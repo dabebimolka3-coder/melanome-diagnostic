@@ -180,7 +180,7 @@ with tab4:
     st.write(f"Système opérationnel - Dernière mise à jour : {datetime.now().strftime('%d/%m/%Y')}")
     st.write("Conformité : Les données chargées sont traitées localement en mémoire et ne sont pas stockées.")
     st.markdown("---")
-    st.caption("© 2026 MelanoPredict AI | Usage strictement académique.")
+    st.caption("© 2026 MelanomaPredict AI | Usage strictement académique.")
 
 # --- BARRE LATÉRALE ---
 with st.sidebar:
