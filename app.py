@@ -81,12 +81,11 @@ st.markdown("""
 tab1, tab2, tab3, tab4 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie", "🤝 Collaboration", "⚖️ Mentions"])
 
 with tab1:
-    # CORRECTION ICI : Utilisation de triples guillemets pour éviter le SyntaxError
     st.warning("""
-    **AVERTISSEMENT LÉGAL ET SCIENTIFIQUE** Ce système est un **dispositif expérimental d'aide au diagnostic** basé sur l'intelligence artificielle.  
-    - Il ne remplace en aucun cas l'examen clinique d'un oncologue ou d'un dermatologue.  
-    - Les résultats fournis sont des probabilités statistiques issues de l'analyse transcriptomique.  
-    - Cet outil est strictement réservé à un **usage de recherche académique** (Research Use Only).
+    **AVERTISSEMENT LÉGAL ET SCIENTIFIQUE** : Ce système est un dispositif expérimental d'aide au diagnostic. 
+    Il ne remplace en aucun cas l'examen clinique d'un oncologue. 
+    Les résultats fournis sont des probabilités statistiques issues de l'analyse transcriptomique. 
+    Usage strictement réservé à la recherche académique (Research Use Only).
     """)
     
     col_input, col_display = st.columns([1, 2], gap="large")
@@ -100,7 +99,8 @@ with tab1:
             if st.button("Lancer le Protocole d'Analyse"):
                 with st.spinner("Analyse moléculaire en cours..."):
                     data = df_patient[GENES]
-                    means, stds = np.array(scaling_params['means']), np.array(scaling_params['stds'])
+                    means = np.array(scaling_params['means'])
+                    stds = np.array(scaling_params['stds'])
                     data_scaled = (data - means) / stds
                     
                     prob = rf_model.predict_proba(data_scaled)[0][1]
@@ -126,10 +126,52 @@ with tab1:
             st.progress(float(res['prob']))
             st.markdown('</div>', unsafe_allow_html=True)
 
-            # Visualisation
+            # Visualisation des Biomarqueurs
             importances = rf_model.feature_importances_
             contributions = (res['scaled'].values[0] * importances)
             top_5 = pd.DataFrame({'Gène': GENES, 'C': contributions}).sort_values('C', key=abs, ascending=False).head(5)
             
-            fig = px.bar(top_5, x='C', y='Gène', orientation='h', color='C', 
-                         title="Biomar
+            fig = px.bar(
+                top_5, 
+                x='C', 
+                y='Gène', 
+                orientation='h', 
+                color='C', 
+                title="Top 5 des Biomarqueurs Décisifs",
+                color_continuous_scale='RdYlGn_r', 
+                template="simple_white"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+with tab2:
+    st.subheader("🔬 Architecture Scientifique")
+    st.markdown("""
+    #### 1. Signature Génomique
+    Analyse de **63 gènes cibles** sélectionnés pour leur rôle clé dans l'oncogenèse cutanée.
+    #### 2. Algorithme de Classification
+    Modèle de Forêt Aléatoire (Random Forest) entraîné sur les cohortes du **The Cancer Genome Atlas (TCGA)**.
+    #### 3. Normalisation des Données
+    Application du Z-score pour assurer la comparabilité inter-échantillons.
+    """)
+
+with tab3:
+    st.subheader("🤝 Collaboration et Support")
+    st.write("**Contact Scientifique :** research@melanomapredict-ai.org")
+    with st.form("contact"):
+        st.text_input("Institution / Laboratoire")
+        st.text_area("Objet de la collaboration")
+        st.form_submit_button("Envoyer la demande")
+
+with tab4:
+    st.caption(f"Système Opérationnel - Mis à jour le : {datetime.now().strftime('%d/%m/%Y')}")
+    st.caption("© 2026 MelanomaPredict AI | Technologie de Diagnostic Moléculaire")
+
+# --- BARRE LATÉRALE ---
+with st.sidebar:
+    st.image("https://cdn-icons-png.flaticon.com/512/3062/3062231.png", width=80)
+    st.title("Statut du Système")
+    if rf_model:
+        st.success("Modèle : Opérationnel")
+    else:
+        st.error("Modèle : Erreur de chargement")
+    st.info("Version Stable : 2.0.4")
