@@ -78,7 +78,7 @@ GENES = ['CLDN11', 'GSC2', 'IL11', 'MMP9', 'HYAL4', 'ASIC2', 'NMU', 'TSPAN11', '
 # --- HEADER PRINCIPAL ---
 st.markdown("""
     <div class="main-header">
-        <h1>MelanoPredict AI v2.0</h1>
+        <h1>MelanomaPredict AI v2.0</h1>
         <p>Système de Diagnostic Moléculaire Assisté par Intelligence Artificielle</p>
     </div>
     """, unsafe_allow_html=True)
