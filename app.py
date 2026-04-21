@@ -88,7 +88,7 @@ tab1, tab2, tab3, tab4 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie", 
 
 # --- ONGLET 1 : DIAGNOSTIC ---
 with tab1:
-    st.info("⚠️ Note : Cet outil est destiné à la recherche académique et à l'aide au diagnostic clinique.")
+    st.info(" Note : Cet outil est destiné à la recherche académique et à l'aide au diagnostic clinique.")
     
     col_input, col_display = st.columns([1, 2], gap="large")
     
