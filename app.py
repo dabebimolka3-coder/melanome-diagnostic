@@ -35,11 +35,11 @@ st.markdown("""
     }
     .report-card {
         background-color: white;
-        padding: 1.5rem;
+        padding: 2rem;
         border-radius: 12px;
-        border-left: 6px solid var(--primary);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        margin-bottom: 1rem;
+        border-left: 8px solid var(--primary);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom: 1.5rem;
     }
     .stTabs [data-baseweb="tab-list"] { gap: 10px; }
     .stTabs [data-baseweb="tab"] {
@@ -73,7 +73,7 @@ GENES = ['CLDN11', 'GSC2', 'IL11', 'MMP9', 'HYAL4', 'ASIC2', 'NMU', 'TSPAN11', '
 st.markdown("""
     <div class="main-header">
         <h1>MelanomaPredict AI v2.0</h1>
-        <p>Système de Diagnostic Moléculaire Assisté par Intelligence Artificielle</p>
+        <p>Analyse Transcriptomique de Haute Précision pour le Diagnostic du Mélanome</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -83,9 +83,8 @@ tab1, tab2, tab3, tab4 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie", 
 with tab1:
     st.warning("""
     **AVERTISSEMENT LÉGAL ET SCIENTIFIQUE** : Ce système est un dispositif expérimental d'aide au diagnostic. 
-    Il ne remplace en aucun cas l'examen clinique d'un oncologue. 
-    Les résultats fournis sont des probabilités statistiques issues de l'analyse transcriptomique. 
-    Usage strictement réservé à la recherche académique (Research Use Only).
+    Il ne remplace en aucun cas l'examen clinique d'un oncologue. Les résultats sont des probabilités 
+    statistiques issues de l'analyse génomique. Usage strictement académique (Research Use Only).
     """)
     
     col_input, col_display = st.columns([1, 2], gap="large")
@@ -97,7 +96,7 @@ with tab1:
         if uploaded_file and rf_model:
             df_patient = pd.read_csv(uploaded_file)
             if st.button("Lancer le Protocole d'Analyse"):
-                with st.spinner("Analyse moléculaire en cours..."):
+                with st.spinner("Séquençage numérique en cours..."):
                     data = df_patient[GENES]
                     means = np.array(scaling_params['means'])
                     stds = np.array(scaling_params['stds'])
@@ -110,20 +109,35 @@ with tab1:
     with col_display:
         if 'analysis' in st.session_state:
             res = st.session_state['analysis']
-            st.markdown('<div class="report-card">', unsafe_allow_html=True)
-            st.subheader("Rapport Synthétique de Diagnostic")
+            prob_percent = res['prob'] * 100
             
+            st.markdown('<div class="report-card">', unsafe_allow_html=True)
+            st.subheader("Rapport d'Interprétation Moléculaire")
+            
+            # LOGIQUE DE DÉCISION EN 3 ZONES
+            if prob_percent < 30:
+                st.success("### VERDICT : PROFIL BÉNIN")
+                st.info("L'expression génique est cohérente avec un tissu sain ou une lésion stable.")
+            elif 30 <= prob_percent <= 70:
+                st.warning("### VERDICT : CAS À SURVEILLER (SUSPECT)")
+                st.markdown("""
+                ⚠️ **Alerte de Vigilance :** Le profil présente des atypies moléculaires significatives. 
+                Une surveillance rapprochée ou une biopsie complémentaire est fortement préconisée.
+                """)
+            else:
+                st.error("### VERDICT : MÉLANOME DÉTECTÉ")
+                st.markdown("**Urgence Clinique :** Le profil présente une signature oncogénique majeure.")
+
+            st.divider()
             c1, c2 = st.columns(2)
             with c1:
-                if res['prob'] > 0.5:
-                    st.error("### VERDICT : MÉLANOME DÉTECTÉ")
-                else:
-                    st.success("### VERDICT : PROFIL BÉNIN")
+                st.metric("Risque de Malignité", f"{prob_percent:.1f}%")
+                st.progress(res['prob'])
             with c2:
-                st.metric("Indice de Confiance", f"{res['conf']:.2f}%")
+                conf_color = "orange" if res['conf'] < 75 else "green"
+                st.markdown(f"**Indice de Confiance IA** : :{conf_color}[{res['conf']:.2f}%]")
+                st.caption("Fiabilité statistique basée sur la variance des arbres de décision.")
             
-            st.write(f"**Probabilité de malignité :** {res['prob']*100:.1f}%")
-            st.progress(float(res['prob']))
             st.markdown('</div>', unsafe_allow_html=True)
 
             # Visualisation des Biomarqueurs
@@ -132,39 +146,35 @@ with tab1:
             top_5 = pd.DataFrame({'Gène': GENES, 'C': contributions}).sort_values('C', key=abs, ascending=False).head(5)
             
             fig = px.bar(
-                top_5, 
-                x='C', 
-                y='Gène', 
-                orientation='h', 
-                color='C', 
-                title="Top 5 des Biomarqueurs Décisifs",
-                color_continuous_scale='RdYlGn_r', 
-                template="simple_white"
+                top_5, x='C', y='Gène', orientation='h', color='C', 
+                title="Top 5 des Biomarqueurs Décisifs (Impact sur le verdict)",
+                color_continuous_scale='RdYlGn_r', template="simple_white"
             )
             st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
     st.subheader("🔬 Architecture Scientifique")
     st.markdown("""
-    #### 1. Signature Génomique
-    Analyse de **63 gènes cibles** sélectionnés pour leur rôle clé dans l'oncogenèse cutanée.
-    #### 2. Algorithme de Classification
-    Modèle de Forêt Aléatoire (Random Forest) entraîné sur les cohortes du **The Cancer Genome Atlas (TCGA)**.
-    #### 3. Normalisation des Données
-    Application du Z-score pour assurer la comparabilité inter-échantillons.
+    #### 1. Signature Moléculaire
+    L'analyse repose sur **63 biomarqueurs (mRNA)** identifiés pour leur rôle critique dans la transition mélanocytaire.
+    #### 2. Modèle Prédictif
+    Algorithme de type **Random Forest** (500 estimateurs) entraîné sur les données normalisées du **The Cancer Genome Atlas (TCGA)**.
+    #### 3. Normalisation Génomique
+    Utilisation de la méthode Z-score pour corriger les variations techniques :
+    $$z = \\frac{x - \\mu}{\\sigma}$$
     """)
 
 with tab3:
-    st.subheader("🤝 Collaboration et Support")
-    st.write("**Contact Scientifique :** research@melanomapredict-ai.org")
+    st.subheader("🤝 Collaboration Institutionnelle")
+    st.write("**Département de Bioinformatique :** research@melanomapredict-ai.org")
     with st.form("contact"):
-        st.text_input("Institution / Laboratoire")
-        st.text_area("Objet de la collaboration")
-        st.form_submit_button("Envoyer la demande")
+        st.text_input("Institution / Laboratoire de référence")
+        st.text_area("Détails de la demande de collaboration")
+        st.form_submit_button("Envoyer la requête")
 
 with tab4:
     st.caption(f"Système Opérationnel - Mis à jour le : {datetime.now().strftime('%d/%m/%Y')}")
-    st.caption("© 2026 MelanomaPredict AI | Technologie de Diagnostic Moléculaire")
+    st.caption("© 2026 MelanomaPredict AI | Technologie de Diagnostic Moléculaire Avancé")
 
 # --- BARRE LATÉRALE ---
 with st.sidebar:
@@ -174,4 +184,4 @@ with st.sidebar:
         st.success("Modèle : Opérationnel")
     else:
         st.error("Modèle : Erreur de chargement")
-    st.info("Version Stable : 2.0.4")
+    st.info("Version Stable : 2.0.5")
