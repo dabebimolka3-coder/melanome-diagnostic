@@ -88,7 +88,10 @@ tab1, tab2, tab3, tab4 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie", 
 
 # --- ONGLET 1 : DIAGNOSTIC ---
 with tab1:
-    st.info(" Note : Cet outil est destiné à la recherche académique et à l'aide au diagnostic clinique.")
+    st.info(" Note : *AVERTISSEMENT LÉGAL ET SCIENTIFIQUE* Ce système est un **dispositif expérimental d'aide au diagnostic** basé sur l'intelligence artificielle. 
+        - Il ne remplace en aucun cas l'examen clinique d'un oncologue ou d'un dermatologue.
+        - Les résultats fournis sont des probabilités statistiques issues de l'analyse transcriptomique.
+        - Cet outil est strictement réservé à un **usage de recherche académique** (Research Use Only).")
     
     col_input, col_display = st.columns([1, 2], gap="large")
     
