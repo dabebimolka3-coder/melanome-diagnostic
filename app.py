@@ -82,7 +82,7 @@ with tab1:
         stade = st.selectbox("Stade Initial", ["I", "II", "III", "IV"])
         
         st.divider()
-        st.subheader("📥 Données transcriptomiques")
+        st.subheader("📥 Données omiques")
         
         # --- SECTION EXPLICATION & TEMPLATE ---
         st.markdown("""
