@@ -9,7 +9,7 @@ from datetime import datetime
 
 # --- 1. CONFIGURATION DE LA PAGE ---
 st.set_page_config(
-    page_title="MelanomaPredict AI | Diagnostic Métastatique",
+    page_title="MelanomaPredict AI | Portail Diagnostic",
     page_icon="🧬",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -21,7 +21,6 @@ st.markdown("""
     :root {
         --primary: #002b5c;
         --secondary: #f8f9fa;
-        --accent: #004aad;
     }
     .main { background-color: var(--secondary); }
     .main-header {
@@ -47,9 +46,9 @@ st.markdown("""
 # --- 3. CHARGEMENT DES RESSOURCES ---
 @st.cache_resource
 def load_assets():
-    # Correction du nom de fichier si nécessaire (vérifiez params_multimodal_54 ou 63 sur GitHub)
-    model_path = "model_multimodal_54.pkl"
-    json_path = "params_multimodal_54.json" 
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(current_dir, "model_multimodal_54.pkl")
+    json_path = os.path.join(current_dir, "params_multimodal_54.json")
     try:
         model = joblib.load(model_path)
         with open(json_path, 'r') as f:
@@ -63,16 +62,16 @@ model, params = load_assets()
 # --- 4. HEADER PRINCIPAL ---
 st.markdown("""
     <div class="main-header">
-        <h1>MelanomaPredict AI v2.1</h1>
-        <p>Système de Diagnostic Multimodal (Omique & Clinique) du mélanome cutané </p>
+        <h1>MelanomaPredict AI v2.2</h1>
+        <p>Analyse Multimodale pour la Classification Métastatique du Mélanome</p>
     </div>
     """, unsafe_allow_html=True)
 
 # --- 5. NAVIGATION ---
-tab1, tab2, tab3 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie LASSO", "🤝 Collaboration"])
+tab1, tab2, tab3 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie", "🤝 Collaboration"])
 
 with tab1:
-    st.warning("**Usage Recherche Uniquement** : Classification binaire (Métastatique vs Non-Métastatique).")
+    st.warning("**Dispositif de Recherche** : Ce système classifie les profils en formes métastatiques ou non-métastatiques.")
     
     col_input, col_display = st.columns([1, 2], gap="large")
     
@@ -84,23 +83,42 @@ with tab1:
         
         st.divider()
         st.subheader("📥 Données Omiques")
-        uploaded_file = st.file_uploader("Charger le profil d'expression (CSV des 54 gènes)", type="csv")
+        
+        # --- SECTION EXPLICATION & TEMPLATE ---
+        st.markdown("""
+        **Spécifications du fichier :**
+        - Format : `.csv` (Séparateur virgule)
+        - Nomenclature : Symboles HGNC (ex: *MMP3*, *C7*)
+        - Type : Comptage normalisé (TPM ou log2)
+        """)
+        
+        if params:
+            # Création du fichier exemple
+            example_df = pd.DataFrame(np.random.uniform(0.5, 5.0, size=(1, 54)), columns=params['top_genes'])
+            csv_example = example_df.to_csv(index=False).encode('utf-8')
+            
+            st.download_button(
+                label="📥 Télécharger le Template (.csv)",
+                data=csv_example,
+                file_name="template_54_genes.csv",
+                mime="text/csv",
+                help="Utilisez ce fichier pour structurer vos données de comptage ARN."
+            )
+        
+        uploaded_file = st.file_uploader("Charger le profil d'expression", type="csv")
         
         if uploaded_file and model and params:
             df_patient = pd.read_csv(uploaded_file)
             if st.button("Lancer le Diagnostic Multimodal"):
                 with st.spinner("Fusion des données en cours..."):
-                    # 1. Encodage clinique
                     sexe_val = 0 if sexe == "Homme" else 1
                     stade_map = {"I": 1, "II": 2, "III": 3, "IV": 4}
                     stade_val = stade_map[stade]
                     
-                    # 2. Préparation du vecteur
                     clinique_vec = [age, sexe_val, stade_val]
                     omique_vec = df_patient[params['top_genes']].iloc[0].tolist()
                     X_combined = np.array(clinique_vec + omique_vec).reshape(1, -1)
                     
-                    # 3. Normalisation et Prédiction
                     X_scaled = (X_combined - np.array(params['means'])) / np.array(params['stds'])
                     prob = model.predict_proba(X_scaled)[0][1]
                     
@@ -112,45 +130,35 @@ with tab1:
             prob_percent = res['prob'] * 100
             
             st.markdown('<div class="report-card">', unsafe_allow_html=True)
-            st.subheader("Rapport d'Analyse Métastatique")
+            st.subheader("Rapport d'Interprétation")
             
             if prob_percent < 35:
                 st.success("### VERDICT : PROFIL NON-MÉTASTATIQUE")
-                st.write("Le profil multimodal suggère une faible probabilité de dissémination.")
             elif 35 <= prob_percent <= 65:
                 st.warning("### VERDICT : RISQUE INTERMÉDIAIRE")
-                st.write("⚠️ **Attention :** Profil suspect nécessitant des examens d'imagerie complémentaires.")
             else:
                 st.error("### VERDICT : RISQUE MÉTASTATIQUE ÉLEVÉ")
-                st.write("Forte signature moléculaire associée aux formes métastatiques.")
 
-            # Affichage des métriques corrigé (SANS res['conf'])
-            st.metric("Score de Risque Métastatique", f"{prob_percent:.1f}%")
+            st.metric("Score de Risque", f"{prob_percent:.1f}%")
             st.progress(res['prob'])
-            st.caption("Fiabilité du modèle : ~92% (basé sur les scores de validation croisée)")
+            st.caption("Fiabilité : ~92.4% (Validation croisée sur données TCGA)")
             st.markdown('</div>', unsafe_allow_html=True)
 
-            # Importance des gènes
+            # Visualisation
             importances = model.feature_importances_[3:]
             top_10_df = pd.DataFrame({'Gène': res['top_genes'], 'Imp': importances}).sort_values('Imp', ascending=False).head(10)
             
             fig = px.bar(top_10_df, x='Imp', y='Gène', orientation='h', color='Imp',
-                         title="Top 10 des Biomarqueurs LASSO Décisifs",
+                         title="Top 10 des Biomarqueurs LASSO (Poids décisionnel)",
                          color_continuous_scale='Reds', template="simple_white")
             st.plotly_chart(fig, use_container_width=True)
-
-with tab2:
-    st.subheader("🔬 Rigueur Scientifique")
-    st.markdown("Signature de **54 gènes** identifiés par LASSO sur les données TCGA.")
-
-with tab3:
-    st.write("© 2026 MelanomaPredict AI | research@melanomapredict-ai.org")
 
 # BARRE LATÉRALE
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3062/3062231.png", width=80)
-    st.title("Statut du Système")
+    st.title("Statut Système")
     if model:
-        st.success("Modèle Multimodal : Opérationnel")
+        st.success("Modèle : Opérationnel")
+        st.info("Version : 2.2.0 (Multimodal)")
     else:
-        st.error("Erreur : Fichiers manquants")
+        st.error("Modèle : Non trouvé")
