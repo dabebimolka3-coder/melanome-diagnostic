@@ -72,7 +72,7 @@ st.markdown("""
 tab1, tab2, tab3 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie LASSO", "🤝 Collaboration"])
 
 with tab1:
-    st.warning("**Usage Recherche Uniquement** : Ce système est une aide au diagnostic pour la classification métastatique.")
+    st.warning("**Usage Recherche Uniquement** : Ce système est une aide au diagnostic pour la classification des formes métastatiques ou non métastatiques.")
     
     col_input, col_display = st.columns([1, 2], gap="large")
     
