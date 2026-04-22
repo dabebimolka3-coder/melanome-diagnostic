@@ -63,7 +63,7 @@ model, params = load_assets()
 st.markdown("""
     <div class="main-header">
         <h1>MelanomaPredict AI </h1>
-        <p>Analyse Multimodale pour l'aide à la décision thérapeutique du du Mélanome cutané </p>
+        <p>Analyse Multimodale pour l'aide à la décision thérapeutique du Mélanome cutané </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -71,7 +71,7 @@ st.markdown("""
 tab1, tab2, tab3 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie", "🤝 Collaboration"])
 
 with tab1:
-    st.warning("**Dispositif de Recherche** : Ce système classifie les profils en formes métastatiques ou non-métastatiques.")
+    st.warning("**Dispositif de Recherche** : Ce système génère un score de risque métastatique basé sur l'analyse de 54 signatures transcriptomiques.")
     
     col_input, col_display = st.columns([1, 2], gap="large")
     
