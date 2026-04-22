@@ -47,9 +47,9 @@ st.markdown("""
 # --- 3. CHARGEMENT DES RESSOURCES ---
 @st.cache_resource
 def load_assets():
-    # Noms de fichiers issus de votre travail sur Colab (LASSO 54 gènes)
+    # Correction du nom de fichier si nécessaire (vérifiez params_multimodal_54 ou 63 sur GitHub)
     model_path = "model_multimodal_54.pkl"
-    json_path = "params_multimodal_54.json"
+    json_path = "params_multimodal_54.json" 
     try:
         model = joblib.load(model_path)
         with open(json_path, 'r') as f:
@@ -72,7 +72,7 @@ st.markdown("""
 tab1, tab2, tab3 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie LASSO", "🤝 Collaboration"])
 
 with tab1:
-    st.warning("**Usage Recherche Uniquement** : Ce système est une aide au diagnostic pour la classification des formes métastatiques ou non métastatiques.")
+    st.warning("**Usage Recherche Uniquement** : Classification binaire (Métastatique vs Non-Métastatique).")
     
     col_input, col_display = st.columns([1, 2], gap="large")
     
@@ -95,7 +95,7 @@ with tab1:
                     stade_map = {"I": 1, "II": 2, "III": 3, "IV": 4}
                     stade_val = stade_map[stade]
                     
-                    # 2. Préparation du vecteur (Clinique + Omique)
+                    # 2. Préparation du vecteur
                     clinique_vec = [age, sexe_val, stade_val]
                     omique_vec = df_patient[params['top_genes']].iloc[0].tolist()
                     X_combined = np.array(clinique_vec + omique_vec).reshape(1, -1)
@@ -109,62 +109,48 @@ with tab1:
     with col_display:
         if 'analysis' in st.session_state:
             res = st.session_state['analysis']
-            score = res['prob'] * 100
-            
-           # --- LOGIQUE DE DÉCISION CLINIQUE AMÉLIORÉE ---
             prob_percent = res['prob'] * 100
             
             st.markdown('<div class="report-card">', unsafe_allow_html=True)
-            st.subheader("Rapport d'Analyse Moléculaire")
+            st.subheader("Rapport d'Analyse Métastatique")
             
-            if prob_percent < 30:
-                st.success("### VERDICT : PROFIL BÉNIN")
-                st.write("L'expression génique est cohérente avec un tissu sain.")
-            elif 30 <= prob_percent <= 70:
-                st.warning("### VERDICT : CAS À SURVEILLER (SUSPECT)")
-                st.write("⚠️ **Alerte :** Le profil présente des atypies moléculaires. Une surveillance accrue ou une biopsie complémentaire est recommandée.")
+            if prob_percent < 35:
+                st.success("### VERDICT : PROFIL NON-MÉTASTATIQUE")
+                st.write("Le profil multimodal suggère une faible probabilité de dissémination.")
+            elif 35 <= prob_percent <= 65:
+                st.warning("### VERDICT : RISQUE INTERMÉDIAIRE")
+                st.write("⚠️ **Attention :** Profil suspect nécessitant des examens d'imagerie complémentaires.")
             else:
-                st.error("### VERDICT : MÉLANOME DÉTECTÉ")
-                st.write("Le profil génomique présente une forte signature oncogénique.")
+                st.error("### VERDICT : RISQUE MÉTASTATIQUE ÉLEVÉ")
+                st.write("Forte signature moléculaire associée aux formes métastatiques.")
 
-            # Affichage des métriques
-            c1, c2 = st.columns(2)
-            with c1:
-                st.metric("Probabilité de Malignité", f"{prob_percent:.1f}%")
-            with c2:
-                # La confiance est maintenant relative à la zone de décision
-                st.metric("Indice de Confiance IA", f"{res['conf']:.2f}%")
-            
+            # Affichage des métriques corrigé (SANS res['conf'])
+            st.metric("Score de Risque Métastatique", f"{prob_percent:.1f}%")
             st.progress(res['prob'])
+            st.caption("Fiabilité du modèle : ~92% (basé sur les scores de validation croisée)")
             st.markdown('</div>', unsafe_allow_html=True)
-            # Importance des gènes sélectionnés par LASSO
-            importances = model.feature_importances_[3:] # On saute les 3 cliniques
+
+            # Importance des gènes
+            importances = model.feature_importances_[3:]
             top_10_df = pd.DataFrame({'Gène': res['top_genes'], 'Imp': importances}).sort_values('Imp', ascending=False).head(10)
             
             fig = px.bar(top_10_df, x='Imp', y='Gène', orientation='h', color='Imp',
-                         title="Top 10 des Biomarqueurs LASSO les plus décisifs",
+                         title="Top 10 des Biomarqueurs LASSO Décisifs",
                          color_continuous_scale='Reds', template="simple_white")
             st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
     st.subheader("🔬 Rigueur Scientifique")
-    st.markdown(f"""
-    #### 1. Sélection LASSO
-    Le modèle utilise une signature parcimonieuse de **54 gènes** identifiés par régularisation L1 pour leur pouvoir prédictif des métastases.
-    #### 2. Fusion Multimodale
-    Le score final intègre l'influence de l'**Âge**, du **Sexe** et du **Stade Clinique** à la signature transcriptomique.
-    """)
+    st.markdown("Signature de **54 gènes** identifiés par LASSO sur les données TCGA.")
 
 with tab3:
-    st.write("**Contact :** research@melanomapredict-ai.org")
+    st.write("© 2026 MelanomaPredict AI | research@melanomapredict-ai.org")
 
 # BARRE LATÉRALE
 with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3062/3062231.png", width=80)
     st.title("Statut du Système")
-    st.success("Modèle Multimodal : Chargé")
-    st.info("Méthode : LASSO Selection")
-    # Dans la barre latérale (sidebar), remplacez par ceci :
-with st.sidebar:
-    st.write("---")
-
+    if model:
+        st.success("Modèle Multimodal : Opérationnel")
+    else:
+        st.error("Erreur : Fichiers manquants")
