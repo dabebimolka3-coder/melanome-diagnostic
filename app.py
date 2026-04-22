@@ -62,7 +62,7 @@ model, params = load_assets()
 # --- 4. HEADER PRINCIPAL ---
 st.markdown("""
     <div class="main-header">
-        <h1>MelanomaPredict AI v2.2</h1>
+        <h1>MelanomaPredict AI </h1>
         <p>Analyse Multimodale pour la Classification Métastatique du Mélanome</p>
     </div>
     """, unsafe_allow_html=True)
@@ -158,6 +158,6 @@ with st.sidebar:
     st.title("Statut Système")
     if model:
         st.success("Modèle : Opérationnel")
-        st.info("Version : 2.2.0 (Multimodal)")
+        st.info("Version : 2.0 (Multimodal)")
     else:
         st.error("Modèle : Non trouvé")
