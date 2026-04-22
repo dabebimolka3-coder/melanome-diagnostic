@@ -63,7 +63,7 @@ model, params = load_assets()
 st.markdown("""
     <div class="main-header">
         <h1>MelanomaPredict AI </h1>
-        <p>Analyse Multimodale pour la Classification du Mélanome cutané </p>
+        <p>Analyse Multimodale pour l'aide à la décision thérapeutique du du Mélanome cutané </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -157,7 +157,7 @@ with st.sidebar:
     st.image("https://cdn-icons-png.flaticon.com/512/3062/3062231.png", width=80)
     st.title("Statut Système")
     if model:
-        st.success("Modèle : Opérationnel")
-        st.info("Version : 2.0 (Multimodal)")
+        st.success("Modèle multimodal : Opérationnel")
+        st.info("Version : 2.0")
     else:
         st.error("Modèle : Non trouvé")
