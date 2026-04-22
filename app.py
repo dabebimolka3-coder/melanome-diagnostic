@@ -64,7 +64,7 @@ model, params = load_assets()
 st.markdown("""
     <div class="main-header">
         <h1>MelanomaPredict AI v2.1</h1>
-        <p>Système de Diagnostic Multimodal (Omique & Clinique) des Formes Métastatiques</p>
+        <p>Système de Diagnostic Multimodal (Omique & Clinique) des Formes Métastatiques ou non métastatiques </p>
     </div>
     """, unsafe_allow_html=True)
 
