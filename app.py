@@ -111,20 +111,32 @@ with tab1:
             res = st.session_state['analysis']
             score = res['prob'] * 100
             
-            st.markdown('<div class="report-card">', unsafe_allow_html=True)
-            st.subheader("Résultat du Risk Score Métastatique")
+           # --- LOGIQUE DE DÉCISION CLINIQUE AMÉLIORÉE ---
+            prob_percent = res['prob'] * 100
             
-            if score < 35:
-                st.success("### PROFIL : NON-MÉTASTATIQUE")
-            elif 35 <= score <= 65:
-                st.warning("### PROFIL : À SURVEILLER (RISQUE INTERMÉDIAIRE)")
+            st.markdown('<div class="report-card">', unsafe_allow_html=True)
+            st.subheader("Rapport d'Analyse Moléculaire")
+            
+            if prob_percent < 30:
+                st.success("### VERDICT : PROFIL BÉNIN")
+                st.write("L'expression génique est cohérente avec un tissu sain.")
+            elif 30 <= prob_percent <= 70:
+                st.warning("### VERDICT : CAS À SURVEILLER (SUSPECT)")
+                st.write("⚠️ **Alerte :** Le profil présente des atypies moléculaires. Une surveillance accrue ou une biopsie complémentaire est recommandée.")
             else:
-                st.error("### PROFIL : RISQUE MÉTASTATIQUE ÉLEVÉ")
+                st.error("### VERDICT : MÉLANOME DÉTECTÉ")
+                st.write("Le profil génomique présente une forte signature oncogénique.")
 
-            st.metric("Score de Risque", f"{score:.1f}%")
+            # Affichage des métriques
+            c1, c2 = st.columns(2)
+            with c1:
+                st.metric("Probabilité de Malignité", f"{prob_percent:.1f}%")
+            with c2:
+                # La confiance est maintenant relative à la zone de décision
+                st.metric("Indice de Confiance IA", f"{res['conf']:.2f}%")
+            
             st.progress(res['prob'])
             st.markdown('</div>', unsafe_allow_html=True)
-
             # Importance des gènes sélectionnés par LASSO
             importances = model.feature_importances_[3:] # On saute les 3 cliniques
             top_10_df = pd.DataFrame({'Gène': res['top_genes'], 'Imp': importances}).sort_values('Imp', ascending=False).head(10)
