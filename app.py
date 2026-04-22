@@ -152,3 +152,14 @@ with st.sidebar:
     st.title("Statut du Système")
     st.success("Modèle Multimodal : Chargé")
     st.info("Méthode : LASSO Selection")
+    # Dans la barre latérale (sidebar), remplacez par ceci :
+with st.sidebar:
+    st.write("---")
+    if model is not None:
+        st.success("✅ Modèle chargé")
+    else:
+        st.error("❌ Modèle NON trouvé")
+    if params is not None:
+        st.success("✅ Paramètres chargés")
+    else:
+        st.error("❌ Paramètres NON trouvés")
