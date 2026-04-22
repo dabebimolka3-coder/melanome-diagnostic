@@ -109,7 +109,7 @@ with tab1:
         
         if uploaded_file and model and params:
             df_patient = pd.read_csv(uploaded_file)
-            if st.button("Lancer le Diagnostic Multimodal"):
+            if st.button("Lancer le Diagnostic"):
                 with st.spinner("Fusion des données en cours..."):
                     sexe_val = 0 if sexe == "Homme" else 1
                     stade_map = {"I": 1, "II": 2, "III": 3, "IV": 4}
