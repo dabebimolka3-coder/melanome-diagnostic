@@ -49,7 +49,7 @@ st.markdown("""
 def load_assets():
     # Noms de fichiers issus de votre travail sur Colab (LASSO 54 gènes)
     model_path = "model_multimodal_54.pkl"
-    json_path = "params_multimodal_63.json"
+    json_path = "params_multimodal_54.json"
     try:
         model = joblib.load(model_path)
         with open(json_path, 'r') as f:
