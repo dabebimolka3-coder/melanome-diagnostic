@@ -141,7 +141,6 @@ with tab1:
 
             st.metric("Score de Risque", f"{prob_percent:.1f}%")
             st.progress(res['prob'])
-            st.caption("Fiabilité : ~92.4% (Validation croisée sur données TCGA)")
             st.markdown('</div>', unsafe_allow_html=True)
 
             # Visualisation
