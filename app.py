@@ -136,10 +136,15 @@ with tab1:
 st.header("Résultats de l'Analyse Diagnostique")
 st.subheader("Score de Risque Métastatique")
 
-# On affiche la barre de progression
-st.progress(prob_percent) 
+# --- SECTION AFFICHAGE (Ligne 158-160 environ) ---
+# Assurez-vous qu'il n'y a QUE des espaces (pas de tabulations) avant ces lignes
 
-# --- LOGIQUE DE DÉCISION (Vérifiez bien l'alignement à gauche ici) ---
+st.subheader("Résultats de l'Analyse")
+
+# Cette ligne doit être alignée avec st.subheader
+st.metric("Score de Risque Métastatique", f"{prob_percent*100:.1f}%")
+
+# --- LOGIQUE DE DÉCISION (Alignée avec st.metric) ---
 if prob_percent < 0.33:
     st.success(f"Probabilité : {prob_percent:.2%} - Faible Risque")
     st.info("Décision : Surveillance standard")
@@ -149,20 +154,6 @@ elif 0.33 <= prob_percent < 0.67:
 else:
     st.error(f"Probabilité : {prob_percent:.2%} - Risque Élevé")
     st.info("Décision : Discussion précoce d'immunothérapie / thérapie ciblée")
-st.header("Résultats de l'Analyse Diagnostique")
-
-# Affichage visuel du score principal
-st.subheader("Score de Risque Métastatique")
-st.progress(proba)
-# Le score de 0.5% a été totalement retiré pour la clarté du diagnostic.
-            # Affichage visuel du score en pourcentage (0-100)
-            st.metric("Score de Risque Métastatique", f"{prob_percent*100:.1f}%")
-            st.progress(prob_percent)
-            st.markdown('</div>', unsafe_allow_html=True)
-            st.metric("Score de Risque", f"{prob_percent:.1f}%")
-            st.progress(res['prob'])
-            st.markdown('</div>', unsafe_allow_html=True)
-
             # Visualisation
             importances = model.feature_importances_[3:]
             top_10_df = pd.DataFrame({'Gène': res['top_genes'], 'Imp': importances}).sort_values('Imp', ascending=False).head(10)
