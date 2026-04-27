@@ -131,26 +131,15 @@ with tab1:
             
             st.markdown('<div class="report-card">', unsafe_allow_html=True)
             st.subheader("Rapport d'Interprétation")
-            
-          import streamlit as st
-
-# ... (votre code de chargement du modèle et de prétraitement des données)
-
-# --- CALCUL DE LA PROBABILITÉ ---
-# Supposons que 'proba' est la probabilité brute (entre 0 et 1) 
-# obtenue via votre modèle Random Forest
-# proba = model.predict_proba(input_data)[0][1] 
-proba = 0.4620  # Valeur d'exemple basée sur votre test actuel
-
+        
+# --- SECTION AFFICHAGE DES RÉSULTATS ---
 st.header("Résultats de l'Analyse Diagnostique")
-
-# Affichage visuel du score principal
 st.subheader("Score de Risque Métastatique")
-st.progress(proba)
 
-# --- LOGIQUE DE DÉCISION CORRIGÉE (Seuils : 0.33 et 0.67) ---
-prob_percent = proba
+# On affiche la barre de progression
+st.progress(prob_percent) 
 
+# --- LOGIQUE DE DÉCISION (Vérifiez bien l'alignement à gauche ici) ---
 if prob_percent < 0.33:
     st.success(f"Probabilité : {prob_percent:.2%} - Faible Risque")
     st.info("Décision : Surveillance standard")
@@ -160,7 +149,11 @@ elif 0.33 <= prob_percent < 0.67:
 else:
     st.error(f"Probabilité : {prob_percent:.2%} - Risque Élevé")
     st.info("Décision : Discussion précoce d'immunothérapie / thérapie ciblée")
+st.header("Résultats de l'Analyse Diagnostique")
 
+# Affichage visuel du score principal
+st.subheader("Score de Risque Métastatique")
+st.progress(proba)
 # Le score de 0.5% a été totalement retiré pour la clarté du diagnostic.
             # Affichage visuel du score en pourcentage (0-100)
             st.metric("Score de Risque Métastatique", f"{prob_percent*100:.1f}%")
