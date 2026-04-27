@@ -132,13 +132,15 @@ with tab1:
             st.markdown('<div class="report-card">', unsafe_allow_html=True)
             st.subheader("Rapport d'Interprétation")
             
-            if prob_percent < 35:
-                st.success("### VERDICT : PROFIL NON-MÉTASTATIQUE")
-            elif 35 <= prob_percent <= 65:
-                st.warning("### VERDICT : RISQUE INTERMÉDIAIRE")
-            else:
-                st.error("### VERDICT : RISQUE MÉTASTATIQUE ÉLEVÉ")
-
+            if prob_percent < 0.33:
+    st.success(fprob_percent : {prob_percent:.2%} - Faible Risque")
+    st.info("Décision : Surveillance standard")
+elif 0.33 <= score < 0.67:
+    st.warning(f"prob_percent : {prob_percent:.2%} - Risque Intermédiaire")
+    st.info("Décision : Examens complémentaires et suivi rapproché")
+else:
+    st.error(f"prob_percent : {prob_percent:.2%} - Risque Élevé")
+    st.info("Décision : Discussion précoce d'immunothérapie / thérapie ciblée")
             st.metric("Score de Risque", f"{prob_percent:.1f}%")
             st.progress(res['prob'])
             st.markdown('</div>', unsafe_allow_html=True)
