@@ -127,20 +127,26 @@ with tab1:
     with col_display:
         if 'analysis' in st.session_state:
             res = st.session_state['analysis']
-            prob_percent = res['prob'] * 100
+            prob_percent = res['prob']  # Valeur entre 0 et 1
             
             st.markdown('<div class="report-card">', unsafe_allow_html=True)
             st.subheader("Rapport d'Interprétation")
             
+            # --- LOGIQUE DE DÉCISION CORRIGÉE ---
             if prob_percent < 0.33:
-    st.success(fprob_percent : {prob_percent:.2%} - Faible Risque")
-    st.info("Décision : Surveillance standard")
-elif 0.33 <= score < 0.67:
-    st.warning(f"prob_percent : {prob_percent:.2%} - Risque Intermédiaire")
-    st.info("Décision : Examens complémentaires et suivi rapproché")
-else:
-    st.error(f"prob_percent : {prob_percent:.2%} - Risque Élevé")
-    st.info("Décision : Discussion précoce d'immunothérapie / thérapie ciblée")
+                st.success(f"Probabilité : {prob_percent:.2%} - Faible Risque")
+                st.info("Décision : Surveillance standard")
+            elif 0.33 <= prob_percent < 0.67:
+                st.warning(f"Probabilité : {prob_percent:.2%} - Risque Intermédiaire")
+                st.info("Décision : Examens complémentaires et suivi rapproché")
+            else:
+                st.error(f"Probabilité : {prob_percent:.2%} - Risque Élevé")
+                st.info("Décision : Discussion précoce d'immunothérapie / thérapie ciblée")
+            
+            # Affichage visuel du score en pourcentage (0-100)
+            st.metric("Score de Risque Métastatique", f"{prob_percent*100:.1f}%")
+            st.progress(prob_percent)
+            st.markdown('</div>', unsafe_allow_html=True)
             st.metric("Score de Risque", f"{prob_percent:.1f}%")
             st.progress(res['prob'])
             st.markdown('</div>', unsafe_allow_html=True)
