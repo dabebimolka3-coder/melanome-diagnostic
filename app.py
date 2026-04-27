@@ -84,16 +84,13 @@ with tab1:
         st.divider()
         st.subheader("📥 Données omiques")
         
-        # --- SECTION EXPLICATION & TEMPLATE ---
         st.markdown("""
         **Spécifications du fichier :**
         - Format : `.csv` (Séparateur virgule)
         - Nomenclature : Symboles HGNC (ex: *MMP3*, *C7*)
-        - Type : Comptage normalisé (TPM ou log2)
         """)
         
         if params:
-            # Création du fichier exemple
             example_df = pd.DataFrame(np.random.uniform(0.5, 5.0, size=(1, 54)), columns=params['top_genes'])
             csv_example = example_df.to_csv(index=False).encode('utf-8')
             
@@ -101,8 +98,7 @@ with tab1:
                 label="📥 Télécharger le Template (.csv)",
                 data=csv_example,
                 file_name="template_54_genes.csv",
-                mime="text/csv",
-                help="Utilisez ce fichier pour structurer vos données de comptage ARN."
+                mime="text/csv"
             )
         
         uploaded_file = st.file_uploader("Charger le profil d'expression", type="csv")
@@ -131,35 +127,30 @@ with tab1:
             
             st.markdown('<div class="report-card">', unsafe_allow_html=True)
             st.subheader("Rapport d'Interprétation")
-        
-# --- SECTION AFFICHAGE DES RÉSULTATS ---
-st.header("Résultats de l'Analyse Diagnostique")
-st.subheader("Score de Risque Métastatique")
+            
+            # Affichage du Score
+            st.metric("Score de Risque Métastatique", f"{prob_percent*100:.1f}%")
+            st.progress(prob_percent)
 
-# --- SECTION AFFICHAGE (Ligne 158-160 environ) ---
-# Assurez-vous qu'il n'y a QUE des espaces (pas de tabulations) avant ces lignes
+            # Logique de décision
+            if prob_percent < 0.33:
+                st.success(f"Probabilité : {prob_percent:.2%} - Faible Risque")
+                st.info("Décision : Surveillance standard")
+            elif 0.33 <= prob_percent < 0.67:
+                st.warning(f"Probabilité : {prob_percent:.2%} - Risque Intermédiaire")
+                st.info("Décision : Examens complémentaires et suivi rapproché")
+            else:
+                st.error(f"Probabilité : {prob_percent:.2%} - Risque Élevé")
+                st.info("Décision : Discussion précoce d'immunothérapie / thérapie ciblée")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
 
-st.subheader("Résultats de l'Analyse")
-
-# Cette ligne doit être alignée avec st.subheader
-st.metric("Score de Risque Métastatique", f"{prob_percent*100:.1f}%")
-
-# --- LOGIQUE DE DÉCISION (Alignée avec st.metric) ---
-if prob_percent < 0.33:
-    st.success(f"Probabilité : {prob_percent:.2%} - Faible Risque")
-    st.info("Décision : Surveillance standard")
-elif 0.33 <= prob_percent < 0.67:
-    st.warning(f"Probabilité : {prob_percent:.2%} - Risque Intermédiaire")
-    st.info("Décision : Examens complémentaires et suivi rapproché")
-else:
-    st.error(f"Probabilité : {prob_percent:.2%} - Risque Élevé")
-    st.info("Décision : Discussion précoce d'immunothérapie / thérapie ciblée")
-            # Visualisation
+            # Visualisation des Biomarqueurs
             importances = model.feature_importances_[3:]
             top_10_df = pd.DataFrame({'Gène': res['top_genes'], 'Imp': importances}).sort_values('Imp', ascending=False).head(10)
             
             fig = px.bar(top_10_df, x='Imp', y='Gène', orientation='h', color='Imp',
-                         title="Top 10 des Biomarqueurs LASSO (Poids décisionnel)",
+                         title="Top 10 des Biomarqueurs (Poids décisionnel)",
                          color_continuous_scale='Reds', template="simple_white")
             st.plotly_chart(fig, use_container_width=True)
 
