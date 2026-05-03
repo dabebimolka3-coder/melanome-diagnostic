@@ -68,7 +68,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- 5. NAVIGATION ---
-tab1, tab2, tab3 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie"])
+tab1, tab2 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie"])
 # --- MÉTHODOLOGIE ---
 with tab2:
     st.subheader("📖 Méthodologie ")
