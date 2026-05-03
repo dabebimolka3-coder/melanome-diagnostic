@@ -69,7 +69,37 @@ st.markdown("""
 
 # --- 5. NAVIGATION ---
 tab1, tab2, tab3 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie", "🤝 Collaboration"])
+# --- MÉTHODOLOGIE ---
+with tab2:
+    st.subheader("📖 Méthodologie ")
+    st.markdown("""
+    #### 1. Signature Génomique
+    Le diagnostic repose sur la quantification de **54 biomarqueurs (mRNA)** sélectionnés par régression Lasso. Ces gènes sont impliqués dans invasion et Remodelage de la Matrice Extracellulaire (MEC), Transition Épithélio-Mésenchymateuse (EMT),Inflammation.
+    
+    #### 2. Moteur de Prédiction
+    Nous utilisons un modèle **Random Forest** (Forêt Aléatoire) de 500 arbres décisionnels. Ce modèle a été entraîné sur des cohortes transcriptomiques normalisées provenant du **TCGA** (The Cancer Genome Atlas).
+    
+    #### 3. Prétraitement des Données
+    Chaque échantillon subit une normalisation **Z-score** basée sur les paramètres de la cohorte de référence :
+    $$z = \\frac{x - \\mu}{\\sigma}$$
+    """)
 
+# --- ONGLET 3 : COLLABORATION ---
+with tab3:
+    st.subheader("🤝 Partenariats et Support")
+    c_info, c_form = st.columns(2)
+    with c_info:
+        st.write("""
+        **Unité de Recherche en Bioinformatique Moléculaire** Pour toute demande de collaboration académique ou accès à l'API :
+        - **Email :** research@melanopredict-ai.org
+        - **Institution :** Centre de Génomique Appliquée
+        """)
+    with c_form:
+        with st.form("contact"):
+            nom = st.text_input("Nom / Institution")
+            msg = st.text_area("Message")
+            if st.form_submit_button("Envoyer la demande"):
+                st.success("Demande transmise à l'équipe de recherche.")
 with tab1:
     st.warning("**Dispositif de Recherche** : Ce système génère un score de risque métastatique basé sur l'analyse de 54 signatures transcriptomiques.")
     
