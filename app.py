@@ -687,26 +687,17 @@ elif st.session_state['current_page'] == 'methodologie':
         <p style="color: rgba(0,0,0,0.55); font-size: 0.85rem;">Architecture et validation du modèle prédictif</p>
     </div>
     """, unsafe_allow_html=True)
-
-# PAGE MÉTHODOLOGIE
-elif st.session_state['current_page'] == 'methodologie':
-    st.markdown("""
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Méthodologie</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Architecture et validation du modèle prédictif</p>
-    </div>
-    """, unsafe_allow_html=True)
     
     c1, c2 = st.columns(2, gap="large")
 
     with c1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Architecture du Modèle</div>
+            <div class="mcard-title">🧠 Architecture du Modèle</div>
             <ul>
-                <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
-                <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
-                <li><strong>Cohorte :</strong> Entraîné sur TCGA-SKCM (mélanome cutané).</li>
+                <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso</li>
+                <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels</li>
+                <li><strong>Cohorte :</strong> Entraîné sur TCGA-SKCM (mélanome cutané)</li>
                 <li><strong>Validation croisée :</strong> 10 folds stratifiés</li>
             </ul>
         </div>
@@ -714,59 +705,49 @@ elif st.session_state['current_page'] == 'methodologie':
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Normalisation Z-score</div>
-            <p>Chaque échantillon subit une normalisation basée sur les paramètres statistiques de la cohorte TCGA de référence :</p>
-            <div class="formula-box">z = (x &minus; &mu;) / &sigma;</div>
-            <p style="margin-top:1rem">&mu; et &sigma; sont calculés sur les distributions TCGA-SKCM pour chacun des 54 gènes et 3 variables cliniques.</p>
+            <div class="mcard-title">📊 Normalisation Z-score</div>
+            <p>Normalisation basée sur les paramètres statistiques de la cohorte TCGA :</p>
+            <div class="formula-box">z = (x &minus; μ) / σ</div>
         </div>
         """, unsafe_allow_html=True)
 
     with c2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Procédure Diagnostique</div>
+            <div class="mcard-title">🔄 Procédure Diagnostique</div>
             <div class="step-row">
                 <div class="step-dot">1</div>
-                <div><strong>Input :</strong> Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression 54 gènes au format .csv.</div>
+                <div>Saisie des paramètres cliniques et chargement RNA-seq</div>
             </div>
             <div class="step-row">
                 <div class="step-dot">2</div>
-                <div><strong>Fusion Multimodale :</strong> Encodage et concaténation pour former un vecteur unique de 57 variables (54G + 3C).</div>
+                <div>Fusion multimodale (54 gènes + 3 cliniques)</div>
             </div>
             <div class="step-row">
                 <div class="step-dot">3</div>
-                <div><strong>Standardisation :</strong> Application des moyennes et écarts-types TCGA sur chaque variable individuelle.</div>
+                <div>Standardisation Z-score</div>
             </div>
             <div class="step-row">
                 <div class="step-dot">4</div>
-                <div><strong>Prédiction :</strong> Calcul de la probabilité p métastatique via le modèle Random Forest entraîné.</div>
+                <div>Prédiction Random Forest</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Seuils de Décision Clinique</div>
+            <div class="mcard-title">🎯 Seuils de Décision</div>
             <div class="threshold-row">
                 <div class="th-ind th-low"></div>
-                <div>
-                    <div class="th-title">Risque Faible — p &lt; 33%</div>
-                    <div class="th-desc">Mélanome primaire probable. Surveillance standard recommandée.</div>
-                </div>
+                <div><div class="th-title">Risque Faible — p &lt; 33%</div></div>
             </div>
             <div class="threshold-row">
                 <div class="th-ind th-med"></div>
-                <div>
-                    <div class="th-title">Risque Intermédiaire — 33% &le; p &lt; 67%</div>
-                    <div class="th-desc">Zone d'incertitude. Confirmation histologique et suivi rapproché.</div>
-                </div>
+                <div><div class="th-title">Risque Intermédiaire — 33% ≤ p &lt; 67%</div></div>
             </div>
             <div class="threshold-row">
                 <div class="th-ind th-high"></div>
-                <div>
-                    <div class="th-title">Risque Élevé — p &ge; 67%</div>
-                    <div class="th-desc">Mélanome métastatique probable. Discussion précoce immunothérapie (anti-PD-1 / anti-CTLA-4).</div>
-                </div>
+                <div><div class="th-title">Risque Élevé — p ≥ 67%</div></div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -774,9 +755,9 @@ elif st.session_state['current_page'] == 'methodologie':
 # PAGE DOCUMENTATION
 elif st.session_state['current_page'] == 'documentation':
     st.markdown("""
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Documentation Scientifique</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Modèle multimodal pour la prédiction du risque métastatique dans le mélanome cutané</p>
+    <div style="margin-bottom: 1.5rem;">
+        <h1 style="font-size: 1.8rem; margin-bottom: 0.3rem;">Documentation Scientifique</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.85rem;">Modèle multimodal pour la prédiction du risque métastatique</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -785,58 +766,65 @@ elif st.session_state['current_page'] == 'documentation':
     with col1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Base de Données</div>
+            <div class="mcard-title">📊 Base de Données</div>
             <ul>
-                <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
-                <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
-                <li><strong>Features :</strong> 57 variables (54 gènes + 3 cliniques)</li>
+                <li><strong>Cohorte :</strong> TCGA-SKCM</li>
+                <li><strong>Échantillons :</strong> 473 patients</li>
+                <li><strong>Features :</strong> 57 variables</li>
                 <li><strong>Ratio :</strong> Train/Test 80/20</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    
-    with col2:
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Performances</div>
-            <ul>
-                <li><strong>Accuracy :</strong> 90%</li>
-                <li><strong>Sensibilité :</strong> 85%</li>
-                <li><strong>Spécificité :</strong> 95%</li>
-                <li><strong>AUC-ROC :</strong> 0.955</li>
-                <li><strong>F1-Score :</strong> 89.47%</li>
-                <li><strong>Precision :</strong> 94.44%</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Limitations</div>
+            <div class="mcard-title">⚙️ Hyperparamètres</div>
             <ul>
-                <li>Validation externe en cours sur cohorte indépendante</li>
-                <li>Ne remplace pas le gold standard histologique</li>
-                <li>Usage réservé à la recherche clinique</li>
-                <li>Nécessite normalisation standardisée des expressions géniques</li>
+                <li><strong>n_estimators :</strong> 500</li>
+                <li><strong>max_depth :</strong> 20</li>
+                <li><strong>min_samples_split :</strong> 5</li>
+                <li><strong>max_features :</strong> sqrt</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
     
+    with col2:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">🎯 Performances</div>
+            <ul>
+                <li><strong>Accuracy :</strong> 90%</li>
+                <li><strong>Sensibilité :</strong> 85%</li>
+                <li><strong>Spécificité :</strong> 95%</li>
+                <li><strong>AUC-ROC :</strong> 0.955</li>
+                <li><strong>F1-Score :</strong> 89.5%</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">📋 Limitations</div>
+            <ul>
+                <li>Validation externe en cours</li>
+                <li>Ne remplace pas l'histologie</li>
+                <li>Usage recherche uniquement</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
     st.markdown("""
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Contact & Support</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Une question, une collaboration ou un support technique ? N'hésitez pas à nous contacter.</p>
+    <div style="margin-bottom: 1.5rem;">
+        <h1 style="font-size: 1.8rem; margin-bottom: 0.3rem;">Contact & Support</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.85rem;">Une question, une collaboration ou un support technique ?</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("""
     <div class="mcard">
-        <div class="mcard-title"> Formulaire de contact</div>
-        <p>Pour toute demande d'information ou collaboration, veuillez nous envoyer un email à :</p>
+        <div class="mcard-title">📧 Email</div>
         <p style="font-family: monospace; font-size: 1rem; color: #1a6fff; text-align: center; margin-top: 0.5rem;">contact@melanomapredict.ai</p>
     </div>
     """, unsafe_allow_html=True)
@@ -844,56 +832,36 @@ elif st.session_state['current_page'] == 'contact':
 # ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style="padding:1.2rem 0 1rem; text-align:center;
-                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.2rem;">
-        <div style="font-size:2rem; margin-bottom:0.5rem;">🧬</div>
-        <div style="font-family:'Cormorant Garamond',serif;
-                    font-size:1.05rem; font-weight:700; color:#0d1b2a;">
-            MelanomaPredict AI
-        </div>
-        <div style="font-size:0.65rem; color:rgba(0,0,0,0.4);
-                    letter-spacing:0.12em; text-transform:uppercase; margin-top:3px;">
-            Portail Diagnostic v2.0
-        </div>
+    <div style="padding: 1rem 0 1rem; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 1rem;">
+        <div style="font-size: 1.8rem; margin-bottom: 0.3rem;">🧬</div>
+        <div style="font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 600; color: #0d1b2a;">MelanomaPredict AI</div>
+        <div style="font-size: 0.6rem; color: rgba(0,0,0,0.4); letter-spacing: 0.1em;">v2.0</div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("**Navigation rapide**")
+    st.markdown("**Navigation**")
     
-    if st.button(" Analyse", use_container_width=True, key="sidebar_analyse"):
-        st.session_state['current_page'] = 'analyse'
-        st.rerun()
+    if st.button("🔬 Analyse", use_container_width=True, key="sidebar_analyse"):
+        navigate_to('analyse')
     
-    if st.button(" Méthodologie", use_container_width=True, key="sidebar_methodo"):
-        st.session_state['current_page'] = 'methodologie'
-        st.rerun()
+    if st.button("📊 Méthodologie", use_container_width=True, key="sidebar_methodo"):
+        navigate_to('methodologie')
     
-    if st.button(" Documentation", use_container_width=True, key="sidebar_doc"):
-        st.session_state['current_page'] = 'documentation'
-        st.rerun()
+    if st.button("📚 Documentation", use_container_width=True, key="sidebar_doc"):
+        navigate_to('documentation')
     
     if st.button("📧 Contact", use_container_width=True, key="sidebar_contact"):
-        st.session_state['current_page'] = 'contact'
-        st.rerun()
+        navigate_to('contact')
     
     st.divider()
     
     st.markdown("**Statut Système**")
     if model_ok:
-        st.success("✅ Modèle chargé avec succès")
-        st.info("🌲 Random Forest · 500 arbres")
-        st.info("🔬 57 features · 54 gènes + 3 cliniques")
+        st.success("✅ Modèle chargé")
+        st.caption("🌲 Random Forest · 57 features")
     else:
         st.error("❌ Modèle introuvable")
-        st.warning("Vérifiez `model_multimodal_54.pkl` et `params_multimodal_54.json` dans le répertoire")
+        st.caption("Vérifiez les fichiers du modèle")
 
     st.divider()
-    st.markdown("""
-    <div style="font-size:0.7rem; color:rgba(0,0,0,0.35);
-                line-height:1.6; padding:0 0.2rem;">
-        <strong>⚠️ Avertissement</strong><br>
-        Cet outil est réservé à un usage de recherche. Il ne constitue pas
-        un dispositif médical certifié et ne remplace pas l'avis d'un
-        professionnel de santé qualifié.
-    </div>
-    """, unsafe_allow_html=True)
+    st.caption("⚠️ Usage recherche uniquement — ne remplace pas un avis médical")
