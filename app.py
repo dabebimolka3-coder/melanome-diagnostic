@@ -455,7 +455,6 @@ st.markdown(f"""
 
 # Capture des clics via les colonnes Streamlit
 nav_cols = st.columns(4)
-nav_pages = ["analyse", "methodologie", "documentation", "contact"]
 nav_labels = ["ANALYSE", "MÉTHODOLOGIE", "DOCUMENTATION", "CONTACT"]
 
 for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
