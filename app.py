@@ -392,69 +392,65 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 </style>
 """, unsafe_allow_html=True)
 
-# ── TOPBAR AVEC INDICATEUR PULSANT ──────────────────────────────────────────
+# ── TOPBAR AVEC ÉCRITURE SIMPLIFIÉE ──────────────────────────────────────────
 st.markdown(f"""
 <style>
-/* Animation du point clignotant */
+/* Style global de la barre de navigation */
+.topbar-name {{
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.15em; /* Espacement large pour le style luxe/minimal */
+    text-transform: uppercase;
+    color: #0d1b2a;
+}}
+
 .status-indicator {{
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(34, 197, 94, 0.1);
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(34, 197, 94, 0.2);
+    gap: 10px;
+    padding: 5px 0; /* Suppression du fond pour plus de simplicité */
 }}
 
 .blink-dot {{
-    height: 8px;
-    width: 8px;
-    background-color: #22c55e;
+    height: 7px;
+    width: 7px;
+    background-color: #0d1b2a;
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-    animation: pulse-green 2s infinite;
+    animation: pulse-simple 2.5s infinite;
 }}
 
-@keyframes pulse-green {{
-    0% {{
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-    }}
-    70% {{
-        transform: scale(1);
-        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
-    }}
-    100% {{
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-    }}
+@keyframes pulse-simple {{
+    0% {{ opacity: 1; }}
+    50% {{ opacity: 0.3; }}
+    100% {{ opacity: 1; }}
 }}
 
 .status-label {{
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #166534;
-    letter-spacing: 0.02em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: #666;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }}
 </style>
 
 <div class="topbar">
     <div class="topbar-brand">
-        <div class="topbar-logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
-                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
-                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
-                <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
-                <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
+        <div class="topbar-logo" style="opacity:0.7;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px; height:16px;">
+                <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93"></path>
             </svg>
         </div>
-        <span class="topbar-name">MelanomaPredict AI <span style="opacity:0.4; font-size:0.8rem; margin-left:5px;">\U0001F9EC</span></span>
+        <span class="topbar-name">MelanomaPredict AI</span>
     </div>
+    
     <div class="topbar-status">
         <div class="status-indicator">
             <span class="blink-dot"></span>
-            <span class="status-label">SYSTÈME OPÉRATIONNEL</span>
+            <span class="status-label">Système Opérationnel</span>
         </div>
     </div>
 </div>
