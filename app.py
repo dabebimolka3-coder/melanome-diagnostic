@@ -515,7 +515,7 @@ if st.session_state['current_page'] == 'analyse':
     col_in, col_out = st.columns([5, 7], gap="large")
 
     with col_in:
-        st.markdown('<div class="glass"><div class="glass-title">📋 &nbsp;PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title"> &nbsp;PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
         age   = st.number_input("Âge du patient", min_value=1, max_value=115, value=55)
         sexe  = st.radio("Sexe biologique", ["Homme", "Femme"], horizontal=True)
         stade = st.selectbox("Stade TNM initial", ["I", "II", "III", "IV"])
@@ -659,7 +659,7 @@ elif st.session_state['current_page'] == 'methodologie':
     with c1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🧠 Architecture du Modèle</div>
+            <div class="mcard-title"> Architecture du Modèle</div>
             <ul>
                 <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
                 <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
@@ -671,7 +671,7 @@ elif st.session_state['current_page'] == 'methodologie':
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📊 Normalisation Z-score</div>
+            <div class="mcard-title"> Normalisation Z-score</div>
             <p>Chaque échantillon subit une normalisation basée sur les paramètres statistiques de la cohorte TCGA de référence :</p>
             <div class="formula-box">z = (x &minus; &mu;) / &sigma;</div>
             <p style="margin-top:1rem">&mu; et &sigma; sont calculés sur les distributions TCGA-SKCM pour chacun des 54 gènes et 3 variables cliniques.</p>
@@ -681,7 +681,7 @@ elif st.session_state['current_page'] == 'methodologie':
     with c2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🔄 Procédure Diagnostique</div>
+            <div class="mcard-title"> Procédure Diagnostique</div>
             <div class="step-row">
                 <div class="step-dot">1</div>
                 <div><strong>Input :</strong> Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression 54 gènes au format .csv.</div>
@@ -703,7 +703,7 @@ elif st.session_state['current_page'] == 'methodologie':
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🎯 Seuils de Décision Clinique</div>
+            <div class="mcard-title"> Seuils de Décision Clinique</div>
             <div class="threshold-row">
                 <div class="th-ind th-low"></div>
                 <div>
@@ -742,7 +742,7 @@ elif st.session_state['current_page'] == 'documentation':
     with col1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📊 Base de Données</div>
+            <div class="mcard-title"> Base de Données</div>
             <ul>
                 <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
                 <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
@@ -756,7 +756,7 @@ elif st.session_state['current_page'] == 'documentation':
     with col2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🎯 Performances</div>
+            <div class="mcard-title"> Performances</div>
             <ul>
                 <li><strong>Accuracy :</strong> 90%</li>
                 <li><strong>Sensibilité :</strong> 85%</li>
@@ -770,7 +770,7 @@ elif st.session_state['current_page'] == 'documentation':
         
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📋 Limitations</div>
+            <div class="mcard-title"> Limitations</div>
             <ul>
                 <li>Validation externe en cours sur cohorte indépendante</li>
                 <li>Ne remplace pas le gold standard histologique</li>
@@ -792,7 +792,7 @@ elif st.session_state['current_page'] == 'contact':
     
     st.markdown("""
     <div class="mcard">
-        <div class="mcard-title">📋 Formulaire de contact</div>
+        <div class="mcard-title"> Formulaire de contact</div>
         <p>Pour toute demande d'information ou collaboration, veuillez nous envoyer un email à :</p>
         <p style="font-family: monospace; font-size: 1rem; color: #1a6fff; text-align: center; margin-top: 0.5rem;">contact@melanomapredict.ai</p>
     </div>
@@ -817,15 +817,15 @@ with st.sidebar:
 
     st.markdown("**Navigation rapide**")
     
-    if st.button("🚀 Analyse", use_container_width=True, key="sidebar_analyse"):
+    if st.button(" Analyse", use_container_width=True, key="sidebar_analyse"):
         st.session_state['current_page'] = 'analyse'
         st.rerun()
     
-    if st.button("📖 Méthodologie", use_container_width=True, key="sidebar_methodo"):
+    if st.button(" Méthodologie", use_container_width=True, key="sidebar_methodo"):
         st.session_state['current_page'] = 'methodologie'
         st.rerun()
     
-    if st.button("📚 Documentation", use_container_width=True, key="sidebar_doc"):
+    if st.button(" Documentation", use_container_width=True, key="sidebar_doc"):
         st.session_state['current_page'] = 'documentation'
         st.rerun()
     
