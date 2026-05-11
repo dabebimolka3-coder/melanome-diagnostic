@@ -392,50 +392,50 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 </style>
 """, unsafe_allow_html=True)
 
-# ── TOPBAR AVEC INDICATEUR PULSANT ──────────────────────────────────────────
+# ── TOPBAR AVEC INDICATEUR PULSANT NEUTRE ──────────────────────────────────────────
 st.markdown(f"""
 <style>
-/* Animation du point clignotant */
+/* Animation du point clignotant Neutre/Blanc */
 .status-indicator {{
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(34, 197, 94, 0.1);
+    background: rgba(0, 0, 0, 0.05); /* Fond gris très léger */
     padding: 5px 12px;
     border-radius: 20px;
-    border: 1px solid rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.08);
 }}
 
 .blink-dot {{
     height: 8px;
     width: 8px;
-    background-color: #22c55e;
+    background-color: #0d1b2a; /* Couleur sombre pour le point */
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-    animation: pulse-green 2s infinite;
+    box-shadow: 0 0 0 0 rgba(13, 27, 42, 0.4);
+    animation: pulse-neutral 2s infinite;
 }}
 
-@keyframes pulse-green {{
+@keyframes pulse-neutral {{
     0% {{
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+        box-shadow: 0 0 0 0 rgba(13, 27, 42, 0.4);
     }}
     70% {{
         transform: scale(1);
-        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+        box-shadow: 0 0 0 8px rgba(13, 27, 42, 0);
     }}
     100% {{
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        box-shadow: 0 0 0 0 rgba(13, 27, 42, 0);
     }}
 }}
 
 .status-label {{
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    color: #166534;
-    letter-spacing: 0.02em;
+    color: #0d1b2a;
+    letter-spacing: 0.05em;
 }}
 </style>
 
@@ -446,7 +446,7 @@ st.markdown(f"""
                 <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
                 <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
                 <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
-                <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
+                <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-3"></path>
             </svg>
         </div>
         <span class="topbar-name">MelanomaPredict AI <span style="opacity:0.4; font-size:0.8rem; margin-left:5px;">\U0001F9EC</span></span>
