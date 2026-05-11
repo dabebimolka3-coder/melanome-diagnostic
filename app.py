@@ -721,23 +721,9 @@ elif st.session_state['current_page'] == 'documentation':
             <div class="mcard-title">📊 Base de Données</div>
             <ul>
                 <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
-                <li><strong>Échantillons :</strong> 470 patients (mélanome primaire et métastatique)</li>
+                <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
                 <li><strong>Features :</strong> 57 variables (54 gènes + 3 cliniques)</li>
                 <li><strong>Ratio :</strong> Train/Test 80/20</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">⚙️ Hyperparamètres</div>
-            <ul>
-                <li><strong>n_estimators :</strong> 500 arbres</li>
-                <li><strong>max_depth :</strong> 20</li>
-                <li><strong>min_samples_split :</strong> 5</li>
-                <li><strong>min_samples_leaf :</strong> 2</li>
-                <li><strong>max_features :</strong> sqrt</li>
-                <li><strong>random_state :</strong> 42</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -747,12 +733,12 @@ elif st.session_state['current_page'] == 'documentation':
         <div class="mcard">
             <div class="mcard-title">🎯 Performances</div>
             <ul>
-                <li><strong>Accuracy :</strong> 87.3%</li>
-                <li><strong>Sensibilité :</strong> 84.6%</li>
-                <li><strong>Spécificité :</strong> 89.2%</li>
-                <li><strong>AUC-ROC :</strong> 0.93</li>
-                <li><strong>F1-Score :</strong> 0.86</li>
-                <li><strong>Precision :</strong> 0.88</li>
+                <li><strong>Accuracy :</strong> 90%</li>
+                <li><strong>Sensibilité :</strong> 85%</li>
+                <li><strong>Spécificité :</strong> 95%</li>
+                <li><strong>AUC-ROC :</strong> 0.955</li>
+                <li><strong>F1-Score :</strong> 89.47%</li>
+                <li><strong>Precision :</strong> 94.44%</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -769,18 +755,6 @@ elif st.session_state['current_page'] == 'documentation':
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class="mcard">
-        <div class="mcard-title">📖 Références Bibliographiques</div>
-        <ul>
-            <li>TCGA Research Network. <em>Genomic Classification of Cutaneous Melanoma</em>. Cell, 2015; 161(7):1681-96.</li>
-            <li>Breiman, L. <em>Random Forests</em>. Machine Learning, 2001; 45(1):5-32.</li>
-            <li>Tibshirani, R. <em>Regression Shrinkage and Selection via the Lasso</em>. JRSSB, 1996; 58(1):267-88.</li>
-            <li>Liu et al. <em>Multi-omics integration for melanoma prognosis</em>. Nature Communications, 2022.</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
     st.markdown("""
@@ -824,25 +798,7 @@ elif st.session_state['current_page'] == 'contact':
     
     st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
     
-    col4, col5 = st.columns(2)
-    
-    with col4:
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">📞 Téléphone</div>
-            <p style="font-size: 1.1rem; color: #1a6fff; font-weight: 600;">+33 (0)1 23 45 67 89</p>
-            <p style="font-size: 0.75rem; color: rgba(0,0,0,0.45); margin-top: 0.5rem;">Standard - Service Recherche</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col5:
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">📍 Adresse</div>
-            <p>Institut de Recherche en Dermatologie<br>123 avenue de la Recherche<br>75015 Paris, France</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
+ 
     st.markdown("""
     <div class="mcard">
         <div class="mcard-title">📋 Formulaire de contact</div>
