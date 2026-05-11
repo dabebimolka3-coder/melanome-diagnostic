@@ -14,19 +14,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── SESSION STATE POUR LA NAVIGATION ─────────────────────────────────────────
-# Initialisation avec query params
-if 'current_page' not in st.session_state:
-    # Lire depuis query params ou défaut
-    page_param = st.query_params.get("page", "analyse")
-    st.session_state['current_page'] = page_param
-
-# Fonction de navigation
-def navigate_to(page):
-    st.session_state['current_page'] = page
-    st.query_params["page"] = page
-    st.rerun()
-
 # ── GLOBAL CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
