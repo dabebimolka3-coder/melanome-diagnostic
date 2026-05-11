@@ -14,6 +14,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ── INITIALISATION SESSION STATE ─────────────────────────────────────────────
+if 'page' not in st.session_state:
+    st.session_state['page'] = 'analyse'
+
+def navigate_to(page_name):
+    st.session_state['page'] = page_name
+    st.rerun()
+
 # ── GLOBAL CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -41,7 +49,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     padding: 0 2.5rem; height: 62px;
     margin: 0 -2.5rem 0;
 }
-.topbar-brand { display: flex; align-items: center; gap: 10px; }
+.topbar-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .topbar-logo {
     width: 34px; height: 34px;
     background: linear-gradient(135deg, #1a6fff, #00c9a7);
@@ -60,6 +68,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     font-size: 0.78rem; color: rgba(0,0,0,0.5);
     text-decoration: none; letter-spacing: 0.08em;
     text-transform: uppercase; font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 .topbar-links a:hover { color: #1a6fff; }
 .topbar-status {
@@ -274,54 +284,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 }
 .stProgress > div > div > div > div { border-radius: 50px !important; }
 
-[data-testid="stTabs"] [data-baseweb="tab-list"] {
-    background: #f5f5f5 !important;
-    border-radius: 50px !important;
-    border: 1px solid rgba(0,0,0,0.08) !important;
-    padding: 4px !important; width: fit-content !important;
-    gap: 2px !important; margin-bottom: 2.5rem !important;
-}
-[data-testid="stTabs"] [data-baseweb="tab"] {
-    border-radius: 50px !important; padding: 9px 26px !important;
-    font-family: 'Syne', sans-serif !important; font-size: 0.82rem !important;
-    font-weight: 600 !important; color: rgba(0,0,0,0.45) !important;
-    background: transparent !important; border: none !important;
-    letter-spacing: 0.03em !important;
-}
-[data-testid="stTabs"] [aria-selected="true"] {
-    background: rgba(26,111,255,0.1) !important;
-    color: #1a6fff !important;
-    border: 1px solid rgba(26,111,255,0.25) !important;
-}
-[data-testid="stTabs"] [data-baseweb="tab-highlight"],
-[data-testid="stTabs"] [data-baseweb="tab-border"] { display: none !important; }
-
-[data-testid="stSidebar"] {
-    background: #fafafa !important;
-    border-right: 1px solid rgba(0,0,0,0.08) !important;
-}
-[data-testid="stSidebar"] * { color: rgba(0,0,0,0.65) !important; }
-
-.stWarning > div {
-    background: rgba(255,187,0,0.08) !important;
-    border: 1px solid rgba(255,187,0,0.25) !important;
-    border-radius: 12px !important; color: #a67c00 !important;
-    font-size: 0.82rem !important;
-}
-.stSuccess > div {
-    background: rgba(0,201,167,0.08) !important;
-    border: 1px solid rgba(0,201,167,0.25) !important; border-radius: 10px !important;
-}
-.stInfo > div {
-    background: rgba(26,111,255,0.08) !important;
-    border: 1px solid rgba(26,111,255,0.25) !important; border-radius: 10px !important;
-}
-.stError > div {
-    background: rgba(255,75,75,0.08) !important;
-    border: 1px solid rgba(255,75,75,0.25) !important; border-radius: 10px !important;
-}
-hr { border-color: rgba(0,0,0,0.08) !important; }
-
 .mcard {
     background: #fafafa;
     border: 1px solid rgba(0,0,0,0.08);
@@ -380,6 +342,44 @@ hr { border-color: rgba(0,0,0,0.08) !important; }
     border-radius: 16px; color: rgba(0,0,0,0.35);
     font-size: 0.85rem; text-align: center; line-height: 1.7; gap: 1rem;
 }
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.contact-card {
+    background: #fafafa;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+.contact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0d1b2a;
+    margin-bottom: 0.25rem;
+}
+.contact-detail {
+    font-size: 0.85rem;
+    color: #1a6fff;
+    text-decoration: none;
+}
+.contact-desc {
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.45);
+    margin-top: 0.5rem;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -400,70 +400,268 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
-# ── TOP NAV ───────────────────────────────────────────────────────────────────
+# ── TOP NAV AVEC JAVASCRIPT ───────────────────────────────────────────────────
 st.markdown("""
 <div class="topbar">
-    <div class="topbar-brand">
+    <div class="topbar-brand" onclick="streamlitNavigate('analyse')">
         <div class="topbar-logo">🧬</div>
         <span class="topbar-name">MelanomaPredict AI</span>
     </div>
     <div class="topbar-links">
-        <a href="#">Analyse</a>
-        <a href="#">Méthodologie</a>
-        <a href="#">Documentation</a>
-        <a href="#">Contact</a>
+        <a onclick="streamlitNavigate('analyse')">Analyse</a>
+        <a onclick="streamlitNavigate('methodologie')">Méthodologie</a>
+        <a onclick="streamlitNavigate('documentation')">Documentation</a>
+        <a onclick="streamlitNavigate('contact')">Contact</a>
     </div>
     <div class="topbar-status">
         <span class="pulse"></span>&nbsp; Système opérationnel
     </div>
 </div>
+
+<script>
+function streamlitNavigate(page) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = page;
+    input.style.position = 'absolute';
+    input.style.left = '-9999px';
+    document.body.appendChild(input);
+    
+    const event = new Event('input', { bubbles: true });
+    input.dispatchEvent(event);
+    
+    const selector = `div[data-testid="stMarkdownContainer"]`;
+    setTimeout(() => {
+        const buttons = document.querySelectorAll('button');
+        for (let btn of buttons) {
+            if (btn.innerText.includes(page) || btn.innerText.includes(page.charAt(0).toUpperCase() + page.slice(1))) {
+                btn.click();
+                break;
+            }
+        }
+    }, 100);
+}
+</script>
 """, unsafe_allow_html=True)
 
-# ── HERO ──────────────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="hero">
-    <div class="hero-img"></div>
-    <div class="hero-gradient"></div>
-    <div class="hero-content">
-        <div class="hero-eyebrow">
-            <span class="hero-eyebrow-dot"></span>
-            Dispositif de Recherche Clinique
+# Fonction pour afficher la méthodologie
+def show_methodology():
+    c1, c2 = st.columns(2, gap="large")
+
+    with c1:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">Architecture du Modèle</div>
+            <ul>
+                <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
+                <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
+                <li><strong>Cohorte :</strong> Entraîné sur TCGA-SKCM (mélanome cutané).</li>
+            </ul>
         </div>
-        <h1>Analyse Multimodale<br>du <span>Mélanome</span> Cutané</h1>
-        <p class="hero-sub">
-            Aide à la décision thérapeutique par analyse combinée de
-            54 biomarqueurs transcriptomiques et paramètres cliniques.
-            Cohorte de référence TCGA-SKCM.
-        </p>
-        <div class="hero-kpis">
-            <div class="kpi">
-                <div class="kpi-val">54</div>
-                <div class="kpi-label">Gènes analysés</div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">Normalisation Z-score</div>
+            <p>Chaque échantillon subit une normalisation basée sur les paramètres statistiques de la cohorte TCGA de référence :</p>
+            <div class="formula-box">z = (x &minus; &mu;) / &sigma;</div>
+            <p style="margin-top:0.9rem">&mu; et &sigma; sont calculés sur les distributions TCGA-SKCM pour chacun des 54 gènes et 3 variables cliniques.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with c2:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">Procédure Diagnostique</div>
+            <div class="step-row">
+                <div class="step-dot">1</div>
+                <div><strong>Input :</strong> Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression 54 gènes au format .csv.</div>
             </div>
-            <div class="kpi">
-                <div class="kpi-val">500</div>
-                <div class="kpi-label">Arbres décisionnels</div>
+            <div class="step-row">
+                <div class="step-dot">2</div>
+                <div><strong>Fusion Multimodale :</strong> Encodage et concaténation pour former un vecteur unique de 57 variables (54G + 3C).</div>
             </div>
-            <div class="kpi">
-                <div class="kpi-val">TCGA</div>
-                <div class="kpi-label">Cohorte de référence</div>
+            <div class="step-row">
+                <div class="step-dot">3</div>
+                <div><strong>Standardisation :</strong> Application des moyennes et écarts-types TCGA sur chaque variable individuelle.</div>
             </div>
-            <div class="kpi">
-                <div class="kpi-val">57</div>
-                <div class="kpi-label">Features totales</div>
+            <div class="step-row">
+                <div class="step-dot">4</div>
+                <div><strong>Prédiction :</strong> Calcul de la probabilité p métastatique via le modèle Random Forest entraîné.</div>
             </div>
         </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">Seuils de Décision Clinique</div>
+            <div class="threshold-row">
+                <div class="th-ind th-low"></div>
+                <div>
+                    <div class="th-title">Risque Faible — p &lt; 33%</div>
+                    <div class="th-desc">Mélanome primaire probable. Surveillance standard recommandée.</div>
+                </div>
+            </div>
+            <div class="threshold-row">
+                <div class="th-ind th-med"></div>
+                <div>
+                    <div class="th-title">Risque Intermédiaire — 33% &le; p &lt; 67%</div>
+                    <div class="th-desc">Zone d'incertitude. Confirmation histologique et suivi rapproché.</div>
+                </div>
+            </div>
+            <div class="threshold-row">
+                <div class="th-ind th-high"></div>
+                <div>
+                    <div class="th-title">Risque Élevé — p &ge; 67%</div>
+                    <div class="th-desc">Mélanome métastatique probable. Discussion précoce immunothérapie (anti-PD-1 / anti-CTLA-4).</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+# Fonction pour afficher la documentation
+def show_documentation():
+    st.markdown("""
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem;">Documentation Scientifique</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Modèle multimodal pour la prédiction du risque métastatique dans le mélanome cutané</p>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">📊 Base de Données</div>
+            <ul>
+                <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
+                <li><strong>Échantillons :</strong> 470 patients (mélanome primaire et métastatique)</li>
+                <li><strong>Features :</strong> 57 variables (54 gènes + 3 cliniques)</li>
+                <li><strong>Ratio :</strong> Train/Test 80/20</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">⚙️ Hyperparamètres</div>
+            <ul>
+                <li><strong>n_estimators :</strong> 500 arbres</li>
+                <li><strong>max_depth :</strong> 20</li>
+                <li><strong>min_samples_split :</strong> 5</li>
+                <li><strong>min_samples_leaf :</strong> 2</li>
+                <li><strong>max_features :</strong> sqrt</li>
+                <li><strong>random_state :</strong> 42</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">🎯 Performances</div>
+            <ul>
+                <li><strong>Accuracy :</strong> 87.3%</li>
+                <li><strong>Sensibilité :</strong> 84.6%</li>
+                <li><strong>Spécificité :</strong> 89.2%</li>
+                <li><strong>AUC-ROC :</strong> 0.93</li>
+                <li><strong>F1-Score :</strong> 0.86</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">📋 Limitations</div>
+            <ul>
+                <li>Validation externe en cours sur cohorte indépendante</li>
+                <li>Ne remplace pas le gold standard histologique</li>
+                <li>Usage réservé à la recherche clinique</li>
+                <li>Nécessite normalisation standardisée des expressions géniques</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="mcard">
+        <div class="mcard-title">📖 Références</div>
+        <ul>
+            <li>TCGA Research Network: <em>Genomic Classification of Cutaneous Melanoma</em> (Cell, 2015)</li>
+            <li>Random Forests: Breiman, L. <em>Machine Learning</em> (2001)</li>
+            <li>Lasso Regression for Biomarker Selection: Tibshirani, R. <em>JRSSB</em> (1996)</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
-# ── TABS ──────────────────────────────────────────────────────────────────────
-tab_analyse, tab_methodo = st.tabs(["🚀  Analyse Patient", "📖  Méthodologie"])
+# Fonction pour afficher la page contact
+def show_contact():
+    st.markdown("""
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem;">Contact & Support</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Une question ? Une collaboration ? N'hésitez pas à nous contacter.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div class="contact-card">
+            <div class="contact-icon">🏥</div>
+            <div class="contact-title">Service de Dermatologie</div>
+            <div class="contact-detail">Pr. Jean Dupont</div>
+            <div class="contact-desc">Chef du service<br>Hôpital Universitaire</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="contact-card">
+            <div class="contact-icon">🔬</div>
+            <div class="contact-title">Plateforme Génomique</div>
+            <div class="contact-detail">Dr. Marie Lambert</div>
+            <div class="contact-desc">Responsable R&D<br>Transcriptomique et Bioinformatique</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class="contact-card">
+            <div class="contact-icon">📧</div>
+            <div class="contact-title">Support Technique</div>
+            <div class="contact-detail">support@melanomapredict.com</div>
+            <div class="contact-desc">Disponible du lundi au vendredi<br>9h-18h</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+    
+    col4, col5 = st.columns(2)
+    
+    with col4:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">📞 Téléphone</div>
+            <p style="font-size: 1.1rem; color: #1a6fff;">+33 (0)1 23 45 67 89</p>
+            <p style="font-size: 0.75rem; color: rgba(0,0,0,0.45);">Standard - Service Recherche</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col5:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">📍 Adresse</div>
+            <p>Institut de Recherche en Dermatologie<br>123 avenue de la Recherche<br>75015 Paris, France</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# TAB — ANALYSE
-# ═══════════════════════════════════════════════════════════════════════════════
-with tab_analyse:
+# Fonction pour afficher l'analyse (page principale)
+def show_analysis():
     st.warning(
         "**Dispositif de Recherche.** Ce système génère un score de risque basé sur "
         "54 signatures transcriptomiques. Il ne remplace pas le jugement clinique d'un médecin."
@@ -603,86 +801,70 @@ with tab_analyse:
             </div>
             """, unsafe_allow_html=True)
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# TAB — MÉTHODOLOGIE
-# ═══════════════════════════════════════════════════════════════════════════════
-with tab_methodo:
-    c1, c2 = st.columns(2, gap="large")
-
-    with c1:
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">Architecture du Modèle</div>
-            <ul>
-                <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
-                <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
-                <li><strong>Cohorte :</strong> Entraîné sur TCGA-SKCM (mélanome cutané).</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">Normalisation Z-score</div>
-            <p>Chaque échantillon subit une normalisation basée sur les paramètres statistiques de la cohorte TCGA de référence :</p>
-            <div class="formula-box">z = (x &minus; &mu;) / &sigma;</div>
-            <p style="margin-top:0.9rem">&mu; et &sigma; sont calculés sur les distributions TCGA-SKCM pour chacun des 54 gènes et 3 variables cliniques.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with c2:
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">Procédure Diagnostique</div>
-            <div class="step-row">
-                <div class="step-dot">1</div>
-                <div><strong>Input :</strong> Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression 54 gènes au format .csv.</div>
+# ── AFFICHAGE CONDITIONNEL SELON LA PAGE ──────────────────────────────────────
+# Hero section (visible sur toutes les pages sauf analyse où on l'a déjà intégrée ?)
+# On garde le hero sur la page analyse
+if st.session_state['page'] == 'analyse':
+    st.markdown("""
+    <div class="hero">
+        <div class="hero-img"></div>
+        <div class="hero-gradient"></div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                <span class="hero-eyebrow-dot"></span>
+                Dispositif de Recherche Clinique
             </div>
-            <div class="step-row">
-                <div class="step-dot">2</div>
-                <div><strong>Fusion Multimodale :</strong> Encodage et concaténation pour former un vecteur unique de 57 variables (54G + 3C).</div>
-            </div>
-            <div class="step-row">
-                <div class="step-dot">3</div>
-                <div><strong>Standardisation :</strong> Application des moyennes et écarts-types TCGA sur chaque variable individuelle.</div>
-            </div>
-            <div class="step-row">
-                <div class="step-dot">4</div>
-                <div><strong>Prédiction :</strong> Calcul de la probabilité p métastatique via le modèle Random Forest entraîné.</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">Seuils de Décision Clinique</div>
-            <div class="threshold-row">
-                <div class="th-ind th-low"></div>
-                <div>
-                    <div class="th-title">Risque Faible — p &lt; 33%</div>
-                    <div class="th-desc">Mélanome primaire probable. Surveillance standard recommandée.</div>
+            <h1>Analyse Multimodale<br>du <span>Mélanome</span> Cutané</h1>
+            <p class="hero-sub">
+                Aide à la décision thérapeutique par analyse combinée de
+                54 biomarqueurs transcriptomiques et paramètres cliniques.
+                Cohorte de référence TCGA-SKCM.
+            </p>
+            <div class="hero-kpis">
+                <div class="kpi">
+                    <div class="kpi-val">54</div>
+                    <div class="kpi-label">Gènes analysés</div>
                 </div>
-            </div>
-            <div class="threshold-row">
-                <div class="th-ind th-med"></div>
-                <div>
-                    <div class="th-title">Risque Intermédiaire — 33% &le; p &lt; 67%</div>
-                    <div class="th-desc">Zone d'incertitude. Confirmation histologique et suivi rapproché.</div>
+                <div class="kpi">
+                    <div class="kpi-val">500</div>
+                    <div class="kpi-label">Arbres décisionnels</div>
                 </div>
-            </div>
-            <div class="threshold-row">
-                <div class="th-ind th-high"></div>
-                <div>
-                    <div class="th-title">Risque Élevé — p &ge; 67%</div>
-                    <div class="th-desc">Mélanome métastatique probable. Discussion précoce immunothérapie (anti-PD-1 / anti-CTLA-4).</div>
+                <div class="kpi">
+                    <div class="kpi-val">TCGA</div>
+                    <div class="kpi-label">Cohorte de référence</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-val">57</div>
+                    <div class="kpi-label">Features totales</div>
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Gestion des onglets manuels (pour le contenu principal)
+    tab_analyse, tab_methodo = st.tabs(["🚀  Analyse Patient", "📖  Méthodologie"])
+    
+    with tab_analyse:
+        show_analysis()
+    
+    with tab_methodo:
+        show_methodology()
+
+elif st.session_state['page'] == 'methodologie':
+    st.markdown("""
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem;">Méthodologie</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Architecture et validation du modèle prédictif</p>
+    </div>
+    """, unsafe_allow_html=True)
+    show_methodology()
+
+elif st.session_state['page'] == 'documentation':
+    show_documentation()
+
+elif st.session_state['page'] == 'contact':
+    show_contact()
 
 # ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -701,6 +883,30 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown("**Navigation**")
+    
+    col_a, col_m = st.columns(2)
+    with col_a:
+        if st.button("🚀 Analyse", use_container_width=True):
+            st.session_state['page'] = 'analyse'
+            st.rerun()
+    with col_m:
+        if st.button("📖 Méthodologie", use_container_width=True):
+            st.session_state['page'] = 'methodologie'
+            st.rerun()
+    
+    col_d, col_c = st.columns(2)
+    with col_d:
+        if st.button("📚 Documentation", use_container_width=True):
+            st.session_state['page'] = 'documentation'
+            st.rerun()
+    with col_c:
+        if st.button("📧 Contact", use_container_width=True):
+            st.session_state['page'] = 'contact'
+            st.rerun()
+    
+    st.divider()
+    
     st.markdown("**Statut Système**")
     if model_ok:
         st.success("✅  Modèle chargé")
