@@ -725,19 +725,6 @@ elif st.session_state['current_page'] == 'documentation':
             </ul>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">⚙️ Hyperparamètres</div>
-            <ul>
-                <li><strong>n_estimators :</strong> 500 arbres</li>
-                <li><strong>max_depth :</strong> 20</li>
-                <li><strong>min_samples_split :</strong> 5</li>
-                <li><strong>min_samples_leaf :</strong> 2</li>
-                <li><strong>max_features :</strong> sqrt</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
@@ -765,17 +752,6 @@ elif st.session_state['current_page'] == 'documentation':
             </ul>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="mcard">
-        <div class="mcard-title">📖 Références Bibliographiques</div>
-        <ul>
-            <li>TCGA Research Network. <em>Genomic Classification of Cutaneous Melanoma</em>. Cell, 2015</li>
-            <li>Breiman, L. <em>Random Forests</em>. Machine Learning, 2001</li>
-            <li>Tibshirani, R. <em>Regression Shrinkage and Selection via the Lasso</em>. JRSSB, 1996</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
 
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
@@ -813,16 +789,16 @@ with st.sidebar:
 
     st.markdown("**Navigation rapide**")
     
-    if st.button("🚀 Analyse", use_container_width=True, key="sidebar_analyse"):
+    if st.button(" Analyse", use_container_width=True, key="sidebar_analyse"):
         navigate_to('analyse')
     
-    if st.button("📖 Méthodologie", use_container_width=True, key="sidebar_methodo"):
+    if st.button(" Méthodologie", use_container_width=True, key="sidebar_methodo"):
         navigate_to('methodologie')
     
-    if st.button("📚 Documentation", use_container_width=True, key="sidebar_doc"):
+    if st.button(" Documentation", use_container_width=True, key="sidebar_doc"):
         navigate_to('documentation')
     
-    if st.button("📧 Contact", use_container_width=True, key="sidebar_contact"):
+    if st.button(" Contact", use_container_width=True, key="sidebar_contact"):
         navigate_to('contact')
     
     st.divider()
