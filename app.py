@@ -16,16 +16,19 @@ st.set_page_config(
 )
 
 # --- 2. STYLE CSS PERSONNALISÉ ---
+# Remplace l'URL ci-dessous par l'option choisie (A, B ou C)
+bg_img_url = "https://img.freepik.com/free-photo/abstract-dna-molecule-medical-science-background_53876-101946.jpg"
+
 st.markdown(f"""
     <style>
-    /* Ajout de l'image d'arrière-plan */
+    /* Image d'arrière-plan avec calque de lisibilité */
     .stApp {{
-        background-image: url("https://votre-lien-image.jpg");
+        background-image: url("{bg_img_url}");
         background-attachment: fixed;
         background-size: cover;
     }}
 
-    /* Ajout d'un calque semi-transparent pour garder le texte lisible */
+    /* Voile de protection pour la lisibilité (0.9 = très opaque, 0.1 = transparent) */
     .stApp::before {{
         content: "";
         position: absolute;
@@ -33,22 +36,39 @@ st.markdown(f"""
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(244, 247, 249, 0.85); /* Ajustez l'opacité ici (0.85) */
+        background-color: rgba(244, 247, 249, 0.92); 
         z-index: -1;
     }}
     
-    /* On garde la sidebar sombre pour le contraste */
+    /* Sidebar sombre pour un look "Dashboard" */
     [data-testid="stSidebar"] {{
-        background-color: #0e1117;
+        background-color: #0e1117 !important;
     }}
 
-    /* Les cartes blanches restent opaques pour bien voir les résultats */
+    /* Cartes de résultats ultra-propres */
     .report-card {{
         background-color: white;
         padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        border: 1px solid #e6e9ef;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        border: 1px solid #eef2f6;
+        margin-bottom: 1.2rem;
+    }}
+
+    /* Harmonisation des textes */
+    h1, h2, h3 {{
+        color: #002b5c !important;
+        font-weight: 700;
+    }}
+    
+    /* Style des boutons */
+    .stButton>button {{
+        background: linear-gradient(90deg, #002b5c 0%, #004aad 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        padding: 0.6rem;
     }}
     </style>
     """, unsafe_allow_html=True)
