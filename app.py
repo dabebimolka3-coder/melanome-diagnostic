@@ -780,14 +780,15 @@ elif st.session_state['current_page'] == 'contact':
     </div>
     """, unsafe_allow_html=True)
 
-# ── SIDEBAR ───────────────────────────────────────────────────────────────────
+# ── SIDEBAR (CONTRÔLES ET INFOS) ──────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("""
+    # En-tête avec logo Unicode sécurisé (U+1F9EC = ADN)
+    st.markdown(f"""
     <div style="padding:1.2rem 0 1rem; text-align:center;
-                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.2rem;">
-        <div style="font-size:2rem; margin-bottom:0.5rem;">🧬</div>
+                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.5rem;">
+        <div style="font-size:2.2rem; margin-bottom:0.5rem; opacity:0.8;">\U0001F9EC</div>
         <div style="font-family:'Cormorant Garamond',serif;
-                    font-size:1.05rem; font-weight:700; color:#0d1b2a;">
+                    font-size:1.1rem; font-weight:700; color:#0d1b2a;">
             MelanomaPredict AI
         </div>
         <div style="font-size:0.65rem; color:rgba(0,0,0,0.4);
@@ -797,38 +798,44 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("**Navigation rapide**")
+    # Navigation Rapide
+    st.markdown("<p style='font-size:0.75rem; font-weight:700; color:#1a6fff; letter-spacing:0.05em; margin-bottom:0.8rem;'>NAVIGATION RAPIDE</p>", unsafe_allow_html=True)
     
-    if st.button(" Analyse", use_container_width=True, key="sidebar_analyse"):
+    if st.button("🔬 Analyse Diagnostic", use_container_width=True, key="sidebar_analyse"):
         navigate_to('analyse')
     
-    if st.button(" Méthodologie", use_container_width=True, key="sidebar_methodo"):
+    if st.button("📊 Méthodologie ML", use_container_width=True, key="sidebar_methodo"):
         navigate_to('methodologie')
     
-    if st.button(" Documentation", use_container_width=True, key="sidebar_doc"):
+    if st.button("📚 Documentation", use_container_width=True, key="sidebar_doc"):
         navigate_to('documentation')
     
-    if st.button(" Contact", use_container_width=True, key="sidebar_contact"):
+    if st.button("📧 Contact Support", use_container_width=True, key="sidebar_contact"):
         navigate_to('contact')
     
+    st.markdown("<div style='height:1.5rem'></div>", unsafe_allow_html=True)
     st.divider()
     
-    st.markdown("**Statut Système**")
+    # Statut Système (Indicateurs techniques)
+    st.markdown("<p style='font-size:0.75rem; font-weight:700; color:#0d1b2a; letter-spacing:0.05em; margin-bottom:0.8rem;'>STATUT SYSTÈME</p>", unsafe_allow_html=True)
+    
     if model_ok:
-        st.success("✅ Modèle chargé avec succès")
-        st.info("🌲 Random Forest · 500 arbres")
-        st.info("🔬 57 features · 54 gènes + 3 cliniques")
+        st.success("✅ Modèle chargé")
+        st.caption("**Architecture :** Random Forest (500 arbres)")
+        st.caption("**Dimensions :** 57 features (54G + 3C)")
     else:
         st.error("❌ Modèle introuvable")
-        st.warning("Vérifiez `model_multimodal_54.pkl` et `params_multimodal_54.json` dans le répertoire")
+        st.warning("Vérifiez la présence des fichiers `.pkl` et `.json` à la racine du projet.")
 
     st.divider()
+    
+    # Pied de page Sidebar (Avertissement Légal)
     st.markdown("""
-    <div style="font-size:0.7rem; color:rgba(0,0,0,0.35);
-                line-height:1.6; padding:0 0.2rem;">
-        <strong>⚠️ Avertissement</strong><br>
-        Cet outil est réservé à un usage de recherche. Il ne constitue pas
-        un dispositif médical certifié et ne remplace pas l'avis d'un
-        professionnel de santé qualifié.
+    <div style="font-size:0.7rem; color:rgba(0,0,0,0.4);
+                line-height:1.5; padding:0 0.5rem; background:rgba(0,0,0,0.02); 
+                border-radius:8px; padding:10px; border:1px solid rgba(0,0,0,0.05);">
+        <strong style="color:#d93025;">⚠️ Avertissement Légal</strong><br>
+        Ce portail est un outil de recherche clinique. Les résultats sont fournis à titre indicatif 
+        et ne constituent pas un diagnostic médical définitif.
     </div>
     """, unsafe_allow_html=True)
