@@ -751,19 +751,7 @@ elif st.session_state['current_page'] == 'documentation':
             </ul>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">⚙️ Hyperparamètres</div>
-            <ul>
-                <li><strong>n_estimators :</strong> 500 arbres</li>
-                <li><strong>max_depth :</strong> 20</li>
-                <li><strong>min_samples_split :</strong> 5</li>
-                <li><strong>min_samples_leaf :</strong> 2</li>
-                <li><strong>max_features :</strong> sqrt</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
+    
     
     with col2:
         st.markdown("""
