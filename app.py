@@ -392,22 +392,19 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 </style>
 """, unsafe_allow_html=True)
 
-# ── TOPBAR MINIMALISTE ────────────────────────────────────────────────────────
-st.markdown("""
+# ── TOPBAR NETTOYÉE ──────────────────────────────────────────────────────────
+st.markdown(f"""
 <div class="topbar">
     <div class="topbar-brand">
         <div class="topbar-logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px;">
                 <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
                 <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
                 <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
                 <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
             </svg>
-      <div class="topbar">
-    <div class="topbar-brand">
-        # \U0001F9EC est le code pour l'emoji ADN 🧬
-st.markdown('<div style="font-size:2.5rem; opacity:0.3;">\U0001F9EC</div>', unsafe_allow_html=True)
-        <span class="topbar-name">MelanomaPredict AI</span>
+        </div>
+        <span class="topbar-name">MelanomaPredict AI <span style="opacity:0.5; margin-left:8px;">\U0001F9EC</span></span>
     </div>
     <div class="topbar-status">
         <div class="status-container">
@@ -415,8 +412,6 @@ st.markdown('<div style="font-size:2.5rem; opacity:0.3;">\U0001F9EC</div>', unsa
             <span class="status-text">Système Opérationnel</span>
         </div>
     </div>
-</div>
-""", unsafe_allow_html=True)
 </div>
 """, unsafe_allow_html=True)
 
