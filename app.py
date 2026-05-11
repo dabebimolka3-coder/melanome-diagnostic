@@ -15,13 +15,10 @@ st.set_page_config(
 )
 
 # ── SESSION STATE POUR LA NAVIGATION ─────────────────────────────────────────
-# Initialisation avec query params
 if 'current_page' not in st.session_state:
-    # Lire depuis query params ou défaut
     page_param = st.query_params.get("page", "analyse")
     st.session_state['current_page'] = page_param
 
-# Fonction de navigation
 def navigate_to(page):
     st.session_state['current_page'] = page
     st.query_params["page"] = page
@@ -43,18 +40,18 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
+/* Topbar simplifiée sans les boutons */
 .topbar {
     position: sticky; top: 0; z-index: 999;
     background: rgba(255,255,255,0.96);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 2.5rem;
     height: 62px;
-    margin: 0 -2.5rem 0;
+    margin: 0 -2.5rem 2rem;
 }
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
 .topbar-logo {
@@ -73,30 +70,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     font-weight: 700;
     color: #0d1b2a;
     letter-spacing: 0.03em;
-}
-.nav-container {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-}
-.nav-link {
-    font-size: 0.7rem;
-    color: rgba(0,0,0,0.45);
-    text-decoration: none;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.2s;
-    background: none;
-    border: none;
-    font-family: 'Syne', sans-serif;
-}
-.nav-link:hover { color: #1a6fff; }
-.nav-link.active { color: #1a6fff; }
-.nav-separator {
-    color: rgba(0,0,0,0.15);
-    font-size: 0.7rem;
 }
 .topbar-status {
     display: flex;
@@ -119,6 +92,48 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     0%   { box-shadow: 0 0 0 0 rgba(0,201,167,0.6); }
     70%  { box-shadow: 0 0 0 8px rgba(0,201,167,0); }
     100% { box-shadow: 0 0 0 0 rgba(0,201,167,0); }
+}
+
+/* Container des boutons de navigation */
+.nav-buttons-container {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding-bottom: 0rem;
+}
+.nav-btn {
+    width: 100%;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0.75rem 0 !important;
+    font-family: 'Syne', sans-serif !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    color: rgba(0,0,0,0.45) !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+.nav-btn:hover {
+    color: #1a6fff !important;
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+.nav-btn-active {
+    color: #1a6fff !important;
+    position: relative;
+}
+.nav-btn-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #1a6fff;
 }
 
 .hero {
@@ -374,42 +389,37 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     border-radius: 16px; color: rgba(0,0,0,0.35);
     font-size: 0.85rem; text-align: center; line-height: 1.7; gap: 1rem;
 }
-
-.contact-card {
-    background: #fafafa;
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.contact-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-}
-.contact-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-.contact-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #0d1b2a;
-    margin-bottom: 0.25rem;
-}
-.contact-detail {
-    font-size: 0.85rem;
-    color: #1a6fff;
-    text-decoration: none;
-}
-.contact-desc {
-    font-size: 0.75rem;
-    color: rgba(0,0,0,0.45);
-    margin-top: 0.5rem;
-}
 </style>
 """, unsafe_allow_html=True)
+
+# ── TOPBAR (LOGO + STATUT SEULEMENT) ──────────────────────────────────────────
+st.markdown("""
+<div class="topbar">
+    <div class="topbar-brand">
+        <div class="topbar-logo">🧬</div>
+        <span class="topbar-name">MelanomaPredict AI</span>
+    </div>
+    <div class="topbar-status">
+        <span class="pulse"></span>&nbsp; Système opérationnel
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# ── BOUTONS DE NAVIGATION (UNIQUEMENT STREAMLIT) ─────────────────────────────────
+st.markdown('<div class="nav-buttons-container">', unsafe_allow_html=True)
+nav_cols = st.columns(4)
+nav_pages = ["analyse", "methodologie", "documentation", "contact"]
+nav_labels = ["🔬 ANALYSE", "📊 MÉTHODOLOGIE", "📚 DOCUMENTATION", "📧 CONTACT"]
+
+for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
+    with col:
+        is_active = st.session_state['current_page'] == page
+        button_css = "nav-btn-active" if is_active else ""
+        if st.button(label, key=f"nav_{page}", use_container_width=True):
+            navigate_to(page)
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.divider()
 
 # ── LOAD MODEL ────────────────────────────────────────────────────────────────
 @st.cache_resource
@@ -428,42 +438,6 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
-# ── TOPBAR NAVIGATION AVEC BOUTONS FONCTIONNELS ────────────────────────────────
-# Déterminer la classe active pour chaque lien
-active_class = lambda page: "active" if st.session_state['current_page'] == page else ""
-
-st.markdown(f"""
-<div class="topbar">
-    <div class="topbar-brand">
-        <div class="topbar-logo">🧬</div>
-        <span class="topbar-name">MelanomaPredict AI</span>
-    </div>
-    <div class="nav-container">
-        <button class="nav-link {active_class('analyse')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'analyse'}}, '*')">ANALYSE</button>
-        <span class="nav-separator">|</span>
-        <button class="nav-link {active_class('methodologie')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'methodologie'}}, '*')">MÉTHODOLOGIE</button>
-        <span class="nav-separator">|</span>
-        <button class="nav-link {active_class('documentation')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'documentation'}}, '*')">DOCUMENTATION</button>
-        <span class="nav-separator">|</span>
-        <button class="nav-link {active_class('contact')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'contact'}}, '*')">CONTACT</button>
-    </div>
-    <div class="topbar-status">
-        <span class="pulse"></span>&nbsp; Système opérationnel
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# Capture des clics via les colonnes Streamlit
-nav_cols = st.columns(4)
-nav_pages = ["analyse", "methodologie", "documentation", "contact"]
-nav_labels = ["ANALYSE", "MÉTHODOLOGIE", "DOCUMENTATION", "CONTACT"]
-
-for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
-    with col:
-        if st.button(label, key=f"nav_{page}", use_container_width=True):
-            navigate_to(page)
-
-st.divider()
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
 # PAGE ANALYSE
@@ -751,7 +725,19 @@ elif st.session_state['current_page'] == 'documentation':
             </ul>
         </div>
         """, unsafe_allow_html=True)
-    
+        
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">⚙️ Hyperparamètres</div>
+            <ul>
+                <li><strong>n_estimators :</strong> 500 arbres</li>
+                <li><strong>max_depth :</strong> 20</li>
+                <li><strong>min_samples_split :</strong> 5</li>
+                <li><strong>min_samples_leaf :</strong> 2</li>
+                <li><strong>max_features :</strong> sqrt</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
@@ -780,6 +766,16 @@ elif st.session_state['current_page'] == 'documentation':
         </div>
         """, unsafe_allow_html=True)
     
+    st.markdown("""
+    <div class="mcard">
+        <div class="mcard-title">📖 Références Bibliographiques</div>
+        <ul>
+            <li>TCGA Research Network. <em>Genomic Classification of Cutaneous Melanoma</em>. Cell, 2015</li>
+            <li>Breiman, L. <em>Random Forests</em>. Machine Learning, 2001</li>
+            <li>Tibshirani, R. <em>Regression Shrinkage and Selection via the Lasso</em>. JRSSB, 1996</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
@@ -818,20 +814,16 @@ with st.sidebar:
     st.markdown("**Navigation rapide**")
     
     if st.button("🚀 Analyse", use_container_width=True, key="sidebar_analyse"):
-        st.session_state['current_page'] = 'analyse'
-        st.rerun()
+        navigate_to('analyse')
     
     if st.button("📖 Méthodologie", use_container_width=True, key="sidebar_methodo"):
-        st.session_state['current_page'] = 'methodologie'
-        st.rerun()
+        navigate_to('methodologie')
     
     if st.button("📚 Documentation", use_container_width=True, key="sidebar_doc"):
-        st.session_state['current_page'] = 'documentation'
-        st.rerun()
+        navigate_to('documentation')
     
     if st.button("📧 Contact", use_container_width=True, key="sidebar_contact"):
-        st.session_state['current_page'] = 'contact'
-        st.rerun()
+        navigate_to('contact')
     
     st.divider()
     
