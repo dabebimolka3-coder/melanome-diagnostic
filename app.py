@@ -764,27 +764,9 @@ elif st.session_state['current_page'] == 'contact':
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
+     col3 = st.columns(3)
     
-    with col1:
-        st.markdown("""
-        <div class="contact-card">
-            <div class="contact-icon">🏥</div>
-            <div class="contact-title">Service de Dermatologie</div>
-            <div class="contact-detail">Pr. Jean Dupont</div>
-            <div class="contact-desc">Chef du service<br>Hôpital Universitaire</div>
-        </div>
-        """, unsafe_allow_html=True)
     
-    with col2:
-        st.markdown("""
-        <div class="contact-card">
-            <div class="contact-icon">🔬</div>
-            <div class="contact-title">Plateforme Génomique</div>
-            <div class="contact-detail">Dr. Marie Lambert</div>
-            <div class="contact-desc">Responsable R&D<br>Transcriptomique et Bioinformatique</div>
-        </div>
-        """, unsafe_allow_html=True)
     
     with col3:
         st.markdown("""
@@ -792,7 +774,6 @@ elif st.session_state['current_page'] == 'contact':
             <div class="contact-icon">📧</div>
             <div class="contact-title">Support Technique</div>
             <div class="contact-detail">support@melanomapredict.ai</div>
-            <div class="contact-desc">Disponible du lundi au vendredi<br>9h-18h</div>
         </div>
         """, unsafe_allow_html=True)
     
