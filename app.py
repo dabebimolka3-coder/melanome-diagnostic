@@ -397,14 +397,14 @@ st.markdown(f"""
 <div class="topbar">
     <div class="topbar-brand">
         <div class="topbar-logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px;">
                 <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
                 <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
                 <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
                 <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
             </svg>
         </div>
-        <span class="topbar-name">MelanomaPredict AI <span style="opacity:0.5; margin-left:8px;">\U0001F9EC</span></span>
+        <span class="topbar-name">MelanomaPredict AI <span style="opacity:0.4; font-size:0.8rem; margin-left:5px;">\U0001F9EC</span></span>
     </div>
     <div class="topbar-status">
         <div class="status-container">
