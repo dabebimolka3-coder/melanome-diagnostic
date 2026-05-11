@@ -15,10 +15,13 @@ st.set_page_config(
 )
 
 # ── SESSION STATE POUR LA NAVIGATION ─────────────────────────────────────────
+# Initialisation avec query params
 if 'current_page' not in st.session_state:
+    # Lire depuis query params ou défaut
     page_param = st.query_params.get("page", "analyse")
     st.session_state['current_page'] = page_param
 
+# Fonction de navigation
 def navigate_to(page):
     st.session_state['current_page'] = page
     st.query_params["page"] = page
@@ -40,18 +43,18 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
-/* Topbar simplifiée sans les boutons */
 .topbar {
     position: sticky; top: 0; z-index: 999;
     background: rgba(255,255,255,0.96);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 2.5rem;
     height: 62px;
-    margin: 0 -2.5rem 2rem;
+    margin: 0 -2.5rem 0;
 }
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
 .topbar-logo {
@@ -70,6 +73,30 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     font-weight: 700;
     color: #0d1b2a;
     letter-spacing: 0.03em;
+}
+.nav-container {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+.nav-link {
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.45);
+    text-decoration: none;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    font-family: 'Syne', sans-serif;
+}
+.nav-link:hover { color: #1a6fff; }
+.nav-link.active { color: #1a6fff; }
+.nav-separator {
+    color: rgba(0,0,0,0.15);
+    font-size: 0.7rem;
 }
 .topbar-status {
     display: flex;
@@ -92,48 +119,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     0%   { box-shadow: 0 0 0 0 rgba(0,201,167,0.6); }
     70%  { box-shadow: 0 0 0 8px rgba(0,201,167,0); }
     100% { box-shadow: 0 0 0 0 rgba(0,201,167,0); }
-}
-
-/* Container des boutons de navigation */
-.nav-buttons-container {
-    margin-bottom: 2rem;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    padding-bottom: 0rem;
-}
-.nav-btn {
-    width: 100%;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    padding: 0.75rem 0 !important;
-    font-family: 'Syne', sans-serif !important;
-    font-size: 0.7rem !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.15em !important;
-    text-transform: uppercase !important;
-    color: rgba(0,0,0,0.45) !important;
-    box-shadow: none !important;
-    transition: all 0.2s ease !important;
-    cursor: pointer !important;
-}
-.nav-btn:hover {
-    color: #1a6fff !important;
-    background: transparent !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
-.nav-btn-active {
-    color: #1a6fff !important;
-    position: relative;
-}
-.nav-btn-active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: #1a6fff;
 }
 
 .hero {
@@ -389,87 +374,42 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     border-radius: 16px; color: rgba(0,0,0,0.35);
     font-size: 0.85rem; text-align: center; line-height: 1.7; gap: 1rem;
 }
-</style>
-""", unsafe_allow_html=True)
 
-# ── TOPBAR AVEC ÉCRITURE SIMPLIFIÉE ──────────────────────────────────────────
-st.markdown(f"""
-<style>
-/* Style global de la barre de navigation */
-.topbar-name {{
-    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.15em; /* Espacement large pour le style luxe/minimal */
-    text-transform: uppercase;
+.contact-card {
+    background: #fafafa;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+.contact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: #0d1b2a;
-}}
-
-.status-indicator {{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 0; /* Suppression du fond pour plus de simplicité */
-}}
-
-.blink-dot {{
-    height: 7px;
-    width: 7px;
-    background-color: #0d1b2a;
-    border-radius: 50%;
-    display: inline-block;
-    animation: pulse-simple 2.5s infinite;
-}}
-
-@keyframes pulse-simple {{
-    0% {{ opacity: 1; }}
-    50% {{ opacity: 0.3; }}
-    100% {{ opacity: 1; }}
-}}
-
-.status-label {{
-    font-family: 'Inter', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 400;
-    color: #666;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}}
+    margin-bottom: 0.25rem;
+}
+.contact-detail {
+    font-size: 0.85rem;
+    color: #1a6fff;
+    text-decoration: none;
+}
+.contact-desc {
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.45);
+    margin-top: 0.5rem;
+}
 </style>
-
-<div class="topbar">
-    <div class="topbar-brand">
-        <div class="topbar-logo" style="opacity:0.7;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px; height:16px;">
-                <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93"></path>
-            </svg>
-        </div>
-        <span class="topbar-name">MelanomaPredict AI</span>
-    </div>
-    
-    <div class="topbar-status">
-        <div class="status-indicator">
-            <span class="blink-dot"></span>
-            <span class="status-label">Système Opérationnel</span>
-        </div>
-    </div>
-</div>
 """, unsafe_allow_html=True)
-# ── BOUTONS DE NAVIGATION (UNIQUEMENT STREAMLIT) ─────────────────────────────────
-st.markdown('<div class="nav-buttons-container">', unsafe_allow_html=True)
-nav_cols = st.columns(4)
-nav_pages = ["analyse", "methodologie", "documentation", "contact"]
-nav_labels = [" Analyse ", " Méthodologie", " Documentation", "Contact"]
-
-for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
-    with col:
-        is_active = st.session_state['current_page'] == page
-        button_css = "nav-btn-active" if is_active else ""
-        if st.button(label, key=f"nav_{page}", use_container_width=True):
-            navigate_to(page)
-st.markdown('</div>', unsafe_allow_html=True)
-
-st.divider()
 
 # ── LOAD MODEL ────────────────────────────────────────────────────────────────
 @st.cache_resource
@@ -488,6 +428,42 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
+# ── TOPBAR NAVIGATION AVEC BOUTONS FONCTIONNELS ────────────────────────────────
+# Déterminer la classe active pour chaque lien
+active_class = lambda page: "active" if st.session_state['current_page'] == page else ""
+
+st.markdown(f"""
+<div class="topbar">
+    <div class="topbar-brand">
+        <div class="topbar-logo">🧬</div>
+        <span class="topbar-name">MelanomaPredict AI</span>
+    </div>
+    <div class="nav-container">
+        <button class="nav-link {active_class('analyse')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'analyse'}}, '*')">ANALYSE</button>
+        <span class="nav-separator">|</span>
+        <button class="nav-link {active_class('methodologie')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'methodologie'}}, '*')">MÉTHODOLOGIE</button>
+        <span class="nav-separator">|</span>
+        <button class="nav-link {active_class('documentation')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'documentation'}}, '*')">DOCUMENTATION</button>
+        <span class="nav-separator">|</span>
+        <button class="nav-link {active_class('contact')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'contact'}}, '*')">CONTACT</button>
+    </div>
+    <div class="topbar-status">
+        <span class="pulse"></span>&nbsp; Système opérationnel
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Capture des clics via les colonnes Streamlit
+nav_cols = st.columns(4)
+nav_pages = ["analyse", "methodologie", "documentation", "contact"]
+nav_labels = ["ANALYSE", "MÉTHODOLOGIE", "DOCUMENTATION", "CONTACT"]
+
+for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
+    with col:
+        if st.button(label, key=f"nav_{page}", use_container_width=True):
+            navigate_to(page)
+
+st.divider()
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
 # PAGE ANALYSE
@@ -539,7 +515,7 @@ if st.session_state['current_page'] == 'analyse':
     col_in, col_out = st.columns([5, 7], gap="large")
 
     with col_in:
-        st.markdown('<div class="glass"><div class="glass-title"> &nbsp;PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title">📋 &nbsp;PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
         age   = st.number_input("Âge du patient", min_value=1, max_value=115, value=55)
         sexe  = st.radio("Sexe biologique", ["Homme", "Femme"], horizontal=True)
         stade = st.selectbox("Stade TNM initial", ["I", "II", "III", "IV"])
@@ -683,7 +659,7 @@ elif st.session_state['current_page'] == 'methodologie':
     with c1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Architecture du Modèle</div>
+            <div class="mcard-title">🧠 Architecture du Modèle</div>
             <ul>
                 <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
                 <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
@@ -695,7 +671,7 @@ elif st.session_state['current_page'] == 'methodologie':
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Normalisation Z-score</div>
+            <div class="mcard-title">📊 Normalisation Z-score</div>
             <p>Chaque échantillon subit une normalisation basée sur les paramètres statistiques de la cohorte TCGA de référence :</p>
             <div class="formula-box">z = (x &minus; &mu;) / &sigma;</div>
             <p style="margin-top:1rem">&mu; et &sigma; sont calculés sur les distributions TCGA-SKCM pour chacun des 54 gènes et 3 variables cliniques.</p>
@@ -705,7 +681,7 @@ elif st.session_state['current_page'] == 'methodologie':
     with c2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">Procédure Diagnostique</div>
+            <div class="mcard-title">🔄 Procédure Diagnostique</div>
             <div class="step-row">
                 <div class="step-dot">1</div>
                 <div><strong>Input :</strong> Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression 54 gènes au format .csv.</div>
@@ -727,7 +703,7 @@ elif st.session_state['current_page'] == 'methodologie':
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Seuils de Décision Clinique</div>
+            <div class="mcard-title">🎯 Seuils de Décision Clinique</div>
             <div class="threshold-row">
                 <div class="th-ind th-low"></div>
                 <div>
@@ -766,7 +742,7 @@ elif st.session_state['current_page'] == 'documentation':
     with col1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Base de Données</div>
+            <div class="mcard-title">📊 Base de Données</div>
             <ul>
                 <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
                 <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
@@ -776,10 +752,11 @@ elif st.session_state['current_page'] == 'documentation':
         </div>
         """, unsafe_allow_html=True)
     
+    
     with col2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Performances</div>
+            <div class="mcard-title">🎯 Performances</div>
             <ul>
                 <li><strong>Accuracy :</strong> 90%</li>
                 <li><strong>Sensibilité :</strong> 85%</li>
@@ -793,7 +770,7 @@ elif st.session_state['current_page'] == 'documentation':
         
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title"> Limitations</div>
+            <div class="mcard-title">📋 Limitations</div>
             <ul>
                 <li>Validation externe en cours sur cohorte indépendante</li>
                 <li>Ne remplace pas le gold standard histologique</li>
@@ -802,6 +779,7 @@ elif st.session_state['current_page'] == 'documentation':
             </ul>
         </div>
         """, unsafe_allow_html=True)
+    
 
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
@@ -814,21 +792,20 @@ elif st.session_state['current_page'] == 'contact':
     
     st.markdown("""
     <div class="mcard">
-        <div class="mcard-title"> Formulaire de contact</div>
+        <div class="mcard-title">📋 Formulaire de contact</div>
         <p>Pour toute demande d'information ou collaboration, veuillez nous envoyer un email à :</p>
         <p style="font-family: monospace; font-size: 1rem; color: #1a6fff; text-align: center; margin-top: 0.5rem;">contact@melanomapredict.ai</p>
     </div>
     """, unsafe_allow_html=True)
 
-# ── SIDEBAR (CONTRÔLES ET INFOS) ──────────────────────────────────────────────
+# ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
-    # En-tête avec logo Unicode sécurisé (U+1F9EC = ADN)
-    st.markdown(f"""
+    st.markdown("""
     <div style="padding:1.2rem 0 1rem; text-align:center;
-                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.5rem;">
-        <div style="font-size:2.2rem; margin-bottom:0.5rem; opacity:0.8;">\U0001F9EC</div>
+                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.2rem;">
+        <div style="font-size:2rem; margin-bottom:0.5rem;">🧬</div>
         <div style="font-family:'Cormorant Garamond',serif;
-                    font-size:1.1rem; font-weight:700; color:#0d1b2a;">
+                    font-size:1.05rem; font-weight:700; color:#0d1b2a;">
             MelanomaPredict AI
         </div>
         <div style="font-size:0.65rem; color:rgba(0,0,0,0.4);
@@ -838,44 +815,42 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    # Navigation Rapide
-    st.markdown("<p style='font-size:0.75rem; font-weight:700; color:#1a6fff; letter-spacing:0.05em; margin-bottom:0.8rem;'>NAVIGATION RAPIDE</p>", unsafe_allow_html=True)
+    st.markdown("**Navigation rapide**")
     
-    if st.button("🔬 Analyse Diagnostic", use_container_width=True, key="sidebar_analyse"):
-        navigate_to('analyse')
+    if st.button("🚀 Analyse", use_container_width=True, key="sidebar_analyse"):
+        st.session_state['current_page'] = 'analyse'
+        st.rerun()
     
-    if st.button("📊 Méthodologie ML", use_container_width=True, key="sidebar_methodo"):
-        navigate_to('methodologie')
+    if st.button("📖 Méthodologie", use_container_width=True, key="sidebar_methodo"):
+        st.session_state['current_page'] = 'methodologie'
+        st.rerun()
     
     if st.button("📚 Documentation", use_container_width=True, key="sidebar_doc"):
-        navigate_to('documentation')
+        st.session_state['current_page'] = 'documentation'
+        st.rerun()
     
-    if st.button("📧 Contact Support", use_container_width=True, key="sidebar_contact"):
-        navigate_to('contact')
+    if st.button("📧 Contact", use_container_width=True, key="sidebar_contact"):
+        st.session_state['current_page'] = 'contact'
+        st.rerun()
     
-    st.markdown("<div style='height:1.5rem'></div>", unsafe_allow_html=True)
     st.divider()
     
-    # Statut Système (Indicateurs techniques)
-    st.markdown("<p style='font-size:0.75rem; font-weight:700; color:#0d1b2a; letter-spacing:0.05em; margin-bottom:0.8rem;'>STATUT SYSTÈME</p>", unsafe_allow_html=True)
-    
+    st.markdown("**Statut Système**")
     if model_ok:
-        st.success("✅ Modèle chargé")
-        st.caption("**Architecture :** Random Forest (500 arbres)")
-        st.caption("**Dimensions :** 57 features (54G + 3C)")
+        st.success("✅ Modèle chargé avec succès")
+        st.info("🌲 Random Forest · 500 arbres")
+        st.info("🔬 57 features · 54 gènes + 3 cliniques")
     else:
         st.error("❌ Modèle introuvable")
-        st.warning("Vérifiez la présence des fichiers `.pkl` et `.json` à la racine du projet.")
+        st.warning("Vérifiez `model_multimodal_54.pkl` et `params_multimodal_54.json` dans le répertoire")
 
     st.divider()
-    
-    # Pied de page Sidebar (Avertissement Légal)
     st.markdown("""
-    <div style="font-size:0.7rem; color:rgba(0,0,0,0.4);
-                line-height:1.5; padding:0 0.5rem; background:rgba(0,0,0,0.02); 
-                border-radius:8px; padding:10px; border:1px solid rgba(0,0,0,0.05);">
-        <strong style="color:#d93025;">⚠️ Avertissement Légal</strong><br>
-        Ce portail est un outil de recherche clinique. Les résultats sont fournis à titre indicatif 
-        et ne constituent pas un diagnostic médical définitif.
+    <div style="font-size:0.7rem; color:rgba(0,0,0,0.35);
+                line-height:1.6; padding:0 0.2rem;">
+        <strong>⚠️ Avertissement</strong><br>
+        Cet outil est réservé à un usage de recherche. Il ne constitue pas
+        un dispositif médical certifié et ne remplace pas l'avis d'un
+        professionnel de santé qualifié.
     </div>
     """, unsafe_allow_html=True)
