@@ -81,28 +81,39 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 }
 
 .hero {
-    position: relative; min-height: 340px;
+    position: relative; min-height: 420px;
     margin: 0 -2.5rem 3rem;
     overflow: hidden; display: flex; align-items: flex-end;
+    border-radius: 0;
 }
 .hero-img {
     position: absolute; inset: 0;
-    background-image: url('https://images.squarespace-cdn.com/content/v1/5d9e30182db9d71681f4a692/1581717140307-89XZXBK2C5OBW2AGDXCO/mountainviewrheumatoidarthritis.jpg');
-    background-size: cover; background-position: center 25%;
-    filter: brightness(0.9) saturate(1.1);
+    background-image: url('https://raw.githubusercontent.com/mauhong/melanoma-detection/main/images/melanoma_skin.jpg');
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    filter: brightness(0.75) contrast(1.1) saturate(1.15);
+    transform: scale(1.02);
+}
+.hero-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
 }
 .hero-gradient {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 55%, rgba(255,255,255,0.6) 100%);
+    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 40%, rgba(255,255,255,0.3) 100%);
 }
 .hero-content {
     position: relative; z-index: 2;
-    padding: 0 3rem 2.8rem; max-width: 780px;
+    padding: 0 3rem 3rem; max-width: 780px;
 }
 .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(26,111,255,0.1);
-    border: 1px solid rgba(26,111,255,0.25);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(26,111,255,0.3);
     border-radius: 50px; padding: 5px 14px;
     font-size: 0.68rem; color: #1a6fff;
     letter-spacing: 0.12em; text-transform: uppercase;
@@ -113,32 +124,37 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     display: inline-block;
 }
 .hero h1 {
-    font-size: 3.2rem !important; font-weight: 600 !important;
-    color: #0d1b2a !important; line-height: 1.1 !important;
+    font-size: 3.2rem !important; font-weight: 700 !important;
+    color: #ffffff !important; line-height: 1.1 !important;
     margin: 0 0 1rem !important; letter-spacing: -0.01em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
-.hero h1 span { color: #1a6fff; }
+.hero h1 span { color: #00c9a7; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 .hero-sub {
-    color: rgba(0,0,0,0.55); font-size: 0.9rem;
+    color: rgba(255,255,255,0.9); font-size: 0.95rem;
     line-height: 1.7; max-width: 520px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.15);
+    font-weight: 500;
 }
 .hero-kpis {
     display: flex; gap: 0; margin-top: 2rem;
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(255,255,255,0.25);
     border-radius: 12px; overflow: hidden; width: fit-content;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
 }
 .kpi {
     padding: 0.9rem 1.8rem;
-    border-right: 1px solid rgba(0,0,0,0.08);
+    border-right: 1px solid rgba(255,255,255,0.2);
 }
 .kpi:last-child { border-right: none; }
 .kpi-val {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem; font-weight: 700; color: #0d1b2a; line-height: 1;
+    font-size: 1.6rem; font-weight: 700; color: #ffffff; line-height: 1;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 .kpi-label {
-    font-size: 0.68rem; color: rgba(0,0,0,0.45);
+    font-size: 0.68rem; color: rgba(255,255,255,0.85);
     letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px;
 }
 
