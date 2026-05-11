@@ -15,30 +15,73 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- 2. STYLE CSS PERSONNALISÉ ---
+# --- 2. STYLE CSS PERSONNALISÉ (DESIGN DASHBOARD) ---
 st.markdown("""
     <style>
-    :root {
-        --primary: #002b5c;
-        --secondary: #f8f9fa;
+    /* Couleur de fond de l'application */
+    .stApp {
+        background-color: #f4f7f9;
     }
-    .main { background-color: var(--secondary); }
+    
+    /* Style de la barre latérale (Sidebar) sombre */
+    [data-testid="stSidebar"] {
+        background-color: #0e1117;
+        color: white;
+    }
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+        color: #dfe3e6;
+    }
+
+    /* En-tête principal */
     .main-header {
         background: linear-gradient(90deg, #002b5c 0%, #004aad 100%);
-        padding: 2.5rem;
-        border-radius: 15px;
+        padding: 2rem;
+        border-radius: 12px;
         color: white;
         text-align: center;
         margin-bottom: 2rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+
+    /* Cartes de résultats et de formulaires */
     .report-card {
         background-color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        border-left: 10px solid var(--primary);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        border: 1px solid #e6e9ef;
+        margin-bottom: 1rem;
+    }
+
+    /* Style des onglets */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 24px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        white-space: pre-wrap;
+        background-color: transparent;
+        border-radius: 4px 4px 0px 0px;
+        gap: 1px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    /* Bouton principal */
+    .stButton>button {
+        width: 100%;
+        background-color: #004aad;
+        color: white;
+        border-radius: 6px;
+        border: none;
+        height: 3rem;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #003073;
+        border: none;
+        color: white;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -68,135 +111,96 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- 5. NAVIGATION ---
-# Correction : 2 onglets correspondent à 2 variables
 tab1, tab2 = st.tabs(["🚀 Analyse Patient", "📖 Méthodologie"])
 
 # --- MÉTHODOLOGIE ---
 with tab2:
     st.header("📖 Méthodologie Scientifique & Technique")
-    
     col_a, col_b = st.columns(2)
     
     with col_a:
         st.subheader("1. Architecture du Modèle")
         st.markdown("""
-        * **Signature Génomique :** Quantification de **54 biomarqueurs (mRNA)** sélectionnés par régression Lasso. Ces gènes sont impliqués dans l'invasion, le Remodelage de la Matrice (MEC), l'EMT et l'Inflammation.
+        * **Signature Génomique :** Quantification de **54 biomarqueurs (mRNA)** sélectionnés par régression Lasso.
         * **Moteur de Prédiction :** Forêt Aléatoire (*Random Forest*) de 500 arbres décisionnels.
         * **Source :** Entraîné sur les cohortes **TCGA-SKCM**.
         """)
-        
-        st.subheader("2. Prétraitement & Normalisation")
-        st.markdown(r"""
-        Chaque échantillon subit une normalisation **Z-score** basée sur les paramètres de la cohorte de référence :
-        $$z = \frac{x - \mu}{\sigma}$$
-        """)
+        st.subheader("2. Prétraitement")
+        st.markdown(r"Normalisation **Z-score** : $$z = \frac{x - \mu}{\sigma}$$")
 
     with col_b:
-        st.subheader("🚀 Procédure de Diagnostic pour le Clinicien")
+        st.subheader("🚀 Procédure de Diagnostic")
         st.info("""
-        **Étape 1 : Préparation (Input)**
-        - Saisie manuelle des paramètres cliniques (Âge, Sexe, Stade).
-        - Chargement du profil d'expression (54 gènes) au format `.csv`.
-
-        **Étape 2 : Traitement (Processing)**
-        - **Fusion Multimodale :** Encodage et concaténation pour former un profil unique de 57 variables.
-        - **Standardisation :** Application des moyennes et écart-types du TCGA.
-
-        **Étape 3 : Aide à la Décision (Output)**
-        - Calcul de la probabilité $p$ métastatique.
-        - Recommandation clinique automatisée selon le score obtenu.
+        **1. Input :** Saisie clinique et chargement du fichier `.csv` (54 gènes).
+        **2. Processing :** Fusion multimodale (57 variables) et standardisation.
+        **3. Output :** Calcul du score $p$ et recommandation thérapeutique.
         """)
 
 # --- ANALYSE PATIENT ---
 with tab1:
-    st.warning("**Dispositif de Recherche** : Ce système génère un score de risque basé sur l'analyse de 54 signatures transcriptomiques.")
-    
-    col_input, col_display = st.columns([1, 2], gap="large")
+    col_input, col_display = st.columns([1, 1.6], gap="large")
     
     with col_input:
-        st.subheader("📋 Paramètres Cliniques")
+        st.markdown('<div class="report-card">', unsafe_allow_html=True)
+        st.subheader("🧬 Configuration")
         age = st.number_input("Âge du patient", 1, 115, 55)
-        sexe = st.radio("Sexe", ["Homme", "Femme"])
-        stade = st.selectbox("Stade Initial", ["I", "II", "III", "IV"])
+        sexe = st.radio("Sexe", ["Homme", "Femme"], horizontal=True)
+        stade = st.select_slider("Stade Initial", options=["I", "II", "III", "IV"])
         
         st.divider()
         st.subheader("📥 Données omiques")
-        
         if params:
             example_df = pd.DataFrame(np.random.uniform(0.5, 5.0, size=(1, 54)), columns=params['top_genes'])
-            csv_example = example_df.to_csv(index=False).encode('utf-8')
-            
-            st.download_button(
-                label="📥 Télécharger le Template (.csv)",
-                data=csv_example,
-                file_name="template_54_genes.csv",
-                mime="text/csv"
-            )
+            st.download_button("📥 Template (.csv)", example_df.to_csv(index=False).encode('utf-8'), "template.csv", "text/csv")
         
-        uploaded_file = st.file_uploader("Charger le profil d'expression (HGNC Symbols)", type="csv")
+        uploaded_file = st.file_uploader("Fichier d'expression", type="csv")
         
         if uploaded_file and model and params:
-            df_patient = pd.read_csv(uploaded_file)
-            if st.button("Lancer le Diagnostic", use_container_width=True):
-                with st.spinner("Analyse du profil en cours..."):
-                    # Encodage
+            if st.button("Lancer le Diagnostic"):
+                with st.spinner("Analyse en cours..."):
+                    df_patient = pd.read_csv(uploaded_file)
                     sexe_val = 0 if sexe == "Homme" else 1
                     stade_map = {"I": 1, "II": 2, "III": 3, "IV": 4}
-                    stade_val = stade_map[stade]
-                    
-                    # Préparation des données
-                    clinique_vec = [age, sexe_val, stade_val]
-                    omique_vec = df_patient[params['top_genes']].iloc[0].tolist()
-                    X_combined = np.array(clinique_vec + omique_vec).reshape(1, -1)
-                    
-                    # Scaling & Prédiction
+                    X_combined = np.array([age, sexe_val, stade_map[stade]] + df_patient[params['top_genes']].iloc[0].tolist()).reshape(1, -1)
                     X_scaled = (X_combined - np.array(params['means'])) / np.array(params['stds'])
-                    prob = model.predict_proba(X_scaled)[0][1]
-                    
-                    st.session_state['analysis'] = {'prob': prob, 'top_genes': params['top_genes']}
+                    st.session_state['analysis'] = {'prob': model.predict_proba(X_scaled)[0][1], 'top_genes': params['top_genes']}
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col_display:
         if 'analysis' in st.session_state:
             res = st.session_state['analysis']
-            prob_percent = res['prob']
+            p = res['prob']
             
             st.markdown('<div class="report-card">', unsafe_allow_html=True)
             st.subheader("📊 Rapport d'Interprétation")
-            
-            # Métrique et Barre
-            st.metric("Probabilité Métastatique (Score p)", f"{prob_percent*100:.1f}%")
-            st.progress(prob_percent)
+            st.metric("Score de Risque Métastatique", f"{p*100:.1f}%")
+            st.progress(p)
 
-            # Logique de décision clinique
-            if prob_percent < 0.33:
-                st.success("🟢 **RISQUE FAIBLE** — Mélanome primaire probable")
-                st.markdown("**Décision :** Surveillance standard et suivi dermatologique classique.")
-            elif 0.33 <= prob_percent < 0.67:
-                st.warning("🟡 **RISQUE INTERMÉDIAIRE** — Zone d'incertitude")
-                st.markdown("**Décision :** Examens complémentaires, confirmation histologique et suivi rapproché.")
+            if p < 0.33:
+                st.success("🟢 **RISQUE FAIBLE** — Surveillance standard recommandée.")
+            elif p < 0.67:
+                st.warning("🟡 **RISQUE INTERMÉDIAIRE** — Suivi rapproché requis.")
             else:
-                st.error("🔴 **RISQUE ÉLEVÉ** — Mélanome métastatique probable")
-                st.markdown("**Décision :** Discussion précoce d'immunothérapie (anti-PD-1 / anti-CTLA-4) ou thérapie ciblée.")
-            
+                st.error("🔴 **RISQUE ÉLEVÉ** — Discussion thérapeutique (Immunothérapie).")
             st.markdown('</div>', unsafe_allow_html=True)
 
             # Importance des Biomarqueurs
-            # Correction : Suppression du mot 'import' devant importances
             importances = model.feature_importances_[3:]
-            top_10_df = pd.DataFrame({'Gène': res['top_genes'], 'Imp': importances}).sort_values('Imp', ascending=False).head(10)
-            
-            fig = px.bar(top_10_df, x='Imp', y='Gène', orientation='h', color='Imp',
-                         title="Top 10 des Biomarqueurs Décisifs",
-                         color_continuous_scale='Reds', template="simple_white")
+            top_10 = pd.DataFrame({'Gène': res['top_genes'], 'Imp': importances}).sort_values('Imp', ascending=False).head(10)
+            fig = px.bar(top_10, x='Imp', y='Gène', orientation='h', color='Imp', color_continuous_scale='Reds', template="simple_white", title="Top 10 Biomarqueurs Décisifs")
+            fig.update_layout(showlegend=False, height=400)
             st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("Veuillez configurer les paramètres et charger un fichier pour lancer l'analyse.")
 
 # BARRE LATÉRALE
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/3062/3062231.png", width=80)
-    st.title("Statut Système")
+    st.markdown("### 🛠️ Statut Système")
     if model:
-        st.success("Modèle : Opérationnel")
-        st.info("Algorithme : Random Forest")
-        st.info("Features : 54 Gènes + 3 Cliniques")
+        st.success("Modèle Multimodal : OK")
+        st.caption("Version de l'algorithme : 2.0.1")
+        st.caption(f"Dernière mise à jour : {datetime.now().strftime('%d/%m/%Y')}")
     else:
-        st.error("Ressources manquantes")
+        st.error("Erreur de chargement")
+    st.divider()
+    st.markdown("🔍 **Aide** : Assurez-vous que le fichier CSV utilise les symboles officiels HGNC.")
