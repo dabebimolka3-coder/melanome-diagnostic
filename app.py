@@ -405,7 +405,8 @@ st.markdown("""
             </svg>
       <div class="topbar">
     <div class="topbar-brand">
-        <div class="topbar-logo">🧬</div>
+        # \U0001F9EC est le code pour l'emoji ADN 🧬
+st.markdown('<div style="font-size:2.5rem; opacity:0.3;">\U0001F9EC</div>', unsafe_allow_html=True)
         <span class="topbar-name">MelanomaPredict AI</span>
     </div>
     <div class="topbar-status">
