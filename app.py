@@ -14,16 +14,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ── SESSION STATE POUR LA NAVIGATION ─────────────────────────────────────────
-if 'current_page' not in st.session_state:
-    page_param = st.query_params.get("page", "analyse")
-    st.session_state['current_page'] = page_param
-
-def navigate_to(page):
-    st.session_state['current_page'] = page
-    st.query_params["page"] = page
-    st.rerun()
-
 # ── GLOBAL CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -34,28 +24,29 @@ html, body, [data-testid="stAppViewContainer"] {
     color: #1a1a2e;
 }
 [data-testid="stAppViewContainer"] > .main { background: #ffffff !important; }
-[data-testid="block-container"] { padding: 0 2rem 3rem !important; max-width: 1400px; margin: 0 auto; }
+[data-testid="block-container"] { padding: 0 2.5rem 3rem !important; max-width: 1400px; }
 * { font-family: 'Syne', sans-serif; }
 h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; color: #0d1b2a !important; }
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
-/* Topbar */
 .topbar {
     position: sticky; top: 0; z-index: 999;
-    background: #ffffff;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
-    height: 60px;
-    margin: 0 -2rem 0;
+    padding: 0 2.5rem;
+    height: 62px;
+    margin: 0 -2.5rem 0;
 }
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
 .topbar-logo {
     width: 34px; height: 34px;
-    background: #0d1b2a;
+    background: linear-gradient(135deg, #1a6fff, #00c9a7);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -64,161 +55,138 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     color: white;
 }
 .topbar-name {
-    font-family: 'Syne', sans-serif !important;
-    font-size: 1rem;
-    font-weight: 600;
+    font-family: 'Cormorant Garamond', serif !important;
+    font-size: 1.15rem;
+    font-weight: 700;
     color: #0d1b2a;
+    letter-spacing: 0.03em;
 }
-.topbar-name span { color: #1a6fff; }
+.nav-container {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+.nav-link {
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.45);
+    text-decoration: none;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    font-family: 'Syne', sans-serif;
+}
+.nav-link:hover { color: #1a6fff; }
+.nav-link.active { color: #1a6fff; }
+.nav-separator {
+    color: rgba(0,0,0,0.15);
+    font-size: 0.7rem;
+}
 .topbar-status {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: #2c7a5e;
-    background: #e6f7f0;
-    padding: 4px 12px;
-    border-radius: 20px;
+    gap: 7px;
+    font-size: 0.72rem;
+    color: rgba(0,0,0,0.45);
+    letter-spacing: 0.06em;
 }
 .pulse {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #00c9a7;
+    box-shadow: 0 0 0 0 rgba(0,201,167,0.6);
     animation: pulse 2s infinite;
+    display: inline-block;
 }
 @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.2); }
+    0%   { box-shadow: 0 0 0 0 rgba(0,201,167,0.6); }
+    70%  { box-shadow: 0 0 0 8px rgba(0,201,167,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,201,167,0); }
 }
 
-/* Hero section - PLEINE LARGEUR */
-.hero-full {
-    position: relative;
-    width: calc(100% + 4rem);
-    margin-left: -2rem;
-    margin-right: -2rem;
-    margin-top: 0;
-    margin-bottom: 2rem;
-    min-height: 380px;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
+.hero {
+    position: relative; min-height: 340px;
+    margin: 0 -2.5rem 3rem;
+    overflow: hidden; display: flex; align-items: flex-end;
 }
 .hero-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: absolute; inset: 0;
     background-image: url('https://images.squarespace-cdn.com/content/v1/5d9e30182db9d71681f4a692/1581717140307-89XZXBK2C5OBW2AGDXCO/mountainviewrheumatoidarthritis.jpg');
-    background-size: cover;
-    background-position: center 30%;
-    filter: brightness(0.85) saturate(1.05);
+    background-size: cover; background-position: center 25%;
+    filter: brightness(0.9) saturate(1.1);
 }
 .hero-gradient {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.5) 100%);
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 55%, rgba(255,255,255,0.6) 100%);
 }
 .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 0 2rem 2.5rem;
-    max-width: 800px;
+    position: relative; z-index: 2;
+    padding: 0 3rem 2.8rem; max-width: 780px;
 }
 .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    display: inline-flex; align-items: center; gap: 8px;
     background: rgba(26,111,255,0.1);
     border: 1px solid rgba(26,111,255,0.25);
-    border-radius: 50px;
-    padding: 5px 14px;
-    font-size: 0.68rem;
-    color: #1a6fff;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 1.1rem;
+    border-radius: 50px; padding: 5px 14px;
+    font-size: 0.68rem; color: #1a6fff;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    font-weight: 600; margin-bottom: 1.1rem;
 }
 .hero-eyebrow-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #1a6fff;
+    width: 5px; height: 5px; border-radius: 50%; background: #1a6fff;
     display: inline-block;
 }
 .hero h1 {
-    font-size: 3rem !important;
-    font-weight: 600 !important;
-    color: #0d1b2a !important;
-    line-height: 1.1 !important;
-    margin: 0 0 1rem !important;
-    letter-spacing: -0.01em;
+    font-size: 3.2rem !important; font-weight: 600 !important;
+    color: #0d1b2a !important; line-height: 1.1 !important;
+    margin: 0 0 1rem !important; letter-spacing: -0.01em;
 }
 .hero h1 span { color: #1a6fff; }
 .hero-sub {
-    color: rgba(0,0,0,0.55);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    max-width: 520px;
+    color: rgba(0,0,0,0.55); font-size: 0.9rem;
+    line-height: 1.7; max-width: 520px;
 }
 .hero-kpis {
-    display: flex;
-    gap: 0;
-    margin-top: 2rem;
+    display: flex; gap: 0; margin-top: 2rem;
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 12px;
-    overflow: hidden;
-    width: fit-content;
-    background: rgba(255,255,255,0.7);
+    border-radius: 12px; overflow: hidden; width: fit-content;
+    background: rgba(255,255,255,0.6);
 }
 .kpi {
-    padding: 0.8rem 1.5rem;
+    padding: 0.9rem 1.8rem;
     border-right: 1px solid rgba(0,0,0,0.08);
 }
 .kpi:last-child { border-right: none; }
 .kpi-val {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #0d1b2a;
-    line-height: 1;
+    font-size: 1.6rem; font-weight: 700; color: #0d1b2a; line-height: 1;
 }
 .kpi-label {
-    font-size: 0.65rem;
-    color: rgba(0,0,0,0.45);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-top: 3px;
+    font-size: 0.68rem; color: rgba(0,0,0,0.45);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px;
 }
 
 .glass {
     background: rgba(0,0,0,0.02);
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 16px; padding: 1.8rem;
 }
 .glass-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.95rem; font-weight: 600;
     color: rgba(0,0,0,0.6);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.8rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 1.4rem; padding-bottom: 0.9rem;
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .stNumberInput label, .stRadio label,
 .stSelectbox label, .stFileUploader label {
-    font-size: 0.7rem !important;
+    font-size: 0.72rem !important;
     color: rgba(0,0,0,0.5) !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
@@ -236,14 +204,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 [data-testid="stRadio"] label {
     background: #f5f5f5 !important;
     border: 1px solid rgba(0,0,0,0.12) !important;
-    border-radius: 10px !important;
-    padding: 8px 18px !important;
-    cursor: pointer !important;
-    transition: all .2s !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
-    font-size: 0.8rem !important;
-    color: rgba(0,0,0,0.65) !important;
+    border-radius: 10px !important; padding: 9px 20px !important;
+    cursor: pointer !important; transition: all .2s !important;
+    text-transform: none !important; letter-spacing: normal !important;
+    font-size: 0.85rem !important; color: rgba(0,0,0,0.65) !important;
 }
 [data-testid="stRadio"] label:has(input:checked) {
     background: rgba(26,111,255,0.1) !important;
@@ -253,14 +217,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 
 .stButton > button {
     background: linear-gradient(135deg, #1a6fff, #0052d9) !important;
-    color: #fff !important;
-    border: none !important;
-    border-radius: 50px !important;
-    padding: 0.7rem 1.8rem !important;
-    font-family: 'Syne', sans-serif !important;
-    font-weight: 600 !important;
-    font-size: 0.8rem !important;
-    letter-spacing: 0.05em !important;
+    color: #fff !important; border: none !important;
+    border-radius: 50px !important; padding: 0.75rem 2rem !important;
+    font-family: 'Syne', sans-serif !important; font-weight: 600 !important;
+    font-size: 0.85rem !important; letter-spacing: 0.05em !important;
     transition: all .25s !important;
     box-shadow: 0 4px 20px rgba(26,111,255,0.35) !important;
 }
@@ -274,12 +234,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     border: 1px solid rgba(0,0,0,0.12) !important;
     border-radius: 50px !important;
     font-family: 'Syne', sans-serif !important;
-    font-weight: 600 !important;
-    font-size: 0.78rem !important;
+    font-weight: 600 !important; font-size: 0.82rem !important;
 }
 .stDownloadButton > button:hover {
-    border-color: #1a6fff !important;
-    color: #1a6fff !important;
+    border-color: #1a6fff !important; color: #1a6fff !important;
 }
 
 [data-testid="stFileUploader"] {
@@ -289,22 +247,13 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 }
 [data-testid="stFileUploader"] section { background: transparent !important; }
 
-/* Result cards */
 .result-card {
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid;
-    position: relative;
-    overflow: hidden;
+    border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem;
+    border: 1px solid; position: relative; overflow: hidden;
 }
 .result-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
 }
 .result-low  { background: rgba(0,201,167,0.05); border-color: rgba(0,201,167,0.3); }
 .result-low::before  { background: linear-gradient(90deg, transparent, #00c9a7, transparent); }
@@ -314,16 +263,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 .result-high::before { background: linear-gradient(90deg, transparent, #ff4b4b, transparent); }
 
 .result-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    border-radius: 50px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 50px;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.2rem;
 }
 .badge-low  { background: rgba(0,201,167,0.12);  color: #00a87e; border: 1px solid rgba(0,201,167,0.3); }
 .badge-med  { background: rgba(255,187,0,0.12);  color: #cc9500; border: 1px solid rgba(255,187,0,0.3); }
@@ -331,43 +274,30 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 
 .result-prob {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 0.2rem;
+    font-size: 4.5rem; font-weight: 700; line-height: 1; margin-bottom: 0.3rem;
 }
 .prob-low  { color: #00a87e; }
 .prob-med  { color: #cc9500; }
 .prob-high { color: #cc3b3b; }
 
 .result-sublabel {
-    font-size: 0.7rem;
-    color: rgba(0,0,0,0.45);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
+    font-size: 0.72rem; color: rgba(0,0,0,0.45);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.4rem;
 }
 .result-decision {
     background: rgba(0,0,0,0.02);
     border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 10px;
-    padding: 0.8rem 1rem;
-    font-size: 0.8rem;
-    color: rgba(0,0,0,0.6);
-    line-height: 1.6;
+    border-radius: 10px; padding: 1rem 1.2rem;
+    font-size: 0.85rem; color: rgba(0,0,0,0.6); line-height: 1.7;
 }
 .result-decision strong {
-    color: #0d1b2a;
-    display: block;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 5px;
+    color: #0d1b2a; display: block;
+    font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 5px;
 }
 
 .stProgress > div > div > div {
-    border-radius: 50px !important;
-    height: 4px !important;
+    border-radius: 50px !important; height: 5px !important;
     background: rgba(0,0,0,0.05) !important;
 }
 .stProgress > div > div > div > div { border-radius: 50px !important; }
@@ -375,89 +305,95 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 .mcard {
     background: #fafafa;
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 16px; padding: 1.6rem;
     margin-bottom: 1rem;
 }
 .mcard-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.05rem; font-weight: 600;
     color: #0d1b2a;
-    margin-bottom: 1rem;
-    padding-bottom: 0.7rem;
+    margin-bottom: 1.1rem; padding-bottom: 0.8rem;
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 .mcard p, .mcard li {
-    font-size: 0.8rem;
-    color: rgba(0,0,0,0.6);
-    line-height: 1.6;
-    margin-bottom: 0.5rem;
+    font-size: 0.85rem; color: rgba(0,0,0,0.6);
+    line-height: 1.7; margin-bottom: 0.5rem;
 }
 .mcard strong { color: #0d1b2a; font-weight: 600; }
 .mcard ul { padding-left: 1.2rem; }
 
 .step-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 1rem;
-    font-size: 0.8rem;
-    color: rgba(0,0,0,0.55);
-    line-height: 1.6;
+    display: flex; gap: 12px; margin-bottom: 1rem;
+    font-size: 0.85rem; color: rgba(0,0,0,0.55); line-height: 1.65;
 }
 .step-dot {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
+    width: 24px; height: 24px; border-radius: 50%;
     background: rgba(26,111,255,0.1);
     border: 1px solid rgba(26,111,255,0.4);
-    color: #1a6fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: #1a6fff; font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
 }
 .formula-box {
     background: rgba(26,111,255,0.08);
     border: 1px solid rgba(26,111,255,0.2);
-    border-radius: 10px;
-    padding: 1rem;
-    text-align: center;
+    border-radius: 10px; padding: 1.1rem; text-align: center;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-    color: #1a6fff;
-    letter-spacing: 0.08em;
-    margin-top: 0.8rem;
+    font-size: 1.4rem; color: #1a6fff;
+    letter-spacing: 0.08em; margin-top: 1rem;
 }
 .threshold-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 0.8rem;
+    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0.9rem;
 }
-.th-ind { width: 4px; height: 36px; border-radius: 2px; flex-shrink: 0; }
+.th-ind { width: 4px; height: 40px; border-radius: 2px; flex-shrink: 0; }
 .th-low  { background: #00c9a7; }
 .th-med  { background: #ffbb00; }
 .th-high { background: #ff4b4b; }
-.th-title { color: #0d1b2a; font-weight: 600; font-size: 0.8rem; }
-.th-desc  { color: rgba(0,0,0,0.5); font-size: 0.72rem; margin-top: 3px; }
+.th-title { color: #0d1b2a; font-weight: 600; font-size: 0.85rem; }
+.th-desc  { color: rgba(0,0,0,0.5); font-size: 0.78rem; margin-top: 4px; }
 
 .placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 350px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 380px;
     background: #fafafa;
     border: 1px dashed rgba(0,0,0,0.12);
+    border-radius: 16px; color: rgba(0,0,0,0.35);
+    font-size: 0.85rem; text-align: center; line-height: 1.7; gap: 1rem;
+}
+
+.contact-card {
+    background: #fafafa;
+    border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px;
-    color: rgba(0,0,0,0.35);
-    font-size: 0.8rem;
+    padding: 1.5rem;
     text-align: center;
-    line-height: 1.6;
-    gap: 0.8rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.contact-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+.contact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0d1b2a;
+    margin-bottom: 0.25rem;
+}
+.contact-detail {
+    font-size: 0.85rem;
+    color: #1a6fff;
+    text-decoration: none;
+}
+.contact-desc {
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.45);
+    margin-top: 0.5rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -479,27 +415,49 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
-# ── TOPBAR ────────────────────────────────────────────────────────────────────
-st.markdown("""
+# ── TOPBAR NAVIGATION AVEC BOUTONS FONCTIONNELS ────────────────────────────────
+# Déterminer la classe active pour chaque lien
+active_class = lambda page: "active" if st.session_state['current_page'] == page else ""
+
+st.markdown(f"""
 <div class="topbar">
     <div class="topbar-brand">
         <div class="topbar-logo">🧬</div>
-        <span class="topbar-name">MelanomaPredict <span>AI</span></span>
+        <span class="topbar-name">MelanomaPredict AI</span>
+    </div>
+    <div class="nav-container">
+        <button class="nav-link {active_class('analyse')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'analyse'}}, '*')">ANALYSE</button>
+        <span class="nav-separator">|</span>
+        <button class="nav-link {active_class('methodologie')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'methodologie'}}, '*')">MÉTHODOLOGIE</button>
+        <span class="nav-separator">|</span>
+        <button class="nav-link {active_class('documentation')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'documentation'}}, '*')">DOCUMENTATION</button>
+        <span class="nav-separator">|</span>
+        <button class="nav-link {active_class('contact')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'contact'}}, '*')">CONTACT</button>
     </div>
     <div class="topbar-status">
-        <span class="pulse"></span>
-        <span>Operational</span>
+        <span class="pulse"></span>&nbsp; Système opérationnel
     </div>
 </div>
 """, unsafe_allow_html=True)
 
+# Capture des clics via les colonnes Streamlit
+nav_cols = st.columns(4)
+nav_pages = ["analyse", "methodologie", "documentation", "contact"]
+nav_labels = ["ANALYSE", "MÉTHODOLOGIE", "DOCUMENTATION", "CONTACT"]
+
+for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
+    with col:
+        if st.button(label, key=f"nav_{page}", use_container_width=True):
+            navigate_to(page)
+
+st.divider()
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
 # PAGE ANALYSE
 if st.session_state['current_page'] == 'analyse':
-    # Hero section PLEINE LARGEUR
+    # Hero section
     st.markdown("""
-    <div class="hero-full">
+    <div class="hero">
         <div class="hero-img"></div>
         <div class="hero-gradient"></div>
         <div class="hero-content">
@@ -507,9 +465,7 @@ if st.session_state['current_page'] == 'analyse':
                 <span class="hero-eyebrow-dot"></span>
                 DISPOSITIF DE RECHERCHE CLINIQUE
             </div>
-            <div class="hero">
-                <h1>Analyse Multimodale<br>du <span>Mélanome</span> Cutané</h1>
-            </div>
+            <h1>Analyse Multimodale<br>du <span>Mélanome</span> Cutané</h1>
             <p class="hero-sub">
                 Aide à la décision thérapeutique par analyse combinée de
                 54 biomarqueurs transcriptomiques et paramètres cliniques.
@@ -522,15 +478,15 @@ if st.session_state['current_page'] == 'analyse':
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">500</div>
-                    <div class="kpi-label">ARBRES</div>
+                    <div class="kpi-label">ARBRES DÉCISIONNELS</div>
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">TCGA</div>
-                    <div class="kpi-label">RÉFÉRENCE</div>
+                    <div class="kpi-label">COHORTE DE RÉFÉRENCE</div>
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">57</div>
-                    <div class="kpi-label">FEATURES</div>
+                    <div class="kpi-label">FEATURES TOTALES</div>
                 </div>
             </div>
         </div>
@@ -538,30 +494,30 @@ if st.session_state['current_page'] == 'analyse':
     """, unsafe_allow_html=True)
     
     st.warning(
-        "⚠️ **Dispositif de Recherche** — Ce système génère un score de risque basé sur "
+        "**Dispositif de Recherche.** Ce système génère un score de risque basé sur "
         "54 signatures transcriptomiques. Il ne remplace pas le jugement clinique d'un médecin."
     )
-    st.markdown("<div style='height: 1rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:1.5rem'></div>", unsafe_allow_html=True)
 
     col_in, col_out = st.columns([5, 7], gap="large")
 
     with col_in:
-        st.markdown('<div class="glass"><div class="glass-title">📋 PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title"> &nbsp;PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
         age   = st.number_input("Âge du patient", min_value=1, max_value=115, value=55)
         sexe  = st.radio("Sexe biologique", ["Homme", "Femme"], horizontal=True)
         stade = st.selectbox("Stade TNM initial", ["I", "II", "III", "IV"])
         st.markdown("</div>", unsafe_allow_html=True)
 
-        st.markdown("<div style='height: 1rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
 
-        st.markdown('<div class="glass"><div class="glass-title">🔬 DONNÉES OMIQUES</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title">🔬 &nbsp;DONNÉES OMIQUES</div>', unsafe_allow_html=True)
         if params:
             example_df = pd.DataFrame(
                 np.random.uniform(0.5, 5.0, size=(1, 54)),
                 columns=params['top_genes']
             )
             st.download_button(
-                label="↓ Télécharger le template .csv",
+                label="↓  Télécharger le template .csv",
                 data=example_df.to_csv(index=False).encode('utf-8'),
                 file_name="template_54_genes.csv",
                 mime="text/csv",
@@ -581,7 +537,7 @@ if st.session_state['current_page'] == 'analyse':
     with col_out:
         if run_btn and uploaded_file and model and params:
             df_patient = pd.read_csv(uploaded_file)
-            with st.spinner("Analyse en cours..."):
+            with st.spinner("Analyse en cours…"):
                 sexe_val   = 0 if sexe == "Homme" else 1
                 stade_val  = {"I": 1, "II": 2, "III": 3, "IV": 4}[stade]
                 omique_vec = df_patient[params['top_genes']].iloc[0].tolist()
@@ -597,21 +553,21 @@ if st.session_state['current_page'] == 'analyse':
 
             if prob < 0.33:
                 rc, bc, pc = "result-low",  "badge-low",  "prob-low"
-                badge_txt  = "● RISQUE FAIBLE"
+                badge_txt  = "● &nbsp;RISQUE FAIBLE"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Mélanome primaire probable. Surveillance standard et "
                               "suivi dermatologique classique recommandé.")
                 bar_color  = "#00c9a7"
             elif prob < 0.67:
                 rc, bc, pc = "result-med",  "badge-med",  "prob-med"
-                badge_txt  = "● RISQUE INTERMÉDIAIRE"
+                badge_txt  = "● &nbsp;RISQUE INTERMÉDIAIRE"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Zone d'incertitude clinique. Examens complémentaires, "
                               "confirmation histologique et suivi rapproché.")
                 bar_color  = "#ffbb00"
             else:
                 rc, bc, pc = "result-high", "badge-high", "prob-high"
-                badge_txt  = "● RISQUE ÉLEVÉ"
+                badge_txt  = "● &nbsp;RISQUE ÉLEVÉ"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Mélanome métastatique probable. Discussion précoce "
                               "d'immunothérapie (anti-PD-1 / anti-CTLA-4) ou thérapie ciblée.")
@@ -621,13 +577,14 @@ if st.session_state['current_page'] == 'analyse':
                 f'<div class="result-card {rc}">'
                 f'<div class="result-badge {bc}">{badge_txt}</div>'
                 f'<div class="result-prob {pc}">{pct:.1f}<span style="font-size:2rem">%</span></div>'
-                f'<div class="result-sublabel">Probabilité Métastatique</div>'
+                f'<div class="result-sublabel">Probabilité Métastatique — Score p</div>'
                 f'<div class="result-decision">{decision}</div>'
                 f'</div>',
                 unsafe_allow_html=True
             )
             st.progress(prob)
 
+            # Biomarker chart
             importances = model.feature_importances_[3:]
             df_imp = (
                 pd.DataFrame({'gene': res['genes'], 'imp': importances})
@@ -646,32 +603,28 @@ if st.session_state['current_page'] == 'analyse':
             fig.update_layout(
                 title=dict(
                     text="Top 10 — Biomarqueurs Décisifs",
-                    font=dict(family="Cormorant Garamond, serif", size=16, color="#0d1b2a"),
+                    font=dict(family="Cormorant Garamond, serif", size=17, color="#0d1b2a"),
                     x=0
                 ),
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                 xaxis=dict(
-                    showgrid=True,
-                    gridcolor="rgba(0,0,0,0.05)",
+                    showgrid=True, gridcolor="rgba(0,0,0,0.05)",
                     color="rgba(0,0,0,0.45)",
-                    tickfont=dict(family="Syne, sans-serif", size=10),
-                    zeroline=False
+                    tickfont=dict(family="Syne, sans-serif", size=10), zeroline=False
                 ),
                 yaxis=dict(
                     color="#0d1b2a",
-                    tickfont=dict(family="Syne, sans-serif", size=10),
+                    tickfont=dict(family="Syne, sans-serif", size=11),
                     gridcolor="rgba(0,0,0,0)"
                 ),
-                margin=dict(l=0, r=0, t=40, b=0),
-                height=320
+                margin=dict(l=0, r=0, t=45, b=0), height=340
             )
             st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
         else:
             st.markdown("""
             <div class="placeholder">
-                <div style="font-size: 2rem; opacity: 0.3;">🧬</div>
+                <div style="font-size:2.5rem; opacity:0.3;">🧬</div>
                 <div>
                     Chargez un profil d'expression génique<br>
                     puis lancez le diagnostic pour afficher les résultats.
@@ -682,9 +635,9 @@ if st.session_state['current_page'] == 'analyse':
 # PAGE MÉTHODOLOGIE
 elif st.session_state['current_page'] == 'methodologie':
     st.markdown("""
-    <div style="margin-bottom: 1.5rem;">
-        <h1 style="font-size: 1.8rem; margin-bottom: 0.3rem;">Méthodologie</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.85rem;">Architecture et validation du modèle prédictif</p>
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Méthodologie</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Architecture et validation du modèle prédictif</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -693,11 +646,11 @@ elif st.session_state['current_page'] == 'methodologie':
     with c1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🧠 Architecture du Modèle</div>
+            <div class="mcard-title"> Architecture du Modèle</div>
             <ul>
-                <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso</li>
-                <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels</li>
-                <li><strong>Cohorte :</strong> Entraîné sur TCGA-SKCM (mélanome cutané)</li>
+                <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
+                <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
+                <li><strong>Cohorte :</strong> Entraîné sur TCGA-SKCM (mélanome cutané).</li>
                 <li><strong>Validation croisée :</strong> 10 folds stratifiés</li>
             </ul>
         </div>
@@ -705,49 +658,59 @@ elif st.session_state['current_page'] == 'methodologie':
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📊 Normalisation Z-score</div>
-            <p>Normalisation basée sur les paramètres statistiques de la cohorte TCGA :</p>
-            <div class="formula-box">z = (x &minus; μ) / σ</div>
+            <div class="mcard-title"> Normalisation Z-score</div>
+            <p>Chaque échantillon subit une normalisation basée sur les paramètres statistiques de la cohorte TCGA de référence :</p>
+            <div class="formula-box">z = (x &minus; &mu;) / &sigma;</div>
+            <p style="margin-top:1rem">&mu; et &sigma; sont calculés sur les distributions TCGA-SKCM pour chacun des 54 gènes et 3 variables cliniques.</p>
         </div>
         """, unsafe_allow_html=True)
 
     with c2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🔄 Procédure Diagnostique</div>
+            <div class="mcard-title"> Procédure Diagnostique</div>
             <div class="step-row">
                 <div class="step-dot">1</div>
-                <div>Saisie des paramètres cliniques et chargement RNA-seq</div>
+                <div><strong>Input :</strong> Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression 54 gènes au format .csv.</div>
             </div>
             <div class="step-row">
                 <div class="step-dot">2</div>
-                <div>Fusion multimodale (54 gènes + 3 cliniques)</div>
+                <div><strong>Fusion Multimodale :</strong> Encodage et concaténation pour former un vecteur unique de 57 variables (54G + 3C).</div>
             </div>
             <div class="step-row">
                 <div class="step-dot">3</div>
-                <div>Standardisation Z-score</div>
+                <div><strong>Standardisation :</strong> Application des moyennes et écarts-types TCGA sur chaque variable individuelle.</div>
             </div>
             <div class="step-row">
                 <div class="step-dot">4</div>
-                <div>Prédiction Random Forest</div>
+                <div><strong>Prédiction :</strong> Calcul de la probabilité p métastatique via le modèle Random Forest entraîné.</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🎯 Seuils de Décision</div>
+            <div class="mcard-title"> Seuils de Décision Clinique</div>
             <div class="threshold-row">
                 <div class="th-ind th-low"></div>
-                <div><div class="th-title">Risque Faible — p &lt; 33%</div></div>
+                <div>
+                    <div class="th-title">Risque Faible — p &lt; 33%</div>
+                    <div class="th-desc">Mélanome primaire probable. Surveillance standard recommandée.</div>
+                </div>
             </div>
             <div class="threshold-row">
                 <div class="th-ind th-med"></div>
-                <div><div class="th-title">Risque Intermédiaire — 33% ≤ p &lt; 67%</div></div>
+                <div>
+                    <div class="th-title">Risque Intermédiaire — 33% &le; p &lt; 67%</div>
+                    <div class="th-desc">Zone d'incertitude. Confirmation histologique et suivi rapproché.</div>
+                </div>
             </div>
             <div class="threshold-row">
                 <div class="th-ind th-high"></div>
-                <div><div class="th-title">Risque Élevé — p ≥ 67%</div></div>
+                <div>
+                    <div class="th-title">Risque Élevé — p &ge; 67%</div>
+                    <div class="th-desc">Mélanome métastatique probable. Discussion précoce immunothérapie (anti-PD-1 / anti-CTLA-4).</div>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -755,9 +718,9 @@ elif st.session_state['current_page'] == 'methodologie':
 # PAGE DOCUMENTATION
 elif st.session_state['current_page'] == 'documentation':
     st.markdown("""
-    <div style="margin-bottom: 1.5rem;">
-        <h1 style="font-size: 1.8rem; margin-bottom: 0.3rem;">Documentation Scientifique</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.85rem;">Modèle multimodal pour la prédiction du risque métastatique</p>
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Documentation Scientifique</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Modèle multimodal pour la prédiction du risque métastatique dans le mélanome cutané</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -766,65 +729,58 @@ elif st.session_state['current_page'] == 'documentation':
     with col1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📊 Base de Données</div>
+            <div class="mcard-title"> Base de Données</div>
             <ul>
-                <li><strong>Cohorte :</strong> TCGA-SKCM</li>
-                <li><strong>Échantillons :</strong> 473 patients</li>
-                <li><strong>Features :</strong> 57 variables</li>
+                <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
+                <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
+                <li><strong>Features :</strong> 57 variables (54 gènes + 3 cliniques)</li>
                 <li><strong>Ratio :</strong> Train/Test 80/20</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title">⚙️ Hyperparamètres</div>
-            <ul>
-                <li><strong>n_estimators :</strong> 500</li>
-                <li><strong>max_depth :</strong> 20</li>
-                <li><strong>min_samples_split :</strong> 5</li>
-                <li><strong>max_features :</strong> sqrt</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
+    
     
     with col2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🎯 Performances</div>
+            <div class="mcard-title"> Performances</div>
             <ul>
                 <li><strong>Accuracy :</strong> 90%</li>
                 <li><strong>Sensibilité :</strong> 85%</li>
                 <li><strong>Spécificité :</strong> 95%</li>
                 <li><strong>AUC-ROC :</strong> 0.955</li>
-                <li><strong>F1-Score :</strong> 89.5%</li>
+                <li><strong>F1-Score :</strong> 89.47%</li>
+                <li><strong>Precision :</strong> 94.44%</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📋 Limitations</div>
+            <div class="mcard-title"> Limitations</div>
             <ul>
-                <li>Validation externe en cours</li>
-                <li>Ne remplace pas l'histologie</li>
-                <li>Usage recherche uniquement</li>
+                <li>Validation externe en cours sur cohorte indépendante</li>
+                <li>Ne remplace pas le gold standard histologique</li>
+                <li>Usage réservé à la recherche clinique</li>
+                <li>Nécessite normalisation standardisée des expressions géniques</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
+    
 
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
     st.markdown("""
-    <div style="margin-bottom: 1.5rem;">
-        <h1 style="font-size: 1.8rem; margin-bottom: 0.3rem;">Contact & Support</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.85rem;">Une question, une collaboration ou un support technique ?</p>
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Contact & Support</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Une question, une collaboration ou un support technique ? N'hésitez pas à nous contacter.</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("""
     <div class="mcard">
-        <div class="mcard-title">📧 Email</div>
+        <div class="mcard-title"> Formulaire de contact</div>
+        <p>Pour toute demande d'information ou collaboration, veuillez nous envoyer un email à :</p>
         <p style="font-family: monospace; font-size: 1rem; color: #1a6fff; text-align: center; margin-top: 0.5rem;">contact@melanomapredict.ai</p>
     </div>
     """, unsafe_allow_html=True)
@@ -832,36 +788,56 @@ elif st.session_state['current_page'] == 'contact':
 # ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style="padding: 1rem 0 1rem; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 1rem;">
-        <div style="font-size: 1.8rem; margin-bottom: 0.3rem;">🧬</div>
-        <div style="font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 600; color: #0d1b2a;">MelanomaPredict AI</div>
-        <div style="font-size: 0.6rem; color: rgba(0,0,0,0.4); letter-spacing: 0.1em;">v2.0</div>
+    <div style="padding:1.2rem 0 1rem; text-align:center;
+                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.2rem;">
+        <div style="font-size:2rem; margin-bottom:0.5rem;">🧬</div>
+        <div style="font-family:'Cormorant Garamond',serif;
+                    font-size:1.05rem; font-weight:700; color:#0d1b2a;">
+            MelanomaPredict AI
+        </div>
+        <div style="font-size:0.65rem; color:rgba(0,0,0,0.4);
+                    letter-spacing:0.12em; text-transform:uppercase; margin-top:3px;">
+            Portail Diagnostic v2.0
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("**Navigation**")
+    st.markdown("**Navigation rapide**")
     
-    if st.button("🔬 Analyse", use_container_width=True, key="sidebar_analyse"):
-        navigate_to('analyse')
+    if st.button(" Analyse", use_container_width=True, key="sidebar_analyse"):
+        st.session_state['current_page'] = 'analyse'
+        st.rerun()
     
-    if st.button("📊 Méthodologie", use_container_width=True, key="sidebar_methodo"):
-        navigate_to('methodologie')
+    if st.button(" Méthodologie", use_container_width=True, key="sidebar_methodo"):
+        st.session_state['current_page'] = 'methodologie'
+        st.rerun()
     
-    if st.button("📚 Documentation", use_container_width=True, key="sidebar_doc"):
-        navigate_to('documentation')
+    if st.button(" Documentation", use_container_width=True, key="sidebar_doc"):
+        st.session_state['current_page'] = 'documentation'
+        st.rerun()
     
     if st.button("📧 Contact", use_container_width=True, key="sidebar_contact"):
-        navigate_to('contact')
+        st.session_state['current_page'] = 'contact'
+        st.rerun()
     
     st.divider()
     
     st.markdown("**Statut Système**")
     if model_ok:
-        st.success("✅ Modèle chargé")
-        st.caption("🌲 Random Forest · 57 features")
+        st.success("✅ Modèle chargé avec succès")
+        st.info("🌲 Random Forest · 500 arbres")
+        st.info("🔬 57 features · 54 gènes + 3 cliniques")
     else:
         st.error("❌ Modèle introuvable")
-        st.caption("Vérifiez les fichiers du modèle")
+        st.warning("Vérifiez `model_multimodal_54.pkl` et `params_multimodal_54.json` dans le répertoire")
 
     st.divider()
-    st.caption("⚠️ Usage recherche uniquement — ne remplace pas un avis médical")
+    st.markdown("""
+    <div style="font-size:0.7rem; color:rgba(0,0,0,0.35);
+                line-height:1.6; padding:0 0.2rem;">
+        <strong>⚠️ Avertissement</strong><br>
+        Cet outil est réservé à un usage de recherche. Il ne constitue pas
+        un dispositif médical certifié et ne remplace pas l'avis d'un
+        professionnel de santé qualifié.
+    </div>
+    """, unsafe_allow_html=True)
