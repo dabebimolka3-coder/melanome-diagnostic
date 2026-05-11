@@ -15,77 +15,43 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- 2. STYLE CSS PERSONNALISÉ (DESIGN DASHBOARD) ---
-st.markdown("""
+# --- 2. STYLE CSS PERSONNALISÉ ---
+st.markdown(f"""
     <style>
-    /* Couleur de fond de l'application */
-    .stApp {
-        background-color: #f4f7f9;
-    }
+    /* Ajout de l'image d'arrière-plan */
+    .stApp {{
+        background-image: url("https://votre-lien-image.jpg");
+        background-attachment: fixed;
+        background-size: cover;
+    }}
+
+    /* Ajout d'un calque semi-transparent pour garder le texte lisible */
+    .stApp::before {{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(244, 247, 249, 0.85); /* Ajustez l'opacité ici (0.85) */
+        z-index: -1;
+    }}
     
-    /* Style de la barre latérale (Sidebar) sombre */
-    [data-testid="stSidebar"] {
+    /* On garde la sidebar sombre pour le contraste */
+    [data-testid="stSidebar"] {{
         background-color: #0e1117;
-        color: white;
-    }
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
-        color: #dfe3e6;
-    }
+    }}
 
-    /* En-tête principal */
-    .main-header {
-        background: linear-gradient(90deg, #002b5c 0%, #004aad 100%);
-        padding: 2rem;
-        border-radius: 12px;
-        color: white;
-        text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    /* Cartes de résultats et de formulaires */
-    .report-card {
+    /* Les cartes blanches restent opaques pour bien voir les résultats */
+    .report-card {{
         background-color: white;
         padding: 1.5rem;
         border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         border: 1px solid #e6e9ef;
-        margin-bottom: 1rem;
-    }
-
-    /* Style des onglets */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        white-space: pre-wrap;
-        background-color: transparent;
-        border-radius: 4px 4px 0px 0px;
-        gap: 1px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    /* Bouton principal */
-    .stButton>button {
-        width: 100%;
-        background-color: #004aad;
-        color: white;
-        border-radius: 6px;
-        border: none;
-        height: 3rem;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        background-color: #003073;
-        border: none;
-        color: white;
-    }
+    }}
     </style>
     """, unsafe_allow_html=True)
-
 # --- 3. CHARGEMENT DES RESSOURCES ---
 @st.cache_resource
 def load_assets():
