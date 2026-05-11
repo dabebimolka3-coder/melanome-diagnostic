@@ -40,9 +40,11 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0,0,0,0.08);
-    display: flex; align-items: center;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 0 2.5rem; height: 62px;
+    padding: 0 2.5rem;
+    height: 62px;
     margin: 0 -2.5rem 0;
 }
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
@@ -50,31 +52,55 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     width: 34px; height: 34px;
     background: linear-gradient(135deg, #1a6fff, #00c9a7);
     border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 16px;
     color: white;
 }
 .topbar-name {
     font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.15rem; font-weight: 700;
-    color: #0d1b2a; letter-spacing: 0.03em;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0d1b2a;
+    letter-spacing: 0.03em;
 }
-.topbar-links { display: flex; gap: 2.5rem; align-items: center; }
-.topbar-links a {
-    font-size: 0.78rem; color: rgba(0,0,0,0.5);
-    text-decoration: none; letter-spacing: 0.08em;
-    text-transform: uppercase; font-weight: 600;
+.nav-container {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+.nav-link {
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.45);
+    text-decoration: none;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
     cursor: pointer;
     transition: color 0.2s;
+    background: none;
+    border: none;
+    font-family: 'Syne', sans-serif;
 }
-.topbar-links a:hover { color: #1a6fff; }
+.nav-link:hover { color: #1a6fff; }
+.nav-link.active { color: #1a6fff; }
+.nav-separator {
+    color: rgba(0,0,0,0.15);
+    font-size: 0.7rem;
+}
 .topbar-status {
-    display: flex; align-items: center; gap: 7px;
-    font-size: 0.72rem; color: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.72rem;
+    color: rgba(0,0,0,0.45);
     letter-spacing: 0.06em;
 }
 .pulse {
-    width: 7px; height: 7px; border-radius: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
     background: #00c9a7;
     box-shadow: 0 0 0 0 rgba(0,201,167,0.6);
     animation: pulse 2s infinite;
@@ -340,11 +366,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     font-size: 0.85rem; text-align: center; line-height: 1.7; gap: 1rem;
 }
 
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
 .contact-card {
     background: #fafafa;
     border: 1px solid rgba(0,0,0,0.08);
@@ -398,47 +419,55 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
-# ── TOPBAR AVEC BOUTONS STREAMLIT ────────────────────────────────────────────
-# On utilise st.markdown avec des boutons Streamlit intégrés via des colonnes
-st.markdown('<div class="topbar">', unsafe_allow_html=True)
-
-col_logo, col_nav, col_status = st.columns([1, 3, 1])
-
-with col_logo:
-    st.markdown("""
+# ── TOOLBAR AVEC STYLE IMAGE (ANALYSE | MÉTHODOLOGIE | DOCUMENTATION | CONTACT) ──
+st.markdown("""
+<div class="topbar">
     <div class="topbar-brand">
         <div class="topbar-logo">🧬</div>
         <span class="topbar-name">MelanomaPredict AI</span>
     </div>
-    """, unsafe_allow_html=True)
-
-with col_nav:
-    nav_cols = st.columns(4)
-    with nav_cols[0]:
-        if st.button("Analyse", key="nav_analyse", use_container_width=True):
-            st.session_state['current_page'] = 'analyse'
-            st.rerun()
-    with nav_cols[1]:
-        if st.button("Méthodologie", key="nav_methodo", use_container_width=True):
-            st.session_state['current_page'] = 'methodologie'
-            st.rerun()
-    with nav_cols[2]:
-        if st.button("Documentation", key="nav_doc", use_container_width=True):
-            st.session_state['current_page'] = 'documentation'
-            st.rerun()
-    with nav_cols[3]:
-        if st.button("Contact", key="nav_contact", use_container_width=True):
-            st.session_state['current_page'] = 'contact'
-            st.rerun()
-
-with col_status:
-    st.markdown("""
+    <div class="nav-container">
+        <span class="nav-link" data-page="analyse">ANALYSE</span>
+        <span class="nav-separator">|</span>
+        <span class="nav-link" data-page="methodologie">MÉTHODOLOGIE</span>
+        <span class="nav-separator">|</span>
+        <span class="nav-link" data-page="documentation">DOCUMENTATION</span>
+        <span class="nav-separator">|</span>
+        <span class="nav-link" data-page="contact">CONTACT</span>
+    </div>
     <div class="topbar-status">
         <span class="pulse"></span>&nbsp; Système opérationnel
     </div>
-    """, unsafe_allow_html=True)
+</div>
 
-st.markdown('</div>', unsafe_allow_html=True)
+<script>
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+        const page = this.getAttribute('data-page');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = page;
+        input.style.position = 'absolute';
+        input.style.left = '-9999px';
+        document.body.appendChild(input);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        
+        setTimeout(() => {
+            const buttons = document.querySelectorAll('button');
+            for(let btn of buttons) {
+                if(btn.innerText.toLowerCase().includes(page)) {
+                    btn.click();
+                    break;
+                }
+            }
+        }, 100);
+        
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+</script>
+""", unsafe_allow_html=True)
 
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
@@ -452,7 +481,7 @@ if st.session_state['current_page'] == 'analyse':
         <div class="hero-content">
             <div class="hero-eyebrow">
                 <span class="hero-eyebrow-dot"></span>
-                Dispositif de Recherche Clinique
+                DISPOSITIF DE RECHERCHE CLINIQUE
             </div>
             <h1>Analyse Multimodale<br>du <span>Mélanome</span> Cutané</h1>
             <p class="hero-sub">
@@ -463,19 +492,19 @@ if st.session_state['current_page'] == 'analyse':
             <div class="hero-kpis">
                 <div class="kpi">
                     <div class="kpi-val">54</div>
-                    <div class="kpi-label">Gènes analysés</div>
+                    <div class="kpi-label">GÈNES ANALYSÉS</div>
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">500</div>
-                    <div class="kpi-label">Arbres décisionnels</div>
+                    <div class="kpi-label">ARBRES DÉCISIONNELS</div>
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">TCGA</div>
-                    <div class="kpi-label">Cohorte de référence</div>
+                    <div class="kpi-label">COHORTE DE RÉFÉRENCE</div>
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">57</div>
-                    <div class="kpi-label">Features totales</div>
+                    <div class="kpi-label">FEATURES TOTALES</div>
                 </div>
             </div>
         </div>
@@ -491,7 +520,7 @@ if st.session_state['current_page'] == 'analyse':
     col_in, col_out = st.columns([5, 7], gap="large")
 
     with col_in:
-        st.markdown('<div class="glass"><div class="glass-title">📋 &nbsp;Paramètres Cliniques</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title">📋 &nbsp;PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
         age   = st.number_input("Âge du patient", min_value=1, max_value=115, value=55)
         sexe  = st.radio("Sexe biologique", ["Homme", "Femme"], horizontal=True)
         stade = st.selectbox("Stade TNM initial", ["I", "II", "III", "IV"])
@@ -499,7 +528,7 @@ if st.session_state['current_page'] == 'analyse':
 
         st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
 
-        st.markdown('<div class="glass"><div class="glass-title">🔬 &nbsp;Données Omiques</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title">🔬 &nbsp;DONNÉES OMIQUES</div>', unsafe_allow_html=True)
         if params:
             example_df = pd.DataFrame(
                 np.random.uniform(0.5, 5.0, size=(1, 54)),
@@ -542,21 +571,21 @@ if st.session_state['current_page'] == 'analyse':
 
             if prob < 0.33:
                 rc, bc, pc = "result-low",  "badge-low",  "prob-low"
-                badge_txt  = "&#11044; &nbsp;Risque Faible"
+                badge_txt  = "● &nbsp;RISQUE FAIBLE"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Mélanome primaire probable. Surveillance standard et "
                               "suivi dermatologique classique recommandé.")
                 bar_color  = "#00c9a7"
             elif prob < 0.67:
                 rc, bc, pc = "result-med",  "badge-med",  "prob-med"
-                badge_txt  = "&#11044; &nbsp;Risque Intermédiaire"
+                badge_txt  = "● &nbsp;RISQUE INTERMÉDIAIRE"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Zone d'incertitude clinique. Examens complémentaires, "
                               "confirmation histologique et suivi rapproché.")
                 bar_color  = "#ffbb00"
             else:
                 rc, bc, pc = "result-high", "badge-high", "prob-high"
-                badge_txt  = "&#11044; &nbsp;Risque Élevé"
+                badge_txt  = "● &nbsp;RISQUE ÉLEVÉ"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Mélanome métastatique probable. Discussion précoce "
                               "d'immunothérapie (anti-PD-1 / anti-CTLA-4) ou thérapie ciblée.")
@@ -727,6 +756,19 @@ elif st.session_state['current_page'] == 'documentation':
             </ul>
         </div>
         """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">⚙️ Hyperparamètres</div>
+            <ul>
+                <li><strong>n_estimators :</strong> 500 arbres</li>
+                <li><strong>max_depth :</strong> 20</li>
+                <li><strong>min_samples_split :</strong> 5</li>
+                <li><strong>min_samples_leaf :</strong> 2</li>
+                <li><strong>max_features :</strong> sqrt</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col2:
         st.markdown("""
@@ -755,6 +797,17 @@ elif st.session_state['current_page'] == 'documentation':
         </div>
         """, unsafe_allow_html=True)
     
+    st.markdown("""
+    <div class="mcard">
+        <div class="mcard-title">📖 Références Bibliographiques</div>
+        <ul>
+            <li>TCGA Research Network. <em>Genomic Classification of Cutaneous Melanoma</em>. Cell, 2015</li>
+            <li>Breiman, L. <em>Random Forests</em>. Machine Learning, 2001</li>
+            <li>Tibshirani, R. <em>Regression Shrinkage and Selection via the Lasso</em>. JRSSB, 1996</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
     st.markdown("""
@@ -764,22 +817,6 @@ elif st.session_state['current_page'] == 'contact':
     </div>
     """, unsafe_allow_html=True)
     
-     col3 = st.columns(3)
-    
-    
-    
-    with col3:
-        st.markdown("""
-        <div class="contact-card">
-            <div class="contact-icon">📧</div>
-            <div class="contact-title">Support Technique</div>
-            <div class="contact-detail">support@melanomapredict.ai</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
-    
- 
     st.markdown("""
     <div class="mcard">
         <div class="mcard-title">📋 Formulaire de contact</div>
