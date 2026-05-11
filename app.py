@@ -417,6 +417,99 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+<style>
+/* Conteneur principal de la Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px); /* Effet verre dépoli */
+    border-bottom: 1px solid rgba(0, 43, 92, 0.1);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo et Branding */
+.topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-logo {
+    width: 35px;
+    height: 35px;
+    background: #002b5c;
+    color: white;
+    padding: 7px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topbar-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #002b5c;
+    letter-spacing: -0.5px;
+}
+
+.ai-badge {
+    background: #004aad;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.topbar-subtitle {
+    display: block;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: -2px;
+}
+
+/* Statut avec animation Pulse */
+.status-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34, 197, 94, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.status-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #166534;
+}
+
+.pulse-dot {
+    height: 8px;
+    width: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+</style>
 # ── BOUTONS DE NAVIGATION (UNIQUEMENT STREAMLIT) ─────────────────────────────────
 st.markdown('<div class="nav-buttons-container">', unsafe_allow_html=True)
 nav_cols = st.columns(4)
