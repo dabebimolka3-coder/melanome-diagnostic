@@ -81,71 +81,109 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 }
 
 .hero {
-    position: relative; min-height: 340px;
+    position: relative; min-height: 460px;
     margin: 0 -2.5rem 3rem;
     overflow: hidden; display: flex; align-items: flex-end;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
 }
 .hero-img {
     position: absolute; inset: 0;
-    background-image: url('https://images.squarespace-cdn.com/content/v1/5d9e30182db9d71681f4a692/1581717140307-89XZXBK2C5OBW2AGDXCO/mountainviewrheumatoidarthritis.jpg');
-    background-size: cover; background-position: center 25%;
-    filter: brightness(0.9) saturate(1.1);
+    background-image: url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format');
+    background-size: cover;
+    background-position: center 35%;
+    filter: brightness(0.92) contrast(1.1) saturate(1.15);
+    transform: scale(1.02);
+}
+.hero-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(26,111,255,0.15), rgba(0,201,167,0.1));
 }
 .hero-gradient {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 55%, rgba(255,255,255,0.6) 100%);
+    background: linear-gradient(to top, 
+        #ffffff 0%, 
+        rgba(255,255,255,0.88) 40%, 
+        rgba(255,255,255,0.3) 100%);
 }
 .hero-content {
     position: relative; z-index: 2;
-    padding: 0 3rem 2.8rem; max-width: 780px;
+    padding: 0 3rem 3rem; max-width: 820px;
 }
 .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(26,111,255,0.1);
-    border: 1px solid rgba(26,111,255,0.25);
-    border-radius: 50px; padding: 5px 14px;
-    font-size: 0.68rem; color: #1a6fff;
+    background: rgba(26,111,255,0.15);
+    border: 1px solid rgba(26,111,255,0.3);
+    border-radius: 50px; padding: 6px 16px;
+    font-size: 0.7rem; color: #1a6fff;
     letter-spacing: 0.12em; text-transform: uppercase;
-    font-weight: 600; margin-bottom: 1.1rem;
+    font-weight: 700; margin-bottom: 1.3rem;
+    backdrop-filter: blur(4px);
 }
 .hero-eyebrow-dot {
-    width: 5px; height: 5px; border-radius: 50%; background: #1a6fff;
+    width: 6px; height: 6px; border-radius: 50%; background: #1a6fff;
     display: inline-block;
+    animation: pulse-blue 1.5s infinite;
+}
+@keyframes pulse-blue {
+    0%   { box-shadow: 0 0 0 0 rgba(26,111,255,0.4); }
+    70%  { box-shadow: 0 0 0 6px rgba(26,111,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(26,111,255,0); }
 }
 .hero h1 {
-    font-size: 3.2rem !important; font-weight: 600 !important;
+    font-size: 3.5rem !important; font-weight: 700 !important;
     color: #0d1b2a !important; line-height: 1.1 !important;
     margin: 0 0 1rem !important; letter-spacing: -0.01em;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
 }
-.hero h1 span { color: #1a6fff; }
+.hero h1 span { 
+    background: linear-gradient(135deg, #1a6fff, #00c9a7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
 .hero-sub {
-    color: rgba(0,0,0,0.55); font-size: 0.9rem;
-    line-height: 1.7; max-width: 520px;
+    color: rgba(0,0,0,0.65); font-size: 0.95rem;
+    line-height: 1.7; max-width: 560px;
+    font-weight: 500;
 }
 .hero-kpis {
     display: flex; gap: 0; margin-top: 2rem;
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.1);
     border-radius: 12px; overflow: hidden; width: fit-content;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
 }
 .kpi {
-    padding: 0.9rem 1.8rem;
+    padding: 1rem 2rem;
     border-right: 1px solid rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+}
+.kpi:hover {
+    background: rgba(26,111,255,0.05);
 }
 .kpi:last-child { border-right: none; }
 .kpi-val {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem; font-weight: 700; color: #0d1b2a; line-height: 1;
+    font-size: 1.8rem; font-weight: 700; color: #1a6fff; line-height: 1;
 }
 .kpi-label {
-    font-size: 0.68rem; color: rgba(0,0,0,0.45);
-    letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px;
+    font-size: 0.7rem; color: rgba(0,0,0,0.55);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px;
+    font-weight: 600;
 }
 
 .glass {
     background: rgba(0,0,0,0.02);
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px; padding: 1.8rem;
+    transition: all 0.2s ease;
+}
+.glass:hover {
+    border-color: rgba(26,111,255,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 .glass-title {
     font-family: 'Cormorant Garamond', serif;
@@ -326,6 +364,11 @@ hr { border-color: rgba(0,0,0,0.08) !important; }
     background: #fafafa;
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px; padding: 1.6rem;
+    transition: all 0.2s ease;
+}
+.mcard:hover {
+    border-color: rgba(26,111,255,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
 .mcard-title {
     font-family: 'Cormorant Garamond', serif;
