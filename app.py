@@ -15,8 +15,17 @@ st.set_page_config(
 )
 
 # ── SESSION STATE POUR LA NAVIGATION ─────────────────────────────────────────
+# Initialisation avec query params
 if 'current_page' not in st.session_state:
-    st.session_state['current_page'] = 'analyse'
+    # Lire depuis query params ou défaut
+    page_param = st.query_params.get("page", "analyse")
+    st.session_state['current_page'] = page_param
+
+# Fonction de navigation
+def navigate_to(page):
+    st.session_state['current_page'] = page
+    st.query_params["page"] = page
+    st.rerun()
 
 # ── GLOBAL CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -419,56 +428,42 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
-# ── TOOLBAR AVEC STYLE IMAGE (ANALYSE | MÉTHODOLOGIE | DOCUMENTATION | CONTACT) ──
-st.markdown("""
+# ── TOPBAR NAVIGATION AVEC BOUTONS FONCTIONNELS ────────────────────────────────
+# Déterminer la classe active pour chaque lien
+active_class = lambda page: "active" if st.session_state['current_page'] == page else ""
+
+st.markdown(f"""
 <div class="topbar">
     <div class="topbar-brand">
         <div class="topbar-logo">🧬</div>
         <span class="topbar-name">MelanomaPredict AI</span>
     </div>
     <div class="nav-container">
-        <span class="nav-link" data-page="analyse">ANALYSE</span>
+        <button class="nav-link {active_class('analyse')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'analyse'}}, '*')">ANALYSE</button>
         <span class="nav-separator">|</span>
-        <span class="nav-link" data-page="methodologie">MÉTHODOLOGIE</span>
+        <button class="nav-link {active_class('methodologie')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'methodologie'}}, '*')">MÉTHODOLOGIE</button>
         <span class="nav-separator">|</span>
-        <span class="nav-link" data-page="documentation">DOCUMENTATION</span>
+        <button class="nav-link {active_class('documentation')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'documentation'}}, '*')">DOCUMENTATION</button>
         <span class="nav-separator">|</span>
-        <span class="nav-link" data-page="contact">CONTACT</span>
+        <button class="nav-link {active_class('contact')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'contact'}}, '*')">CONTACT</button>
     </div>
     <div class="topbar-status">
         <span class="pulse"></span>&nbsp; Système opérationnel
     </div>
 </div>
-
-<script>
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function() {
-        const page = this.getAttribute('data-page');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = page;
-        input.style.position = 'absolute';
-        input.style.left = '-9999px';
-        document.body.appendChild(input);
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        
-        setTimeout(() => {
-            const buttons = document.querySelectorAll('button');
-            for(let btn of buttons) {
-                if(btn.innerText.toLowerCase().includes(page)) {
-                    btn.click();
-                    break;
-                }
-            }
-        }, 100);
-        
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-</script>
 """, unsafe_allow_html=True)
 
+# Capture des clics via les colonnes Streamlit
+nav_cols = st.columns(4)
+nav_pages = ["analyse", "methodologie", "documentation", "contact"]
+nav_labels = ["ANALYSE", "MÉTHODOLOGIE", "DOCUMENTATION", "CONTACT"]
+
+for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
+    with col:
+        if st.button(label, key=f"nav_{page}", use_container_width=True):
+            navigate_to(page)
+
+st.divider()
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
 # PAGE ANALYSE
