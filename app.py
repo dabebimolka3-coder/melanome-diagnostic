@@ -677,7 +677,7 @@ elif st.session_state['current_page'] == 'methodologie':
 
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🎯 Seuils de Décision Clinique</div>
+            <div class="mcard-title"> Seuils de Décision Clinique</div>
             <div class="threshold-row">
                 <div class="th-ind th-low"></div>
                 <div>
@@ -729,7 +729,7 @@ elif st.session_state['current_page'] == 'documentation':
     with col2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🎯 Performances</div>
+            <div class="mcard-title"> Performances</div>
             <ul>
                 <li><strong>Accuracy :</strong> 90%</li>
                 <li><strong>Sensibilité :</strong> 85%</li>
