@@ -633,7 +633,7 @@ elif st.session_state['current_page'] == 'methodologie':
     with c1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🧠 Architecture du Modèle</div>
+            <div class="mcard-title"> Architecture du Modèle</div>
             <ul>
                 <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
                 <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
