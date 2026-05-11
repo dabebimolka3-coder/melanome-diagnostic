@@ -392,8 +392,53 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 </style>
 """, unsafe_allow_html=True)
 
-# ── TOPBAR NETTOYÉE ──────────────────────────────────────────────────────────
+# ── TOPBAR AVEC INDICATEUR PULSANT ──────────────────────────────────────────
 st.markdown(f"""
+<style>
+/* Animation du point clignotant */
+.status-indicator {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34, 197, 94, 0.1);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}}
+
+.blink-dot {{
+    height: 8px;
+    width: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    animation: pulse-green 2s infinite;
+}}
+
+@keyframes pulse-green {{
+    0% {{
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }}
+    70% {{
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+    }}
+    100% {{
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }}
+}}
+
+.status-label {{
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #166534;
+    letter-spacing: 0.02em;
+}}
+</style>
+
 <div class="topbar">
     <div class="topbar-brand">
         <div class="topbar-logo">
@@ -407,14 +452,13 @@ st.markdown(f"""
         <span class="topbar-name">MelanomaPredict AI <span style="opacity:0.4; font-size:0.8rem; margin-left:5px;">\U0001F9EC</span></span>
     </div>
     <div class="topbar-status">
-        <div class="status-container">
-            <span class="pulse-dot"></span>
-            <span class="status-text">Système Opérationnel</span>
+        <div class="status-indicator">
+            <span class="blink-dot"></span>
+            <span class="status-label">SYSTÈME OPÉRATIONNEL</span>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
-
 # ── BOUTONS DE NAVIGATION (UNIQUEMENT STREAMLIT) ─────────────────────────────────
 st.markdown('<div class="nav-buttons-container">', unsafe_allow_html=True)
 nav_cols = st.columns(4)
