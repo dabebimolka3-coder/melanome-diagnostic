@@ -742,7 +742,7 @@ elif st.session_state['current_page'] == 'documentation':
     with col1:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📊 Base de Données</div>
+            <div class="mcard-title"> Base de Données</div>
             <ul>
                 <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
                 <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
@@ -756,7 +756,7 @@ elif st.session_state['current_page'] == 'documentation':
     with col2:
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">🎯 Performances</div>
+            <div class="mcard-title"> Performances</div>
             <ul>
                 <li><strong>Accuracy :</strong> 90%</li>
                 <li><strong>Sensibilité :</strong> 85%</li>
@@ -770,7 +770,7 @@ elif st.session_state['current_page'] == 'documentation':
         
         st.markdown("""
         <div class="mcard">
-            <div class="mcard-title">📋 Limitations</div>
+            <div class="mcard-title"> Limitations</div>
             <ul>
                 <li>Validation externe en cours sur cohorte indépendante</li>
                 <li>Ne remplace pas le gold standard histologique</li>
