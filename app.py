@@ -406,6 +406,7 @@ st.markdown("""
         </div>
         <div class="topbar-text">
             <span class="topbar-name">MelanomaPredict<span class="ai-badge">AI</span></span>
+            <span class="topbar-subtitle">Diagnostic Support Portal</span>
        
         </div>
     </div>
