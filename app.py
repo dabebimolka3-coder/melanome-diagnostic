@@ -409,7 +409,7 @@ st.markdown("""
 st.markdown('<div class="nav-buttons-container">', unsafe_allow_html=True)
 nav_cols = st.columns(4)
 nav_pages = ["analyse", "methodologie", "documentation", "contact"]
-nav_labels = ["🔬 ANALYSE", "📊 MÉTHODOLOGIE", "📚 DOCUMENTATION", "📧 CONTACT"]
+nav_labels = [" Analyse ", " Méthodologie", " Documentation", "Contact"]
 
 for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
     with col:
