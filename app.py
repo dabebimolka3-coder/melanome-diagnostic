@@ -20,22 +20,22 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Syne:wght@400;500;600;700&display=swap');
 
 html, body, [data-testid="stAppViewContainer"] {
-    background: #080d14 !important;
-    color: #e8edf5;
+    background: #ffffff !important;
+    color: #1a1a2e;
 }
-[data-testid="stAppViewContainer"] > .main { background: #080d14 !important; }
+[data-testid="stAppViewContainer"] > .main { background: #ffffff !important; }
 [data-testid="block-container"] { padding: 0 2.5rem 3rem !important; max-width: 1400px; }
-* { font-family: 'Syne', sans-serif; }
-h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
+* { font-family: 'Syne', sans-serif; color: #1a1a2e; }
+h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; color: #0d1b2a !important; }
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
 .topbar {
     position: sticky; top: 0; z-index: 999;
-    background: rgba(8,13,20,0.92);
+    background: rgba(255,255,255,0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
     display: flex; align-items: center;
     justify-content: space-between;
     padding: 0 2.5rem; height: 62px;
@@ -48,21 +48,23 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px;
+    color: white;
 }
 .topbar-name {
     font-family: 'Cormorant Garamond', serif !important;
     font-size: 1.15rem; font-weight: 700;
-    color: #fff; letter-spacing: 0.03em;
+    color: #0d1b2a; letter-spacing: 0.03em;
 }
 .topbar-links { display: flex; gap: 2.5rem; align-items: center; }
 .topbar-links a {
-    font-size: 0.78rem; color: rgba(255,255,255,0.4);
+    font-size: 0.78rem; color: rgba(0,0,0,0.5);
     text-decoration: none; letter-spacing: 0.08em;
     text-transform: uppercase; font-weight: 600;
 }
+.topbar-links a:hover { color: #1a6fff; }
 .topbar-status {
     display: flex; align-items: center; gap: 7px;
-    font-size: 0.72rem; color: rgba(255,255,255,0.35);
+    font-size: 0.72rem; color: rgba(0,0,0,0.45);
     letter-spacing: 0.06em;
 }
 .pulse {
@@ -87,11 +89,11 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
     position: absolute; inset: 0;
     background-image: url('https://images.squarespace-cdn.com/content/v1/5d9e30182db9d71681f4a692/1581717140307-89XZXBK2C5OBW2AGDXCO/mountainviewrheumatoidarthritis.jpg');
     background-size: cover; background-position: center 25%;
-    filter: brightness(0.28) saturate(0.6);
+    filter: brightness(0.9) saturate(1.1);
 }
 .hero-gradient {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, #080d14 0%, rgba(8,13,20,0.5) 55%, transparent 100%);
+    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 55%, rgba(255,255,255,0.6) 100%);
 }
 .hero-content {
     position: relative; z-index: 2;
@@ -99,10 +101,10 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
 }
 .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(26,111,255,0.15);
-    border: 1px solid rgba(26,111,255,0.35);
+    background: rgba(26,111,255,0.1);
+    border: 1px solid rgba(26,111,255,0.25);
     border-radius: 50px; padding: 5px 14px;
-    font-size: 0.68rem; color: #6aa3ff;
+    font-size: 0.68rem; color: #1a6fff;
     letter-spacing: 0.12em; text-transform: uppercase;
     font-weight: 600; margin-bottom: 1.1rem;
 }
@@ -112,76 +114,77 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
 }
 .hero h1 {
     font-size: 3.2rem !important; font-weight: 600 !important;
-    color: #fff !important; line-height: 1.1 !important;
+    color: #0d1b2a !important; line-height: 1.1 !important;
     margin: 0 0 1rem !important; letter-spacing: -0.01em;
 }
-.hero h1 span { color: #00c9a7; }
+.hero h1 span { color: #1a6fff; }
 .hero-sub {
-    color: rgba(255,255,255,0.5); font-size: 0.9rem;
+    color: rgba(0,0,0,0.55); font-size: 0.9rem;
     line-height: 1.7; max-width: 520px;
 }
 .hero-kpis {
     display: flex; gap: 0; margin-top: 2rem;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,0,0,0.08);
     border-radius: 12px; overflow: hidden; width: fit-content;
+    background: rgba(255,255,255,0.6);
 }
 .kpi {
     padding: 0.9rem 1.8rem;
-    border-right: 1px solid rgba(255,255,255,0.08);
+    border-right: 1px solid rgba(0,0,0,0.08);
 }
 .kpi:last-child { border-right: none; }
 .kpi-val {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem; font-weight: 700; color: #fff; line-height: 1;
+    font-size: 1.6rem; font-weight: 700; color: #0d1b2a; line-height: 1;
 }
 .kpi-label {
-    font-size: 0.68rem; color: rgba(255,255,255,0.35);
+    font-size: 0.68rem; color: rgba(0,0,0,0.45);
     letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px;
 }
 
 .glass {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px; padding: 1.8rem;
 }
 .glass-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.95rem; font-weight: 600;
-    color: rgba(255,255,255,0.5);
+    color: rgba(0,0,0,0.6);
     letter-spacing: 0.06em; text-transform: uppercase;
     margin-bottom: 1.4rem; padding-bottom: 0.9rem;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .stNumberInput label, .stRadio label,
 .stSelectbox label, .stFileUploader label {
     font-size: 0.72rem !important;
-    color: rgba(255,255,255,0.35) !important;
+    color: rgba(0,0,0,0.5) !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
     font-weight: 600 !important;
     font-family: 'Syne', sans-serif !important;
 }
 .stNumberInput input, .stSelectbox select {
-    background: rgba(255,255,255,0.04) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
+    background: #f5f5f5 !important;
+    border: 1px solid rgba(0,0,0,0.12) !important;
     border-radius: 10px !important;
-    color: #fff !important;
+    color: #1a1a2e !important;
     font-family: 'Syne', sans-serif !important;
 }
 [data-testid="stRadio"] > div { gap: 10px !important; flex-direction: row !important; }
 [data-testid="stRadio"] label {
-    background: rgba(255,255,255,0.04) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
+    background: #f5f5f5 !important;
+    border: 1px solid rgba(0,0,0,0.12) !important;
     border-radius: 10px !important; padding: 9px 20px !important;
     cursor: pointer !important; transition: all .2s !important;
     text-transform: none !important; letter-spacing: normal !important;
-    font-size: 0.85rem !important; color: rgba(255,255,255,0.65) !important;
+    font-size: 0.85rem !important; color: rgba(0,0,0,0.65) !important;
 }
 [data-testid="stRadio"] label:has(input:checked) {
-    background: rgba(26,111,255,0.15) !important;
-    border-color: rgba(26,111,255,0.5) !important;
-    color: #6aa3ff !important;
+    background: rgba(26,111,255,0.1) !important;
+    border-color: #1a6fff !important;
+    color: #1a6fff !important;
 }
 
 .stButton > button {
@@ -198,20 +201,20 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
     box-shadow: 0 8px 30px rgba(26,111,255,0.5) !important;
 }
 .stDownloadButton > button {
-    background: rgba(255,255,255,0.04) !important;
-    color: rgba(255,255,255,0.55) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
+    background: #f5f5f5 !important;
+    color: rgba(0,0,0,0.55) !important;
+    border: 1px solid rgba(0,0,0,0.12) !important;
     border-radius: 50px !important;
     font-family: 'Syne', sans-serif !important;
     font-weight: 600 !important; font-size: 0.82rem !important;
 }
 .stDownloadButton > button:hover {
-    border-color: rgba(255,255,255,0.3) !important; color: #fff !important;
+    border-color: #1a6fff !important; color: #1a6fff !important;
 }
 
 [data-testid="stFileUploader"] {
-    background: rgba(255,255,255,0.02) !important;
-    border: 2px dashed rgba(255,255,255,0.09) !important;
+    background: #fafafa !important;
+    border: 2px dashed rgba(0,0,0,0.12) !important;
     border-radius: 12px !important;
 }
 [data-testid="stFileUploader"] section { background: transparent !important; }
@@ -224,11 +227,11 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
     content: ''; position: absolute;
     top: 0; left: 0; right: 0; height: 1px;
 }
-.result-low  { background: rgba(0,201,167,0.06); border-color: rgba(0,201,167,0.2); }
+.result-low  { background: rgba(0,201,167,0.05); border-color: rgba(0,201,167,0.3); }
 .result-low::before  { background: linear-gradient(90deg, transparent, #00c9a7, transparent); }
-.result-med  { background: rgba(255,187,0,0.06);  border-color: rgba(255,187,0,0.2); }
+.result-med  { background: rgba(255,187,0,0.05);  border-color: rgba(255,187,0,0.3); }
 .result-med::before  { background: linear-gradient(90deg, transparent, #ffbb00, transparent); }
-.result-high { background: rgba(255,75,75,0.06);  border-color: rgba(255,75,75,0.2); }
+.result-high { background: rgba(255,75,75,0.05);  border-color: rgba(255,75,75,0.3); }
 .result-high::before { background: linear-gradient(90deg, transparent, #ff4b4b, transparent); }
 
 .result-badge {
@@ -237,116 +240,116 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif !important; }
     font-size: 0.68rem; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.2rem;
 }
-.badge-low  { background: rgba(0,201,167,0.12);  color: #00c9a7; border: 1px solid rgba(0,201,167,0.25); }
-.badge-med  { background: rgba(255,187,0,0.12);  color: #ffbb00; border: 1px solid rgba(255,187,0,0.25); }
-.badge-high { background: rgba(255,75,75,0.12);  color: #ff4b4b; border: 1px solid rgba(255,75,75,0.25); }
+.badge-low  { background: rgba(0,201,167,0.12);  color: #00a87e; border: 1px solid rgba(0,201,167,0.3); }
+.badge-med  { background: rgba(255,187,0,0.12);  color: #cc9500; border: 1px solid rgba(255,187,0,0.3); }
+.badge-high { background: rgba(255,75,75,0.12);  color: #cc3b3b; border: 1px solid rgba(255,75,75,0.3); }
 
 .result-prob {
     font-family: 'Cormorant Garamond', serif;
     font-size: 4.5rem; font-weight: 700; line-height: 1; margin-bottom: 0.3rem;
 }
-.prob-low  { color: #00c9a7; }
-.prob-med  { color: #ffbb00; }
-.prob-high { color: #ff4b4b; }
+.prob-low  { color: #00a87e; }
+.prob-med  { color: #cc9500; }
+.prob-high { color: #cc3b3b; }
 
 .result-sublabel {
-    font-size: 0.72rem; color: rgba(255,255,255,0.3);
+    font-size: 0.72rem; color: rgba(0,0,0,0.45);
     letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.4rem;
 }
 .result-decision {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.06);
     border-radius: 10px; padding: 1rem 1.2rem;
-    font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.7;
+    font-size: 0.85rem; color: rgba(0,0,0,0.6); line-height: 1.7;
 }
 .result-decision strong {
-    color: #fff; display: block;
+    color: #0d1b2a; display: block;
     font-size: 0.72rem; letter-spacing: 0.1em;
     text-transform: uppercase; margin-bottom: 5px;
 }
 
 .stProgress > div > div > div {
     border-radius: 50px !important; height: 5px !important;
-    background: rgba(255,255,255,0.05) !important;
+    background: rgba(0,0,0,0.05) !important;
 }
 .stProgress > div > div > div > div { border-radius: 50px !important; }
 
 [data-testid="stTabs"] [data-baseweb="tab-list"] {
-    background: rgba(255,255,255,0.03) !important;
+    background: #f5f5f5 !important;
     border-radius: 50px !important;
-    border: 1px solid rgba(255,255,255,0.07) !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
     padding: 4px !important; width: fit-content !important;
     gap: 2px !important; margin-bottom: 2.5rem !important;
 }
 [data-testid="stTabs"] [data-baseweb="tab"] {
     border-radius: 50px !important; padding: 9px 26px !important;
     font-family: 'Syne', sans-serif !important; font-size: 0.82rem !important;
-    font-weight: 600 !important; color: rgba(255,255,255,0.35) !important;
+    font-weight: 600 !important; color: rgba(0,0,0,0.45) !important;
     background: transparent !important; border: none !important;
     letter-spacing: 0.03em !important;
 }
 [data-testid="stTabs"] [aria-selected="true"] {
-    background: rgba(26,111,255,0.2) !important;
-    color: #6aa3ff !important;
-    border: 1px solid rgba(26,111,255,0.35) !important;
+    background: rgba(26,111,255,0.1) !important;
+    color: #1a6fff !important;
+    border: 1px solid rgba(26,111,255,0.25) !important;
 }
 [data-testid="stTabs"] [data-baseweb="tab-highlight"],
 [data-testid="stTabs"] [data-baseweb="tab-border"] { display: none !important; }
 
 [data-testid="stSidebar"] {
-    background: #080d14 !important;
-    border-right: 1px solid rgba(255,255,255,0.07) !important;
+    background: #fafafa !important;
+    border-right: 1px solid rgba(0,0,0,0.08) !important;
 }
-[data-testid="stSidebar"] * { color: rgba(255,255,255,0.65) !important; }
+[data-testid="stSidebar"] * { color: rgba(0,0,0,0.65) !important; }
 
 .stWarning > div {
-    background: rgba(255,187,0,0.06) !important;
-    border: 1px solid rgba(255,187,0,0.2) !important;
-    border-radius: 12px !important; color: rgba(255,200,50,0.85) !important;
+    background: rgba(255,187,0,0.08) !important;
+    border: 1px solid rgba(255,187,0,0.25) !important;
+    border-radius: 12px !important; color: #a67c00 !important;
     font-size: 0.82rem !important;
 }
 .stSuccess > div {
-    background: rgba(0,201,167,0.07) !important;
-    border: 1px solid rgba(0,201,167,0.2) !important; border-radius: 10px !important;
+    background: rgba(0,201,167,0.08) !important;
+    border: 1px solid rgba(0,201,167,0.25) !important; border-radius: 10px !important;
 }
 .stInfo > div {
-    background: rgba(26,111,255,0.07) !important;
-    border: 1px solid rgba(26,111,255,0.2) !important; border-radius: 10px !important;
+    background: rgba(26,111,255,0.08) !important;
+    border: 1px solid rgba(26,111,255,0.25) !important; border-radius: 10px !important;
 }
 .stError > div {
-    background: rgba(255,75,75,0.07) !important;
-    border: 1px solid rgba(255,75,75,0.2) !important; border-radius: 10px !important;
+    background: rgba(255,75,75,0.08) !important;
+    border: 1px solid rgba(255,75,75,0.25) !important; border-radius: 10px !important;
 }
-hr { border-color: rgba(255,255,255,0.06) !important; }
+hr { border-color: rgba(0,0,0,0.08) !important; }
 
 .mcard {
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(255,255,255,0.07);
+    background: #fafafa;
+    border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px; padding: 1.6rem;
 }
 .mcard-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.05rem; font-weight: 600;
-    color: rgba(255,255,255,0.65);
+    color: #0d1b2a;
     margin-bottom: 1.1rem; padding-bottom: 0.8rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 .mcard p, .mcard li {
-    font-size: 0.83rem; color: rgba(255,255,255,0.42);
+    font-size: 0.83rem; color: rgba(0,0,0,0.55);
     line-height: 1.75; margin-bottom: 0.5rem;
 }
-.mcard strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+.mcard strong { color: #0d1b2a; font-weight: 600; }
 .mcard ul { padding-left: 1.2rem; }
 
 .step-row {
     display: flex; gap: 12px; margin-bottom: 1rem;
-    font-size: 0.83rem; color: rgba(255,255,255,0.42); line-height: 1.65;
+    font-size: 0.83rem; color: rgba(0,0,0,0.5); line-height: 1.65;
 }
 .step-dot {
     width: 22px; height: 22px; border-radius: 50%;
-    background: rgba(26,111,255,0.2);
+    background: rgba(26,111,255,0.1);
     border: 1px solid rgba(26,111,255,0.4);
-    color: #6aa3ff; font-size: 0.68rem; font-weight: 700;
+    color: #1a6fff; font-size: 0.68rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; margin-top: 2px;
 }
@@ -355,7 +358,7 @@ hr { border-color: rgba(255,255,255,0.06) !important; }
     border: 1px solid rgba(26,111,255,0.2);
     border-radius: 10px; padding: 1.1rem; text-align: center;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem; color: #6aa3ff;
+    font-size: 1.4rem; color: #1a6fff;
     letter-spacing: 0.08em; margin-top: 1rem;
 }
 .threshold-row {
@@ -365,16 +368,16 @@ hr { border-color: rgba(255,255,255,0.06) !important; }
 .th-low  { background: #00c9a7; }
 .th-med  { background: #ffbb00; }
 .th-high { background: #ff4b4b; }
-.th-title { color: rgba(255,255,255,0.65); font-weight: 600; font-size: 0.82rem; }
-.th-desc  { color: rgba(255,255,255,0.32); font-size: 0.78rem; margin-top: 2px; }
+.th-title { color: #0d1b2a; font-weight: 600; font-size: 0.82rem; }
+.th-desc  { color: rgba(0,0,0,0.5); font-size: 0.78rem; margin-top: 2px; }
 
 .placeholder {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     min-height: 380px;
-    background: rgba(255,255,255,0.015);
-    border: 1px dashed rgba(255,255,255,0.07);
-    border-radius: 16px; color: rgba(255,255,255,0.18);
+    background: #fafafa;
+    border: 1px dashed rgba(0,0,0,0.12);
+    border-radius: 16px; color: rgba(0,0,0,0.35);
     font-size: 0.85rem; text-align: center; line-height: 1.7; gap: 1rem;
 }
 </style>
@@ -563,7 +566,7 @@ with tab_analyse:
                 x=df_imp['imp'], y=df_imp['gene'], orientation='h',
                 marker=dict(
                     color=df_imp['imp'],
-                    colorscale=[[0, "rgba(255,255,255,0.04)"], [1, bar_color]],
+                    colorscale=[[0, "rgba(0,0,0,0.04)"], [1, bar_color]],
                     line=dict(width=0)
                 ),
                 hovertemplate='<b>%{y}</b><br>Importance : %{x:.4f}<extra></extra>'
@@ -571,17 +574,17 @@ with tab_analyse:
             fig.update_layout(
                 title=dict(
                     text="Top 10 — Biomarqueurs Décisifs",
-                    font=dict(family="Cormorant Garamond, serif", size=17, color="rgba(255,255,255,0.6)"),
+                    font=dict(family="Cormorant Garamond, serif", size=17, color="#0d1b2a"),
                     x=0
                 ),
                 paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                 xaxis=dict(
-                    showgrid=True, gridcolor="rgba(255,255,255,0.05)",
-                    color="rgba(255,255,255,0.25)",
+                    showgrid=True, gridcolor="rgba(0,0,0,0.05)",
+                    color="rgba(0,0,0,0.45)",
                     tickfont=dict(family="Syne, sans-serif", size=10), zeroline=False
                 ),
                 yaxis=dict(
-                    color="rgba(255,255,255,0.55)",
+                    color="#0d1b2a",
                     tickfont=dict(family="Syne, sans-serif", size=11),
                     gridcolor="rgba(0,0,0,0)"
                 ),
@@ -685,13 +688,13 @@ with tab_methodo:
 with st.sidebar:
     st.markdown("""
     <div style="padding:1.2rem 0 1rem; text-align:center;
-                border-bottom:1px solid rgba(255,255,255,0.07); margin-bottom:1.2rem;">
+                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.2rem;">
         <div style="font-size:2rem; margin-bottom:0.5rem;">🧬</div>
         <div style="font-family:'Cormorant Garamond',serif;
-                    font-size:1.05rem; font-weight:700; color:rgba(255,255,255,0.8);">
+                    font-size:1.05rem; font-weight:700; color:#0d1b2a;">
             MelanomaPredict AI
         </div>
-        <div style="font-size:0.65rem; color:rgba(255,255,255,0.22);
+        <div style="font-size:0.65rem; color:rgba(0,0,0,0.4);
                     letter-spacing:0.12em; text-transform:uppercase; margin-top:3px;">
             Portail Diagnostic v2.0
         </div>
@@ -709,7 +712,7 @@ with st.sidebar:
 
     st.divider()
     st.markdown("""
-    <div style="font-size:0.72rem; color:rgba(255,255,255,0.22);
+    <div style="font-size:0.72rem; color:rgba(0,0,0,0.35);
                 line-height:1.7; padding:0 0.2rem;">
         Cet outil est réservé à un usage de recherche. Il ne constitue pas
         un dispositif médical certifié et ne remplace pas l'avis d'un
