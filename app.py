@@ -16,19 +16,16 @@ st.set_page_config(
 )
 
 # --- 2. STYLE CSS PERSONNALISÉ ---
-# Remplace l'URL ci-dessous par l'option choisie (A, B ou C)
-bg_img_url = "https://img.freepik.com/free-photo/abstract-dna-molecule-medical-science-background_53876-101946.jpg"
-
 st.markdown(f"""
     <style>
-    /* Image d'arrière-plan avec calque de lisibilité */
+    /* Application de ton image en arrière-plan */
     .stApp {{
-        background-image: url("{bg_img_url}");
+        background-image: url("data:image/webp;base64,{img_base64}");
         background-attachment: fixed;
         background-size: cover;
     }}
 
-    /* Voile de protection pour la lisibilité (0.9 = très opaque, 0.1 = transparent) */
+    /* Calque pour assurer la lisibilité (0.9 = opacité du blanc) */
     .stApp::before {{
         content: "";
         position: absolute;
@@ -36,39 +33,37 @@ st.markdown(f"""
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(244, 247, 249, 0.92); 
+        background-color: rgba(244, 247, 249, 0.90); 
         z-index: -1;
     }}
     
-    /* Sidebar sombre pour un look "Dashboard" */
+    /* Sidebar sombre pour le contraste pro */
     [data-testid="stSidebar"] {{
         background-color: #0e1117 !important;
     }}
 
-    /* Cartes de résultats ultra-propres */
+    /* Cartes de résultats blanches et modernes */
     .report-card {{
         background-color: white;
         padding: 1.5rem;
         border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
         border: 1px solid #eef2f6;
         margin-bottom: 1.2rem;
     }}
 
-    /* Harmonisation des textes */
+    /* Harmonisation des couleurs de titres */
     h1, h2, h3 {{
         color: #002b5c !important;
-        font-weight: 700;
     }}
     
-    /* Style des boutons */
+    /* Style du bouton de diagnostic */
     .stButton>button {{
         background: linear-gradient(90deg, #002b5c 0%, #004aad 100%);
         color: white;
         border: none;
         border-radius: 8px;
         font-weight: bold;
-        padding: 0.6rem;
     }}
     </style>
     """, unsafe_allow_html=True)
