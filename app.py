@@ -1,3 +1,4 @@
+python
 import streamlit as st
 import joblib
 import json
@@ -24,12 +25,12 @@ def navigate_to(page):
     st.query_params["page"] = page
     st.rerun()
 
-# ── GLOBAL CSS AVEC IMAGE D'ARRIÈRE-PLAN POUR TOUTE LA PAGE ───────────────────
+# ── GLOBAL CSS AVEC IMAGE D'ARRIÈRE-PLAN PLUS CLAIRE ──────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Syne:wght@400;500;600;700&display=swap');
 
-/* Image d'arrière-plan pour TOUTE l'application */
+/* Image d'arrière-plan pour TOUTE l'application - PLUS CLAIRE */
 .stApp {
     background-image: url('https://images.squarespace-cdn.com/content/v1/5d9e30182db9d71681f4a692/1581717140307-89XZXBK2C5OBW2AGDXCO/mountainviewrheumatoidarthritis.jpg');
     background-size: cover;
@@ -38,7 +39,7 @@ st.markdown("""
     background-repeat: no-repeat;
 }
 
-/* Overlay semi-transparent pour améliorer la lisibilité */
+/* Overlay plus clair (blanc à 85% au lieu de 92%) pour éclaircir l'image */
 .stApp::before {
     content: '';
     position: fixed;
@@ -46,7 +47,7 @@ st.markdown("""
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.88);
     z-index: 0;
     pointer-events: none;
 }
@@ -86,12 +87,12 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
 }
 
-/* Topbar avec fond légèrement transparent */
+/* Topbar avec fond plus transparent */
 .topbar {
     position: sticky;
     top: 0;
     z-index: 999;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(0,0,0,0.08);
     display: flex;
@@ -156,7 +157,19 @@ h1, h2, h3, h4, h5, h6 {
     50% { opacity: 0.4; transform: scale(1.2); }
 }
 
-/* Hero section avec fond transparent */
+/* Conteneur des boutons de navigation */
+.nav-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.nav-btn {
+    flex: 1;
+    text-align: center;
+}
+
+/* Hero section */
 .hero-section {
     margin-bottom: 2rem;
     position: relative;
@@ -220,7 +233,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 12px;
     overflow: hidden;
     width: fit-content;
-    background: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.6);
     backdrop-filter: blur(5px);
 }
 
@@ -249,11 +262,11 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 3px;
 }
 
-/* Cartes avec fond semi-transparent */
+/* Cartes avec fond plus transparent */
 .glass, .mcard, .result-card {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.4);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 1rem;
@@ -271,13 +284,12 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
-/* Inputs avec fond adapté */
+/* Inputs */
 .stNumberInput input, .stSelectbox select {
     background: rgba(245,245,245,0.9) !important;
     border: 1px solid rgba(0,0,0,0.12) !important;
     border-radius: 10px !important;
     color: #1a1a2e !important;
-    font-family: 'Syne', sans-serif !important;
 }
 
 [data-testid="stRadio"] label {
@@ -300,7 +312,6 @@ h1, h2, h3, h4, h5, h6 {
     border: none !important;
     border-radius: 50px !important;
     padding: 0.7rem 1.8rem !important;
-    font-family: 'Syne', sans-serif !important;
     font-weight: 600 !important;
     font-size: 0.8rem !important;
     transition: all .25s !important;
@@ -318,17 +329,17 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 12px !important;
 }
 
-/* Result cards spécifiques */
+/* Result cards */
 .result-low {
-    background: rgba(0,201,167,0.12) !important;
+    background: rgba(0,201,167,0.15) !important;
     border-color: rgba(0,201,167,0.3) !important;
 }
 .result-med {
-    background: rgba(255,187,0,0.12) !important;
+    background: rgba(255,187,0,0.15) !important;
     border-color: rgba(255,187,0,0.3) !important;
 }
 .result-high {
-    background: rgba(255,75,75,0.12) !important;
+    background: rgba(255,75,75,0.15) !important;
     border-color: rgba(255,75,75,0.3) !important;
 }
 
@@ -369,6 +380,14 @@ h1, h2, h3, h4, h5, h6 {
 .prob-low { color: #00a87e; }
 .prob-med { color: #cc9500; }
 .prob-high { color: #cc3b3b; }
+
+.result-sublabel {
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
 
 .result-decision {
     background: rgba(0,0,0,0.03);
@@ -439,9 +458,9 @@ h1, h2, h3, h4, h5, h6 {
 .th-med { background: #ffbb00; }
 .th-high { background: #ff4b4b; }
 
-/* Sidebar avec fond semi-transparent */
+/* Sidebar */
 [data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.95) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
     backdrop-filter: blur(10px);
     border-right: 1px solid rgba(0,0,0,0.08);
 }
@@ -454,6 +473,13 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 50px !important;
     height: 4px !important;
     background: rgba(0,0,0,0.05) !important;
+}
+
+/* Warning personnalisé */
+.stAlert {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0,0,0,0.1) !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -492,18 +518,14 @@ st.markdown("""
 # ── BOUTONS DE NAVIGATION ─────────────────────────────────────────────────────
 nav_cols = st.columns(4)
 nav_pages = ["analyse", "methodologie", "documentation", "contact"]
-nav_labels = ["🔬 ANALYSE", "📊 MÉTHODOLOGIE", "📚 DOCUMENTATION", "📧 CONTACT"]
-nav_icons = ["🔬", "📊", "📚", "📧"]
+nav_labels = ["ANALYSE", " MÉTHODOLOGIE", " DOCUMENTATION", " CONTACT"]
 
-for i, (col, page, label, icon) in enumerate(zip(nav_cols, nav_pages, nav_labels, nav_icons)):
+for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
     with col:
-        is_active = st.session_state['current_page'] == page
-        button_label = f"{icon} {label.split()[1]}" if is_active else label
         if st.button(label, key=f"nav_{page}", use_container_width=True):
             navigate_to(page)
 
 st.divider()
-
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
 # PAGE ANALYSE
