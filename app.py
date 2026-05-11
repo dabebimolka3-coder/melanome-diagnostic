@@ -392,22 +392,16 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 </style>
 """, unsafe_allow_html=True)
 
-# ── TOPBAR PROFESSIONNELLE (LOGO + STATUT) ─────────────────────────────────────
+# ── TOPBAR MINIMALISTE ────────────────────────────────────────────────────────
 st.markdown("""
 <div class="topbar">
     <div class="topbar-brand">
-        <div class="topbar-logo">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </div>
-        <span class="topbar-name">Melanoma<span>Predict</span> AI</span>
+        <div class="topbar-logo">🧬</div>
+        <span class="topbar-name">MelanomaPredict <span>AI</span></span>
     </div>
     <div class="topbar-status">
-        <div class="status-dot"></div>
-        <span>Ready</span>
+        <span class="status-dot"></span>
+        <span>Operational</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
