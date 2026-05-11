@@ -403,12 +403,10 @@ st.markdown("""
                 <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
                 <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
             </svg>
-        </div>
-        <div class="topbar-text">
-            <span class="topbar-name">MelanomaPredict<span class="ai-badge">AI</span></span>
-            <span class="topbar-subtitle">Diagnostic Support Portal</span>
-       
-        </div>
+      <div class="topbar">
+    <div class="topbar-brand">
+        <div class="topbar-logo">🧬</div>
+        <span class="topbar-name">MelanomaPredict AI</span>
     </div>
     <div class="topbar-status">
         <div class="status-container">
@@ -416,6 +414,8 @@ st.markdown("""
             <span class="status-text">Système Opérationnel</span>
         </div>
     </div>
+</div>
+""", unsafe_allow_html=True)
 </div>
 """, unsafe_allow_html=True)
 
