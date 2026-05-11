@@ -842,29 +842,57 @@ elif st.session_state['current_page'] == 'contact':
 # ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 1rem;">
-        <div style="font-size: 1.8rem;">🧬</div>
-        <div style="font-weight: 600;">MelanomaPredict AI</div>
-        <div style="font-size: 0.6rem; opacity: 0.5;">v2.0</div>
+    <div style="padding:1.2rem 0 1rem; text-align:center;
+                border-bottom:1px solid rgba(0,0,0,0.08); margin-bottom:1.2rem;">
+        <div style="font-size:2rem; margin-bottom:0.5rem;">🧬</div>
+        <div style="font-family:'Cormorant Garamond',serif;
+                    font-size:1.05rem; font-weight:700; color:#0d1b2a;">
+            MelanomaPredict AI
+        </div>
+        <div style="font-size:0.65rem; color:rgba(0,0,0,0.4);
+                    letter-spacing:0.12em; text-transform:uppercase; margin-top:3px;">
+            Portail Diagnostic v2.0
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("🔬 Analyse", use_container_width=True):
-        navigate_to('analyse')
-    if st.button("📊 Méthodologie", use_container_width=True):
-        navigate_to('methodologie')
-    if st.button("📚 Documentation", use_container_width=True):
-        navigate_to('documentation')
-    if st.button("📧 Contact", use_container_width=True):
-        navigate_to('contact')
+    st.markdown("**Navigation rapide**")
+    
+    if st.button(" Analyse", use_container_width=True, key="sidebar_analyse"):
+        st.session_state['current_page'] = 'analyse'
+        st.rerun()
+    
+    if st.button(" Méthodologie", use_container_width=True, key="sidebar_methodo"):
+        st.session_state['current_page'] = 'methodologie'
+        st.rerun()
+    
+    if st.button(" Documentation", use_container_width=True, key="sidebar_doc"):
+        st.session_state['current_page'] = 'documentation'
+        st.rerun()
+    
+    if st.button("📧 Contact", use_container_width=True, key="sidebar_contact"):
+        st.session_state['current_page'] = 'contact'
+        st.rerun()
     
     st.divider()
     
+    st.markdown("**Statut Système**")
     if model_ok:
-        st.success("✅ Modèle chargé")
-        st.caption("🌲 Random Forest · 57 features")
+        st.success("✅ Modèle chargé avec succès")
+        st.info("🌲 Random Forest · 500 arbres")
+        st.info("🔬 57 features · 54 gènes + 3 cliniques")
     else:
         st.error("❌ Modèle introuvable")
-    
+        st.warning("Vérifiez `model_multimodal_54.pkl` et `params_multimodal_54.json` dans le répertoire")
+
     st.divider()
-    st.caption("⚠️ Usage recherche uniquement")
+    st.markdown("""
+    <div style="font-size:0.7rem; color:rgba(0,0,0,0.35);
+                line-height:1.6; padding:0 0.2rem;">
+        <strong>⚠️ Avertissement</strong><br>
+        Cet outil est réservé à un usage de recherche. Il ne constitue pas
+        un dispositif médical certifié et ne remplace pas l'avis d'un
+        professionnel de santé qualifié.
+    </div>
+    """, unsafe_allow_html=True)
+
