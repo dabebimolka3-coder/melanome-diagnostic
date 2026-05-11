@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 # ── PAGE CONFIG ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="MelanomaPredict AI",
+    page_icon="🧬",
     layout="wide",
     initial_sidebar_state="expanded"
 )
