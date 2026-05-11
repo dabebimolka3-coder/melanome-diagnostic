@@ -34,17 +34,57 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
+/* Style des boutons de navigation dans la topbar */
+.nav-button {
+    background: transparent !important;
+    border: none !important;
+    color: #333333 !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    font-family: 'Syne', sans-serif !important;
+}
+
+.nav-button:hover {
+    background: transparent !important;
+    color: #1a6fff !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Cacher le style par défaut des boutons Streamlit dans la topbar */
+div[data-testid="column"] .stButton button {
+    background: transparent !important;
+    border: none !important;
+    color: #333333 !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    font-family: 'Syne', sans-serif !important;
+}
+
+div[data-testid="column"] .stButton button:hover {
+    background: transparent !important;
+    color: #1a6fff !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
 .topbar {
     position: sticky; top: 0; z-index: 999;
     background: rgba(255,255,255,0.96);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0,0,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 0 2.5rem;
-    height: 62px;
     margin: 0 -2.5rem 0;
 }
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
@@ -65,30 +105,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     color: #0d1b2a;
     letter-spacing: 0.03em;
 }
-.nav-container {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-}
-.nav-link {
-    font-size: 0.7rem;
-    color: rgba(0,0,0,0.45);
-    text-decoration: none;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.2s;
-    background: none;
-    border: none;
-    font-family: 'Syne', sans-serif;
-}
-.nav-link:hover { color: #1a6fff; }
-.nav-link.active { color: #1a6fff; }
-.nav-separator {
-    color: rgba(0,0,0,0.15);
-    font-size: 0.7rem;
-}
 .topbar-status {
     display: flex;
     align-items: center;
@@ -96,6 +112,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     font-size: 0.72rem;
     color: rgba(0,0,0,0.45);
     letter-spacing: 0.06em;
+    justify-content: flex-end;
 }
 .pulse {
     width: 7px;
@@ -110,6 +127,13 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     0%   { box-shadow: 0 0 0 0 rgba(0,201,167,0.6); }
     70%  { box-shadow: 0 0 0 8px rgba(0,201,167,0); }
     100% { box-shadow: 0 0 0 0 rgba(0,201,167,0); }
+}
+.separator {
+    color: rgba(0,0,0,0.15);
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-align: center;
+    margin: 0;
 }
 
 .hero {
@@ -219,12 +243,17 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     color: #1a6fff !important;
 }
 
+/* Bouton principal d'analyse - garder le style bleu */
 .stButton > button {
     background: linear-gradient(135deg, #1a6fff, #0052d9) !important;
-    color: #fff !important; border: none !important;
-    border-radius: 50px !important; padding: 0.75rem 2rem !important;
-    font-family: 'Syne', sans-serif !important; font-weight: 600 !important;
-    font-size: 0.85rem !important; letter-spacing: 0.05em !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 0.75rem 2rem !important;
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.05em !important;
     transition: all .25s !important;
     box-shadow: 0 4px 20px rgba(26,111,255,0.35) !important;
 }
@@ -238,10 +267,12 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     border: 1px solid rgba(0,0,0,0.12) !important;
     border-radius: 50px !important;
     font-family: 'Syne', sans-serif !important;
-    font-weight: 600 !important; font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
 }
 .stDownloadButton > button:hover {
-    border-color: #1a6fff !important; color: #1a6fff !important;
+    border-color: #1a6fff !important;
+    color: #1a6fff !important;
 }
 
 [data-testid="stFileUploader"] {
@@ -419,55 +450,51 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
-# ── TOOLBAR AVEC STYLE IMAGE (ANALYSE | MÉTHODOLOGIE | DOCUMENTATION | CONTACT) ──
-st.markdown("""
-<div class="topbar">
+# ── TOPBAR AVEC BOUTONS NOIRS ────────────────────────────────────────────────
+col1, col2, col3 = st.columns([1, 3, 1])
+
+with col1:
+    st.markdown("""
     <div class="topbar-brand">
         <div class="topbar-logo">🧬</div>
         <span class="topbar-name">MelanomaPredict AI</span>
     </div>
-    <div class="nav-container">
-        <span class="nav-link" data-page="analyse">ANALYSE</span>
-        <span class="nav-separator">|</span>
-        <span class="nav-link" data-page="methodologie">MÉTHODOLOGIE</span>
-        <span class="nav-separator">|</span>
-        <span class="nav-link" data-page="documentation">DOCUMENTATION</span>
-        <span class="nav-separator">|</span>
-        <span class="nav-link" data-page="contact">CONTACT</span>
-    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    # Navigation avec Style "ANALYSE | MÉTHODOLOGIE | DOCUMENTATION | CONTACT"
+    nav_cols = st.columns([1, 0.1, 1, 0.1, 1, 0.1, 1])
+    with nav_cols[0]:
+        if st.button("ANALYSE", key="nav_analyse", use_container_width=True):
+            st.session_state['current_page'] = 'analyse'
+            st.rerun()
+    with nav_cols[1]:
+        st.markdown('<p class="separator">|</p>', unsafe_allow_html=True)
+    with nav_cols[2]:
+        if st.button("MÉTHODOLOGIE", key="nav_methodo", use_container_width=True):
+            st.session_state['current_page'] = 'methodologie'
+            st.rerun()
+    with nav_cols[3]:
+        st.markdown('<p class="separator">|</p>', unsafe_allow_html=True)
+    with nav_cols[4]:
+        if st.button("DOCUMENTATION", key="nav_doc", use_container_width=True):
+            st.session_state['current_page'] = 'documentation'
+            st.rerun()
+    with nav_cols[5]:
+        st.markdown('<p class="separator">|</p>', unsafe_allow_html=True)
+    with nav_cols[6]:
+        if st.button("CONTACT", key="nav_contact", use_container_width=True):
+            st.session_state['current_page'] = 'contact'
+            st.rerun()
+
+with col3:
+    st.markdown("""
     <div class="topbar-status">
         <span class="pulse"></span>&nbsp; Système opérationnel
     </div>
-</div>
+    """, unsafe_allow_html=True)
 
-<script>
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function() {
-        const page = this.getAttribute('data-page');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = page;
-        input.style.position = 'absolute';
-        input.style.left = '-9999px';
-        document.body.appendChild(input);
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        
-        setTimeout(() => {
-            const buttons = document.querySelectorAll('button');
-            for(let btn of buttons) {
-                if(btn.innerText.toLowerCase().includes(page)) {
-                    btn.click();
-                    break;
-                }
-            }
-        }, 100);
-        
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-</script>
-""", unsafe_allow_html=True)
+st.markdown("<hr style='margin: 0 -2.5rem 1rem -2.5rem; opacity: 0.5;'>", unsafe_allow_html=True)
 
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
@@ -816,6 +843,58 @@ elif st.session_state['current_page'] == 'contact':
         <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Une question, une collaboration ou un support technique ? N'hésitez pas à nous contacter.</p>
     </div>
     """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div class="contact-card">
+            <div class="contact-icon">🏥</div>
+            <div class="contact-title">Service de Dermatologie</div>
+            <div class="contact-detail">Pr. Jean Dupont</div>
+            <div class="contact-desc">Chef du service<br>Hôpital Universitaire</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="contact-card">
+            <div class="contact-icon">🔬</div>
+            <div class="contact-title">Plateforme Génomique</div>
+            <div class="contact-detail">Dr. Marie Lambert</div>
+            <div class="contact-desc">Responsable R&D<br>Transcriptomique et Bioinformatique</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class="contact-card">
+            <div class="contact-icon">📧</div>
+            <div class="contact-title">Support Technique</div>
+            <div class="contact-detail">support@melanomapredict.ai</div>
+            <div class="contact-desc">Disponible du lundi au vendredi<br>9h-18h</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+    
+    col4, col5 = st.columns(2)
+    
+    with col4:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">📞 Téléphone</div>
+            <p style="font-size: 1.1rem; color: #1a6fff;">+33 (0)1 23 45 67 89</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col5:
+        st.markdown("""
+        <div class="mcard">
+            <div class="mcard-title">📍 Adresse</div>
+            <p>Institut de Recherche en Dermatologie<br>123 avenue de la Recherche<br>75015 Paris, France</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.markdown("""
     <div class="mcard">
