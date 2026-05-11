@@ -1,3 +1,32 @@
+import streamlit as st
+import joblib
+import json
+import os
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
+
+# ── PAGE CONFIG ───────────────────────────────
+st.set_page_config(
+    page_title="MelanomaPredict AI",
+    page_icon="🧬",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# ── SESSION STATE ────────────────────────────
+if 'current_page' not in st.session_state:
+    st.session_state['current_page'] = 'analyse'
+
+# ── CSS ──────────────────────────────────────
+st.markdown("""
+<style>
+...
+</style>
+""", unsafe_allow_html=True)
+
+# ── TOPBAR ───────────────────────────────────
+# (le code que je t’ai donné)
 # ─────────────────────────────────────────────────────────────
 # TOPBAR FONCTIONNELLE STREAMLIT
 # ─────────────────────────────────────────────────────────────
