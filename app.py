@@ -396,12 +396,24 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 st.markdown("""
 <div class="topbar">
     <div class="topbar-brand">
-        <div class="topbar-logo">🧬</div>
-        <span class="topbar-name">MelanomaPredict <span>AI</span></span>
+        <div class="topbar-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                <path d="M9 12H4s.55-3.03 2-5c1.62-2.2 5-3 5-3"></path>
+                <path d="M12 15v5s3.03-.55 5-2c2.2-1.62 3-5 3-5"></path>
+            </svg>
+        </div>
+        <div class="topbar-text">
+            <span class="topbar-name">MelanomaPredict<span class="ai-badge">AI</span></span>
+            <span class="topbar-subtitle">Diagnostic Support Portal</span>
+        </div>
     </div>
     <div class="topbar-status">
-        <span class="status-dot"></span>
-        <span>Operational</span>
+        <div class="status-container">
+            <span class="pulse-dot"></span>
+            <span class="status-text">Système Opérationnel</span>
+        </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
