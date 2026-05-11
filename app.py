@@ -792,16 +792,6 @@ elif st.session_state['current_page'] == 'documentation':
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class="mcard">
-        <div class="mcard-title">📖 Références Bibliographiques</div>
-        <ul>
-            <li>TCGA Research Network. <em>Genomic Classification of Cutaneous Melanoma</em>. Cell, 2015</li>
-            <li>Breiman, L. <em>Random Forests</em>. Machine Learning, 2001</li>
-            <li>Tibshirani, R. <em>Regression Shrinkage and Selection via the Lasso</em>. JRSSB, 1996</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
 
 # PAGE CONTACT
 elif st.session_state['current_page'] == 'contact':
