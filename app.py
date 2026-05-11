@@ -14,6 +14,16 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ── SESSION STATE POUR LA NAVIGATION ─────────────────────────────────────────
+if 'current_page' not in st.session_state:
+    page_param = st.query_params.get("page", "analyse")
+    st.session_state['current_page'] = page_param
+
+def navigate_to(page):
+    st.session_state['current_page'] = page
+    st.query_params["page"] = page
+    st.rerun()
+
 # ── GLOBAL CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -24,29 +34,28 @@ html, body, [data-testid="stAppViewContainer"] {
     color: #1a1a2e;
 }
 [data-testid="stAppViewContainer"] > .main { background: #ffffff !important; }
-[data-testid="block-container"] { padding: 0 2.5rem 3rem !important; max-width: 1400px; }
+[data-testid="block-container"] { padding: 0 2rem 3rem !important; max-width: 1400px; margin: 0 auto; }
 * { font-family: 'Syne', sans-serif; }
 h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; color: #0d1b2a !important; }
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
+/* Topbar */
 .topbar {
     position: sticky; top: 0; z-index: 999;
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: #ffffff;
     border-bottom: 1px solid rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2.5rem;
-    height: 62px;
-    margin: 0 -2.5rem 0;
+    padding: 0 2rem;
+    height: 60px;
+    margin: 0 -2rem 0;
 }
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
 .topbar-logo {
     width: 34px; height: 34px;
-    background: linear-gradient(135deg, #1a6fff, #00c9a7);
+    background: #0d1b2a;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -55,138 +64,161 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     color: white;
 }
 .topbar-name {
-    font-family: 'Cormorant Garamond', serif !important;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #0d1b2a;
-    letter-spacing: 0.03em;
-}
-.nav-container {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-}
-.nav-link {
-    font-size: 0.7rem;
-    color: rgba(0,0,0,0.45);
-    text-decoration: none;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
+    font-family: 'Syne', sans-serif !important;
+    font-size: 1rem;
     font-weight: 600;
-    cursor: pointer;
-    transition: color 0.2s;
-    background: none;
-    border: none;
-    font-family: 'Syne', sans-serif;
+    color: #0d1b2a;
 }
-.nav-link:hover { color: #1a6fff; }
-.nav-link.active { color: #1a6fff; }
-.nav-separator {
-    color: rgba(0,0,0,0.15);
-    font-size: 0.7rem;
-}
+.topbar-name span { color: #1a6fff; }
 .topbar-status {
     display: flex;
     align-items: center;
-    gap: 7px;
-    font-size: 0.72rem;
-    color: rgba(0,0,0,0.45);
-    letter-spacing: 0.06em;
+    gap: 6px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #2c7a5e;
+    background: #e6f7f0;
+    padding: 4px 12px;
+    border-radius: 20px;
 }
 .pulse {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: #00c9a7;
-    box-shadow: 0 0 0 0 rgba(0,201,167,0.6);
     animation: pulse 2s infinite;
-    display: inline-block;
 }
 @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(0,201,167,0.6); }
-    70%  { box-shadow: 0 0 0 8px rgba(0,201,167,0); }
-    100% { box-shadow: 0 0 0 0 rgba(0,201,167,0); }
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.2); }
 }
 
-.hero {
-    position: relative; min-height: 340px;
-    margin: 0 -2.5rem 3rem;
-    overflow: hidden; display: flex; align-items: flex-end;
+/* Hero section - PLEINE LARGEUR */
+.hero-full {
+    position: relative;
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    margin-right: -2rem;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    min-height: 380px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
 }
 .hero-img {
-    position: absolute; inset: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-image: url('https://images.squarespace-cdn.com/content/v1/5d9e30182db9d71681f4a692/1581717140307-89XZXBK2C5OBW2AGDXCO/mountainviewrheumatoidarthritis.jpg');
-    background-size: cover; background-position: center 25%;
-    filter: brightness(0.9) saturate(1.1);
+    background-size: cover;
+    background-position: center 30%;
+    filter: brightness(0.85) saturate(1.05);
 }
 .hero-gradient {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 55%, rgba(255,255,255,0.6) 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.5) 100%);
 }
 .hero-content {
-    position: relative; z-index: 2;
-    padding: 0 3rem 2.8rem; max-width: 780px;
+    position: relative;
+    z-index: 2;
+    padding: 0 2rem 2.5rem;
+    max-width: 800px;
 }
 .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     background: rgba(26,111,255,0.1);
     border: 1px solid rgba(26,111,255,0.25);
-    border-radius: 50px; padding: 5px 14px;
-    font-size: 0.68rem; color: #1a6fff;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    font-weight: 600; margin-bottom: 1.1rem;
+    border-radius: 50px;
+    padding: 5px 14px;
+    font-size: 0.68rem;
+    color: #1a6fff;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 1.1rem;
 }
 .hero-eyebrow-dot {
-    width: 5px; height: 5px; border-radius: 50%; background: #1a6fff;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #1a6fff;
     display: inline-block;
 }
 .hero h1 {
-    font-size: 3.2rem !important; font-weight: 600 !important;
-    color: #0d1b2a !important; line-height: 1.1 !important;
-    margin: 0 0 1rem !important; letter-spacing: -0.01em;
+    font-size: 3rem !important;
+    font-weight: 600 !important;
+    color: #0d1b2a !important;
+    line-height: 1.1 !important;
+    margin: 0 0 1rem !important;
+    letter-spacing: -0.01em;
 }
 .hero h1 span { color: #1a6fff; }
 .hero-sub {
-    color: rgba(0,0,0,0.55); font-size: 0.9rem;
-    line-height: 1.7; max-width: 520px;
+    color: rgba(0,0,0,0.55);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 520px;
 }
 .hero-kpis {
-    display: flex; gap: 0; margin-top: 2rem;
+    display: flex;
+    gap: 0;
+    margin-top: 2rem;
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 12px; overflow: hidden; width: fit-content;
-    background: rgba(255,255,255,0.6);
+    border-radius: 12px;
+    overflow: hidden;
+    width: fit-content;
+    background: rgba(255,255,255,0.7);
 }
 .kpi {
-    padding: 0.9rem 1.8rem;
+    padding: 0.8rem 1.5rem;
     border-right: 1px solid rgba(0,0,0,0.08);
 }
 .kpi:last-child { border-right: none; }
 .kpi-val {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem; font-weight: 700; color: #0d1b2a; line-height: 1;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d1b2a;
+    line-height: 1;
 }
 .kpi-label {
-    font-size: 0.68rem; color: rgba(0,0,0,0.45);
-    letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px;
+    font-size: 0.65rem;
+    color: rgba(0,0,0,0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 3px;
 }
 
 .glass {
     background: rgba(0,0,0,0.02);
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 16px; padding: 1.8rem;
+    border-radius: 16px;
+    padding: 1.5rem;
 }
 .glass-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem; font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 600;
     color: rgba(0,0,0,0.6);
-    letter-spacing: 0.06em; text-transform: uppercase;
-    margin-bottom: 1.4rem; padding-bottom: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .stNumberInput label, .stRadio label,
 .stSelectbox label, .stFileUploader label {
-    font-size: 0.72rem !important;
+    font-size: 0.7rem !important;
     color: rgba(0,0,0,0.5) !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
@@ -204,10 +236,14 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 [data-testid="stRadio"] label {
     background: #f5f5f5 !important;
     border: 1px solid rgba(0,0,0,0.12) !important;
-    border-radius: 10px !important; padding: 9px 20px !important;
-    cursor: pointer !important; transition: all .2s !important;
-    text-transform: none !important; letter-spacing: normal !important;
-    font-size: 0.85rem !important; color: rgba(0,0,0,0.65) !important;
+    border-radius: 10px !important;
+    padding: 8px 18px !important;
+    cursor: pointer !important;
+    transition: all .2s !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    font-size: 0.8rem !important;
+    color: rgba(0,0,0,0.65) !important;
 }
 [data-testid="stRadio"] label:has(input:checked) {
     background: rgba(26,111,255,0.1) !important;
@@ -217,10 +253,14 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 
 .stButton > button {
     background: linear-gradient(135deg, #1a6fff, #0052d9) !important;
-    color: #fff !important; border: none !important;
-    border-radius: 50px !important; padding: 0.75rem 2rem !important;
-    font-family: 'Syne', sans-serif !important; font-weight: 600 !important;
-    font-size: 0.85rem !important; letter-spacing: 0.05em !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 0.7rem 1.8rem !important;
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.05em !important;
     transition: all .25s !important;
     box-shadow: 0 4px 20px rgba(26,111,255,0.35) !important;
 }
@@ -234,10 +274,12 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
     border: 1px solid rgba(0,0,0,0.12) !important;
     border-radius: 50px !important;
     font-family: 'Syne', sans-serif !important;
-    font-weight: 600 !important; font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    font-size: 0.78rem !important;
 }
 .stDownloadButton > button:hover {
-    border-color: #1a6fff !important; color: #1a6fff !important;
+    border-color: #1a6fff !important;
+    color: #1a6fff !important;
 }
 
 [data-testid="stFileUploader"] {
@@ -247,13 +289,22 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 }
 [data-testid="stFileUploader"] section { background: transparent !important; }
 
+/* Result cards */
 .result-card {
-    border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem;
-    border: 1px solid; position: relative; overflow: hidden;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
 }
 .result-card::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
 }
 .result-low  { background: rgba(0,201,167,0.05); border-color: rgba(0,201,167,0.3); }
 .result-low::before  { background: linear-gradient(90deg, transparent, #00c9a7, transparent); }
@@ -263,10 +314,16 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 .result-high::before { background: linear-gradient(90deg, transparent, #ff4b4b, transparent); }
 
 .result-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 5px 14px; border-radius: 50px;
-    font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
 }
 .badge-low  { background: rgba(0,201,167,0.12);  color: #00a87e; border: 1px solid rgba(0,201,167,0.3); }
 .badge-med  { background: rgba(255,187,0,0.12);  color: #cc9500; border: 1px solid rgba(255,187,0,0.3); }
@@ -274,30 +331,43 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 
 .result-prob {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 4.5rem; font-weight: 700; line-height: 1; margin-bottom: 0.3rem;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.2rem;
 }
 .prob-low  { color: #00a87e; }
 .prob-med  { color: #cc9500; }
 .prob-high { color: #cc3b3b; }
 
 .result-sublabel {
-    font-size: 0.72rem; color: rgba(0,0,0,0.45);
-    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.4rem;
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
 }
 .result-decision {
     background: rgba(0,0,0,0.02);
     border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 10px; padding: 1rem 1.2rem;
-    font-size: 0.85rem; color: rgba(0,0,0,0.6); line-height: 1.7;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    font-size: 0.8rem;
+    color: rgba(0,0,0,0.6);
+    line-height: 1.6;
 }
 .result-decision strong {
-    color: #0d1b2a; display: block;
-    font-size: 0.72rem; letter-spacing: 0.1em;
-    text-transform: uppercase; margin-bottom: 5px;
+    color: #0d1b2a;
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
 }
 
 .stProgress > div > div > div {
-    border-radius: 50px !important; height: 5px !important;
+    border-radius: 50px !important;
+    height: 4px !important;
     background: rgba(0,0,0,0.05) !important;
 }
 .stProgress > div > div > div > div { border-radius: 50px !important; }
@@ -305,95 +375,89 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Cormorant Garamond', serif !important; co
 .mcard {
     background: #fafafa;
     border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 16px; padding: 1.6rem;
+    border-radius: 16px;
+    padding: 1.5rem;
     margin-bottom: 1rem;
 }
 .mcard-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem; font-weight: 600;
+    font-size: 1rem;
+    font-weight: 600;
     color: #0d1b2a;
-    margin-bottom: 1.1rem; padding-bottom: 0.8rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.7rem;
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 .mcard p, .mcard li {
-    font-size: 0.85rem; color: rgba(0,0,0,0.6);
-    line-height: 1.7; margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(0,0,0,0.6);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
 }
 .mcard strong { color: #0d1b2a; font-weight: 600; }
 .mcard ul { padding-left: 1.2rem; }
 
 .step-row {
-    display: flex; gap: 12px; margin-bottom: 1rem;
-    font-size: 0.85rem; color: rgba(0,0,0,0.55); line-height: 1.65;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: rgba(0,0,0,0.55);
+    line-height: 1.6;
 }
 .step-dot {
-    width: 24px; height: 24px; border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
     background: rgba(26,111,255,0.1);
     border: 1px solid rgba(26,111,255,0.4);
-    color: #1a6fff; font-size: 0.7rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
+    color: #1a6fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
 }
 .formula-box {
     background: rgba(26,111,255,0.08);
     border: 1px solid rgba(26,111,255,0.2);
-    border-radius: 10px; padding: 1.1rem; text-align: center;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem; color: #1a6fff;
-    letter-spacing: 0.08em; margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #1a6fff;
+    letter-spacing: 0.08em;
+    margin-top: 0.8rem;
 }
 .threshold-row {
-    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 0.8rem;
 }
-.th-ind { width: 4px; height: 40px; border-radius: 2px; flex-shrink: 0; }
+.th-ind { width: 4px; height: 36px; border-radius: 2px; flex-shrink: 0; }
 .th-low  { background: #00c9a7; }
 .th-med  { background: #ffbb00; }
 .th-high { background: #ff4b4b; }
-.th-title { color: #0d1b2a; font-weight: 600; font-size: 0.85rem; }
-.th-desc  { color: rgba(0,0,0,0.5); font-size: 0.78rem; margin-top: 4px; }
+.th-title { color: #0d1b2a; font-weight: 600; font-size: 0.8rem; }
+.th-desc  { color: rgba(0,0,0,0.5); font-size: 0.72rem; margin-top: 3px; }
 
 .placeholder {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
     background: #fafafa;
     border: 1px dashed rgba(0,0,0,0.12);
-    border-radius: 16px; color: rgba(0,0,0,0.35);
-    font-size: 0.85rem; text-align: center; line-height: 1.7; gap: 1rem;
-}
-
-.contact-card {
-    background: #fafafa;
-    border: 1px solid rgba(0,0,0,0.08);
     border-radius: 16px;
-    padding: 1.5rem;
+    color: rgba(0,0,0,0.35);
+    font-size: 0.8rem;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.contact-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-}
-.contact-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-.contact-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #0d1b2a;
-    margin-bottom: 0.25rem;
-}
-.contact-detail {
-    font-size: 0.85rem;
-    color: #1a6fff;
-    text-decoration: none;
-}
-.contact-desc {
-    font-size: 0.75rem;
-    color: rgba(0,0,0,0.45);
-    margin-top: 0.5rem;
+    line-height: 1.6;
+    gap: 0.8rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -415,49 +479,27 @@ def load_assets():
 model, params = load_assets()
 model_ok = model is not None
 
-# ── TOPBAR NAVIGATION AVEC BOUTONS FONCTIONNELS ────────────────────────────────
-# Déterminer la classe active pour chaque lien
-active_class = lambda page: "active" if st.session_state['current_page'] == page else ""
-
-st.markdown(f"""
+# ── TOPBAR ────────────────────────────────────────────────────────────────────
+st.markdown("""
 <div class="topbar">
     <div class="topbar-brand">
         <div class="topbar-logo">🧬</div>
-        <span class="topbar-name">MelanomaPredict AI</span>
-    </div>
-    <div class="nav-container">
-        <button class="nav-link {active_class('analyse')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'analyse'}}, '*')">ANALYSE</button>
-        <span class="nav-separator">|</span>
-        <button class="nav-link {active_class('methodologie')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'methodologie'}}, '*')">MÉTHODOLOGIE</button>
-        <span class="nav-separator">|</span>
-        <button class="nav-link {active_class('documentation')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'documentation'}}, '*')">DOCUMENTATION</button>
-        <span class="nav-separator">|</span>
-        <button class="nav-link {active_class('contact')}" onclick="parent.postMessage({{type: 'streamlit:setComponentValue', value: 'contact'}}, '*')">CONTACT</button>
+        <span class="topbar-name">MelanomaPredict <span>AI</span></span>
     </div>
     <div class="topbar-status">
-        <span class="pulse"></span>&nbsp; Système opérationnel
+        <span class="pulse"></span>
+        <span>Operational</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Capture des clics via les colonnes Streamlit
-nav_cols = st.columns(4)
-nav_pages = ["analyse", "methodologie", "documentation", "contact"]
-nav_labels = ["ANALYSE", "MÉTHODOLOGIE", "DOCUMENTATION", "CONTACT"]
-
-for i, (col, page, label) in enumerate(zip(nav_cols, nav_pages, nav_labels)):
-    with col:
-        if st.button(label, key=f"nav_{page}", use_container_width=True):
-            navigate_to(page)
-
-st.divider()
 # ── CONTENU DES PAGES ─────────────────────────────────────────────────────────
 
 # PAGE ANALYSE
 if st.session_state['current_page'] == 'analyse':
-    # Hero section
+    # Hero section PLEINE LARGEUR
     st.markdown("""
-    <div class="hero">
+    <div class="hero-full">
         <div class="hero-img"></div>
         <div class="hero-gradient"></div>
         <div class="hero-content">
@@ -465,7 +507,9 @@ if st.session_state['current_page'] == 'analyse':
                 <span class="hero-eyebrow-dot"></span>
                 DISPOSITIF DE RECHERCHE CLINIQUE
             </div>
-            <h1>Analyse Multimodale<br>du <span>Mélanome</span> Cutané</h1>
+            <div class="hero">
+                <h1>Analyse Multimodale<br>du <span>Mélanome</span> Cutané</h1>
+            </div>
             <p class="hero-sub">
                 Aide à la décision thérapeutique par analyse combinée de
                 54 biomarqueurs transcriptomiques et paramètres cliniques.
@@ -478,15 +522,15 @@ if st.session_state['current_page'] == 'analyse':
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">500</div>
-                    <div class="kpi-label">ARBRES DÉCISIONNELS</div>
+                    <div class="kpi-label">ARBRES</div>
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">TCGA</div>
-                    <div class="kpi-label">COHORTE DE RÉFÉRENCE</div>
+                    <div class="kpi-label">RÉFÉRENCE</div>
                 </div>
                 <div class="kpi">
                     <div class="kpi-val">57</div>
-                    <div class="kpi-label">FEATURES TOTALES</div>
+                    <div class="kpi-label">FEATURES</div>
                 </div>
             </div>
         </div>
@@ -494,30 +538,30 @@ if st.session_state['current_page'] == 'analyse':
     """, unsafe_allow_html=True)
     
     st.warning(
-        "**Dispositif de Recherche.** Ce système génère un score de risque basé sur "
+        "⚠️ **Dispositif de Recherche** — Ce système génère un score de risque basé sur "
         "54 signatures transcriptomiques. Il ne remplace pas le jugement clinique d'un médecin."
     )
-    st.markdown("<div style='height:1.5rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 1rem'></div>", unsafe_allow_html=True)
 
     col_in, col_out = st.columns([5, 7], gap="large")
 
     with col_in:
-        st.markdown('<div class="glass"><div class="glass-title"> &nbsp;PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title">📋 PARAMÈTRES CLINIQUES</div>', unsafe_allow_html=True)
         age   = st.number_input("Âge du patient", min_value=1, max_value=115, value=55)
         sexe  = st.radio("Sexe biologique", ["Homme", "Femme"], horizontal=True)
         stade = st.selectbox("Stade TNM initial", ["I", "II", "III", "IV"])
         st.markdown("</div>", unsafe_allow_html=True)
 
-        st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 1rem'></div>", unsafe_allow_html=True)
 
-        st.markdown('<div class="glass"><div class="glass-title">🔬 &nbsp;DONNÉES OMIQUES</div>', unsafe_allow_html=True)
+        st.markdown('<div class="glass"><div class="glass-title">🔬 DONNÉES OMIQUES</div>', unsafe_allow_html=True)
         if params:
             example_df = pd.DataFrame(
                 np.random.uniform(0.5, 5.0, size=(1, 54)),
                 columns=params['top_genes']
             )
             st.download_button(
-                label="↓  Télécharger le template .csv",
+                label="↓ Télécharger le template .csv",
                 data=example_df.to_csv(index=False).encode('utf-8'),
                 file_name="template_54_genes.csv",
                 mime="text/csv",
@@ -537,7 +581,7 @@ if st.session_state['current_page'] == 'analyse':
     with col_out:
         if run_btn and uploaded_file and model and params:
             df_patient = pd.read_csv(uploaded_file)
-            with st.spinner("Analyse en cours…"):
+            with st.spinner("Analyse en cours..."):
                 sexe_val   = 0 if sexe == "Homme" else 1
                 stade_val  = {"I": 1, "II": 2, "III": 3, "IV": 4}[stade]
                 omique_vec = df_patient[params['top_genes']].iloc[0].tolist()
@@ -553,21 +597,21 @@ if st.session_state['current_page'] == 'analyse':
 
             if prob < 0.33:
                 rc, bc, pc = "result-low",  "badge-low",  "prob-low"
-                badge_txt  = "● &nbsp;RISQUE FAIBLE"
+                badge_txt  = "● RISQUE FAIBLE"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Mélanome primaire probable. Surveillance standard et "
                               "suivi dermatologique classique recommandé.")
                 bar_color  = "#00c9a7"
             elif prob < 0.67:
                 rc, bc, pc = "result-med",  "badge-med",  "prob-med"
-                badge_txt  = "● &nbsp;RISQUE INTERMÉDIAIRE"
+                badge_txt  = "● RISQUE INTERMÉDIAIRE"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Zone d'incertitude clinique. Examens complémentaires, "
                               "confirmation histologique et suivi rapproché.")
                 bar_color  = "#ffbb00"
             else:
                 rc, bc, pc = "result-high", "badge-high", "prob-high"
-                badge_txt  = "● &nbsp;RISQUE ÉLEVÉ"
+                badge_txt  = "● RISQUE ÉLEVÉ"
                 decision   = ("<strong>Recommandation</strong><br>"
                               "Mélanome métastatique probable. Discussion précoce "
                               "d'immunothérapie (anti-PD-1 / anti-CTLA-4) ou thérapie ciblée.")
@@ -577,14 +621,13 @@ if st.session_state['current_page'] == 'analyse':
                 f'<div class="result-card {rc}">'
                 f'<div class="result-badge {bc}">{badge_txt}</div>'
                 f'<div class="result-prob {pc}">{pct:.1f}<span style="font-size:2rem">%</span></div>'
-                f'<div class="result-sublabel">Probabilité Métastatique — Score p</div>'
+                f'<div class="result-sublabel">Probabilité Métastatique</div>'
                 f'<div class="result-decision">{decision}</div>'
                 f'</div>',
                 unsafe_allow_html=True
             )
             st.progress(prob)
 
-            # Biomarker chart
             importances = model.feature_importances_[3:]
             df_imp = (
                 pd.DataFrame({'gene': res['genes'], 'imp': importances})
@@ -603,34 +646,47 @@ if st.session_state['current_page'] == 'analyse':
             fig.update_layout(
                 title=dict(
                     text="Top 10 — Biomarqueurs Décisifs",
-                    font=dict(family="Cormorant Garamond, serif", size=17, color="#0d1b2a"),
+                    font=dict(family="Cormorant Garamond, serif", size=16, color="#0d1b2a"),
                     x=0
                 ),
-                paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
                 xaxis=dict(
-                    showgrid=True, gridcolor="rgba(0,0,0,0.05)",
+                    showgrid=True,
+                    gridcolor="rgba(0,0,0,0.05)",
                     color="rgba(0,0,0,0.45)",
-                    tickfont=dict(family="Syne, sans-serif", size=10), zeroline=False
+                    tickfont=dict(family="Syne, sans-serif", size=10),
+                    zeroline=False
                 ),
                 yaxis=dict(
                     color="#0d1b2a",
-                    tickfont=dict(family="Syne, sans-serif", size=11),
+                    tickfont=dict(family="Syne, sans-serif", size=10),
                     gridcolor="rgba(0,0,0,0)"
                 ),
-                margin=dict(l=0, r=0, t=45, b=0), height=340
+                margin=dict(l=0, r=0, t=40, b=0),
+                height=320
             )
             st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
         else:
             st.markdown("""
             <div class="placeholder">
-                <div style="font-size:2.5rem; opacity:0.3;">🧬</div>
+                <div style="font-size: 2rem; opacity: 0.3;">🧬</div>
                 <div>
                     Chargez un profil d'expression génique<br>
                     puis lancez le diagnostic pour afficher les résultats.
                 </div>
             </div>
             """, unsafe_allow_html=True)
+
+# PAGE MÉTHODOLOGIE
+elif st.session_state['current_page'] == 'methodologie':
+    st.markdown("""
+    <div style="margin-bottom: 1.5rem;">
+        <h1 style="font-size: 1.8rem; margin-bottom: 0.3rem;">Méthodologie</h1>
+        <p style="color: rgba(0,0,0,0.55); font-size: 0.85rem;">Architecture et validation du modèle prédictif</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # PAGE MÉTHODOLOGIE
 elif st.session_state['current_page'] == 'methodologie':
