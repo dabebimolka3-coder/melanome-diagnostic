@@ -645,159 +645,407 @@ if st.session_state['current_page'] == 'analyse':
             </div>
             """, unsafe_allow_html=True)
 
-# PAGE MÉTHODOLOGIE
+# ════════════════════════════════════════════════════════
+# PAGE MÉTHODOLOGIE — remplace le bloc elif correspondant
+# ════════════════════════════════════════════════════════
+METHODOLOGIE = '''
 elif st.session_state['current_page'] == 'methodologie':
     st.markdown("""
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Méthodologie</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Architecture et validation du modèle prédictif</p>
+    <div class="page-header">
+        <div class="page-eyebrow"><span class="page-eyebrow-line"></span>Architecture Scientifique</div>
+        <h1 class="page-title">Méthodologie</h1>
+        <p class="page-subtitle">Protocole de conception, validation et déploiement du modèle prédictif multimodal.</p>
     </div>
     """, unsafe_allow_html=True)
-    
+
+    st.markdown(\'<div class="section-label">01 — Architecture du Modèle</div>\', unsafe_allow_html=True)
     c1, c2 = st.columns(2, gap="large")
 
     with c1:
         st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Architecture du Modèle</div>
-            <ul>
-                <li><strong>Signature Génomique :</strong> 54 biomarqueurs mRNA sélectionnés par régression Lasso — invasion tumorale, remodelage de la MEC, EMT, inflammation.</li>
-                <li><strong>Moteur prédictif :</strong> Random Forest de 500 arbres décisionnels.</li>
-                <li><strong>Cohorte :</strong> Entraîné sur TCGA-SKCM (mélanome cutané).</li>
-                <li><strong>Validation croisée :</strong> 10 folds stratifiés</li>
-            </ul>
+        <div class="arch-block">
+            <div class="arch-block-header">
+                <div class="arch-icon arch-icon-blue">🧠</div>
+                <div class="arch-block-title">Moteur Prédictif</div>
+                <span class="arch-block-tag">Core</span>
+            </div>
+            <div class="arch-block-body">
+                <p>Random Forest de <strong>500 arbres décisionnels</strong> entraîné sur la cohorte TCGA-SKCM. Chaque arbre vote indépendamment ; la probabilité finale est la moyenne agrégée des votes foliaires.</p>
+                <div class="arch-chip-row">
+                    <span class="arch-chip">500 estimators</span>
+                    <span class="arch-chip">max_features = sqrt</span>
+                    <span class="arch-chip">Gini impurity</span>
+                    <span class="arch-chip">OOB scoring</span>
+                </div>
+            </div>
         </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Normalisation Z-score</div>
-            <p>Chaque échantillon subit une normalisation basée sur les paramètres statistiques de la cohorte TCGA de référence :</p>
-            <div class="formula-box">z = (x &minus; &mu;) / &sigma;</div>
-            <p style="margin-top:1rem">&mu; et &sigma; sont calculés sur les distributions TCGA-SKCM pour chacun des 54 gènes et 3 variables cliniques.</p>
+        <div class="arch-block">
+            <div class="arch-block-header">
+                <div class="arch-icon arch-icon-teal">🔬</div>
+                <div class="arch-block-title">Signature Génomique</div>
+                <span class="arch-block-tag">54 gènes</span>
+            </div>
+            <div class="arch-block-body">
+                <p>54 biomarqueurs mRNA sélectionnés par <strong>régression Lasso pénalisée</strong> sur l'ensemble du transcriptome TCGA. Couvrent l'invasion tumorale, le remodelage de la MEC, la transition EMT et l'inflammation.</p>
+                <div class="arch-chip-row">
+                    <span class="arch-chip">Lasso α-optimisé</span>
+                    <span class="arch-chip">Log2 TPM</span>
+                    <span class="arch-chip">HGNC Symbols</span>
+                </div>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
     with c2:
         st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Procédure Diagnostique</div>
-            <div class="step-row">
-                <div class="step-dot">1</div>
-                <div><strong>Input :</strong> Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression 54 gènes au format .csv.</div>
+        <div class="arch-block">
+            <div class="arch-block-header">
+                <div class="arch-icon arch-icon-amber">📊</div>
+                <div class="arch-block-title">Normalisation Z-score</div>
+                <span class="arch-block-tag">Preprocessing</span>
             </div>
-            <div class="step-row">
-                <div class="step-dot">2</div>
-                <div><strong>Fusion Multimodale :</strong> Encodage et concaténation pour former un vecteur unique de 57 variables (54G + 3C).</div>
+            <div class="arch-block-body">
+                <p>Chaque variable subit une standardisation basée sur les paramètres de la cohorte TCGA, assurant la comparabilité inter-laboratoires indépendamment du pipeline RNA-seq utilisé.</p>
+                <div class="formula-elegant">
+                    <div class="formula-math">z = (x − μ) / σ</div>
+                    <div class="formula-sub">μ, σ calculés sur TCGA-SKCM (n = 473)</div>
+                </div>
             </div>
-            <div class="step-row">
-                <div class="step-dot">3</div>
-                <div><strong>Standardisation :</strong> Application des moyennes et écarts-types TCGA sur chaque variable individuelle.</div>
+        </div>
+        <div class="arch-block">
+            <div class="arch-block-header">
+                <div class="arch-icon arch-icon-rose">✅</div>
+                <div class="arch-block-title">Validation Croisée</div>
+                <span class="arch-block-tag">10-Fold CV</span>
             </div>
-            <div class="step-row">
-                <div class="step-dot">4</div>
-                <div><strong>Prédiction :</strong> Calcul de la probabilité p métastatique via le modèle Random Forest entraîné.</div>
+            <div class="arch-block-body">
+                <p>Validation croisée <strong>stratifiée à 10 folds</strong> préservant la distribution des classes. Métriques reportées : moyennes ± écarts-types sur les 10 partitions.</p>
+                <div class="arch-chip-row">
+                    <span class="arch-chip">Stratified K-Fold</span>
+                    <span class="arch-chip">Train 80 / Test 20</span>
+                    <span class="arch-chip">Balanced classes</span>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
+    st.markdown(\'<div class="section-label">02 — Pipeline Diagnostique</div>\', unsafe_allow_html=True)
+    c3, c4 = st.columns([5, 7], gap="large")
+
+    with c3:
         st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Seuils de Décision Clinique</div>
-            <div class="threshold-row">
-                <div class="th-ind th-low"></div>
-                <div>
-                    <div class="th-title">Risque Faible — p &lt; 33%</div>
-                    <div class="th-desc">Mélanome primaire probable. Surveillance standard recommandée.</div>
+        <div class="pipeline-wrap">
+            <div class="pipeline-title">🔄 Flux de Traitement</div>
+            <div class="pipe-step">
+                <div class="pipe-num">01</div>
+                <div class="pipe-content">
+                    <div class="pipe-label">Acquisition</div>
+                    <div class="pipe-desc">Saisie des paramètres cliniques (Âge, Sexe, Stade TNM) et chargement du profil d'expression au format CSV normalisé HGNC.</div>
                 </div>
             </div>
-            <div class="threshold-row">
-                <div class="th-ind th-med"></div>
-                <div>
-                    <div class="th-title">Risque Intermédiaire — 33% &le; p &lt; 67%</div>
-                    <div class="th-desc">Zone d'incertitude. Confirmation histologique et suivi rapproché.</div>
+            <div class="pipe-step">
+                <div class="pipe-num">02</div>
+                <div class="pipe-content">
+                    <div class="pipe-label">Fusion Multimodale</div>
+                    <div class="pipe-desc">Encodage binaire du sexe, ordinalisation du stade TNM, concaténation en vecteur unique de <strong>57 variables</strong> (54G + 3C).</div>
                 </div>
             </div>
-            <div class="threshold-row">
-                <div class="th-ind th-high"></div>
-                <div>
-                    <div class="th-title">Risque Élevé — p &ge; 67%</div>
-                    <div class="th-desc">Mélanome métastatique probable. Discussion précoce immunothérapie (anti-PD-1 / anti-CTLA-4).</div>
+            <div class="pipe-step">
+                <div class="pipe-num">03</div>
+                <div class="pipe-content">
+                    <div class="pipe-label">Standardisation</div>
+                    <div class="pipe-desc">Application des paramètres μ/σ TCGA sur chaque variable. Alignement sur l'espace de référence de la cohorte.</div>
+                </div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">04</div>
+                <div class="pipe-content">
+                    <div class="pipe-label">Inférence RF</div>
+                    <div class="pipe-desc">Vote agrégé des 500 arbres. Calcul de <em>p</em> métastatique par moyenne des probabilités foliaires pondérées.</div>
+                </div>
+            </div>
+            <div class="pipe-step" style="margin-bottom:0">
+                <div class="pipe-num">05</div>
+                <div class="pipe-content">
+                    <div class="pipe-label">Interprétation</div>
+                    <div class="pipe-desc">Seuillage tripartite et visualisation du top-10 des biomarqueurs décisifs par feature importance normalisée.</div>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-# PAGE DOCUMENTATION
+    with c4:
+        st.markdown("""
+        <div class="pipeline-wrap">
+            <div class="pipeline-title">🎯 Seuils de Décision Clinique</div>
+            <div class="thr-grid">
+                <div class="thr-card thr-card-low">
+                    <div class="thr-pct thr-pct-low">&lt;33<span style="font-size:1rem">%</span></div>
+                    <div class="thr-divider"></div>
+                    <div>
+                        <div class="thr-title">Risque Faible</div>
+                        <div class="thr-desc">Mélanome primaire probable. Surveillance standard et suivi dermatologique classique recommandé.</div>
+                    </div>
+                </div>
+                <div class="thr-card thr-card-med">
+                    <div class="thr-pct thr-pct-med">33–67<span style="font-size:1rem">%</span></div>
+                    <div class="thr-divider"></div>
+                    <div>
+                        <div class="thr-title">Risque Intermédiaire</div>
+                        <div class="thr-desc">Zone d'incertitude clinique. Confirmation histologique et imagerie complémentaire requises.</div>
+                    </div>
+                </div>
+                <div class="thr-card thr-card-high">
+                    <div class="thr-pct thr-pct-high">≥67<span style="font-size:1rem">%</span></div>
+                    <div class="thr-divider"></div>
+                    <div>
+                        <div class="thr-title">Risque Élevé</div>
+                        <div class="thr-desc">Mélanome métastatique probable. Discussion précoce anti-PD-1 / anti-CTLA-4 ou thérapie ciblée BRAF/MEK.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+'''
+
+
+
+# ════════════════════════════════════════════════════════
+# PAGE DOCUMENTATION — remplace le bloc elif correspondant
+# ════════════════════════════════════════════════════════
+DOCUMENTATION = '''
 elif st.session_state['current_page'] == 'documentation':
     st.markdown("""
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Documentation Scientifique</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Modèle multimodal pour la prédiction du risque métastatique dans le mélanome cutané</p>
+    <div class="page-header">
+        <div class="page-eyebrow"><span class="page-eyebrow-line"></span>Référence Technique</div>
+        <h1 class="page-title">Documentation Scientifique</h1>
+        <p class="page-subtitle">Modèle multimodal pour la prédiction du risque métastatique dans le mélanome cutané (TCGA-SKCM).</p>
     </div>
     """, unsafe_allow_html=True)
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Base de Données</div>
-            <ul>
-                <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
-                <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
-                <li><strong>Features :</strong> 57 variables (54 gènes + 3 cliniques)</li>
-                <li><strong>Ratio :</strong> Train/Test 80/20</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    
-    with col2:
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Performances</div>
-            <ul>
-                <li><strong>Accuracy :</strong> 90%</li>
-                <li><strong>Sensibilité :</strong> 85%</li>
-                <li><strong>Spécificité :</strong> 95%</li>
-                <li><strong>AUC-ROC :</strong> 0.955</li>
-                <li><strong>F1-Score :</strong> 89.47%</li>
-                <li><strong>Precision :</strong> 94.44%</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="mcard">
-            <div class="mcard-title"> Limitations</div>
-            <ul>
-                <li>Validation externe en cours sur cohorte indépendante</li>
-                <li>Ne remplace pas le gold standard histologique</li>
-                <li>Usage réservé à la recherche clinique</li>
-                <li>Nécessite normalisation standardisée des expressions géniques</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
 
-# PAGE CONTACT
+    st.markdown("""
+    <div class="stat-strip">
+        <div class="stat-cell">
+            <div class="stat-cell-val">473</div>
+            <div class="stat-cell-label">Patients TCGA</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-cell-val">54</div>
+            <div class="stat-cell-label">Gènes sélectionnés</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-cell-val">0.955</div>
+            <div class="stat-cell-label">AUC-ROC</div>
+        </div>
+        <div class="stat-cell">
+            <div class="stat-cell-val">90<span>%</span></div>
+            <div class="stat-cell-label">Accuracy globale</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([6, 6], gap="large")
+
+    with col1:
+        st.markdown(\'<div class="section-label">Performances du Modèle</div>\', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="perf-wrap">
+            <div class="perf-row">
+                <div class="perf-meta"><span class="perf-metric-name">Accuracy</span><span class="perf-metric-val">90.0 %</span></div>
+                <div class="perf-bar-bg"><div class="perf-bar-fill" style="width:90%"></div></div>
+            </div>
+            <div class="perf-row">
+                <div class="perf-meta"><span class="perf-metric-name">Sensibilité (Recall)</span><span class="perf-metric-val">85.0 %</span></div>
+                <div class="perf-bar-bg"><div class="perf-bar-fill" style="width:85%"></div></div>
+            </div>
+            <div class="perf-row">
+                <div class="perf-meta"><span class="perf-metric-name">Spécificité</span><span class="perf-metric-val">95.0 %</span></div>
+                <div class="perf-bar-bg"><div class="perf-bar-fill" style="width:95%"></div></div>
+            </div>
+            <div class="perf-row">
+                <div class="perf-meta"><span class="perf-metric-name">AUC-ROC</span><span class="perf-metric-val">0.955</span></div>
+                <div class="perf-bar-bg"><div class="perf-bar-fill" style="width:95.5%"></div></div>
+            </div>
+            <div class="perf-row">
+                <div class="perf-meta"><span class="perf-metric-name">F1-Score</span><span class="perf-metric-val">89.47 %</span></div>
+                <div class="perf-bar-bg"><div class="perf-bar-fill" style="width:89.47%"></div></div>
+            </div>
+            <div class="perf-row">
+                <div class="perf-meta"><span class="perf-metric-name">Precision</span><span class="perf-metric-val">94.44 %</span></div>
+                <div class="perf-bar-bg"><div class="perf-bar-fill" style="width:94.44%"></div></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown(\'<div class="section-label">Limitations & Usage</div>\', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="gene-panel">
+            <div class="gene-panel-title">⚠️ Limitations connues</div>
+            <div class="limit-item">
+                <div class="limit-num">1</div>
+                <div class="limit-text"><strong>Validation externe en cours</strong> sur cohortes indépendantes GEO et ICGC. Performances à confirmer hors cadre TCGA.</div>
+            </div>
+            <div class="limit-item">
+                <div class="limit-num">2</div>
+                <div class="limit-text"><strong>Ne remplace pas le gold standard</strong> histologique — diagnostic anatomopathologique toujours requis.</div>
+            </div>
+            <div class="limit-item">
+                <div class="limit-num">3</div>
+                <div class="limit-text"><strong>Usage réservé à la recherche clinique.</strong> Non certifié comme dispositif médical (CE / FDA).</div>
+            </div>
+            <div class="limit-item">
+                <div class="limit-num">4</div>
+                <div class="limit-text"><strong>Normalisation stricte requise</strong> — expressions géniques produites par RNA-seq TPM et normalisées en log2(x+1).</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(\'<div class="section-label">Base de Données & Cohorte</div>\', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="arch-block">
+            <div class="arch-block-header">
+                <div class="arch-icon arch-icon-blue">🗄️</div>
+                <div class="arch-block-title">TCGA-SKCM</div>
+                <span class="arch-block-tag">Référence</span>
+            </div>
+            <div class="arch-block-body">
+                <p><strong>The Cancer Genome Atlas – Skin Cutaneous Melanoma.</strong> Cohorte multicentrique incluant 473 patients avec données RNA-seq complètes et annotation clinique détaillée.</p>
+                <div class="arch-chip-row">
+                    <span class="arch-chip">RNA-seq FPKM</span>
+                    <span class="arch-chip">473 patients</span>
+                    <span class="arch-chip">Primaire + Métastatique</span>
+                    <span class="arch-chip">Annoté TNM</span>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown(\'<div class="section-label" style="margin-top:1.5rem">Signature Génomique — 54 Biomarqueurs</div>\', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="gene-panel">
+            <div class="gene-panel-title">🧬 Gènes sélectionnés par Lasso</div>
+            <div class="gene-category">Invasion & Remodelage MEC</div>
+            <div class="gene-tag-grid">
+                <span class="gene-tag">MMP1</span><span class="gene-tag">MMP9</span>
+                <span class="gene-tag">MMP14</span><span class="gene-tag">COL1A1</span>
+                <span class="gene-tag">COL3A1</span><span class="gene-tag">LAMC2</span>
+                <span class="gene-tag">FN1</span><span class="gene-tag">ITGAV</span>
+            </div>
+            <div class="gene-category">Transition Épithélio-Mésenchymateuse (EMT)</div>
+            <div class="gene-tag-grid">
+                <span class="gene-tag">CDH1</span><span class="gene-tag">CDH2</span>
+                <span class="gene-tag">VIM</span><span class="gene-tag">ZEB1</span>
+                <span class="gene-tag">ZEB2</span><span class="gene-tag">TWIST1</span>
+                <span class="gene-tag">SNAI1</span><span class="gene-tag">SNAI2</span>
+            </div>
+            <div class="gene-category">Immunité & Checkpoints</div>
+            <div class="gene-tag-grid">
+                <span class="gene-tag">PDCD1</span><span class="gene-tag">CD274</span>
+                <span class="gene-tag">CTLA4</span><span class="gene-tag">LAG3</span>
+                <span class="gene-tag">TIGIT</span><span class="gene-tag">HAVCR2</span>
+                <span class="gene-tag">CD8A</span><span class="gene-tag">FOXP3</span>
+            </div>
+            <div class="gene-category">Prolifération & Cycle Cellulaire</div>
+            <div class="gene-tag-grid">
+                <span class="gene-tag">BRAF</span><span class="gene-tag">NRAS</span>
+                <span class="gene-tag">CDKN2A</span><span class="gene-tag">TP53</span>
+                <span class="gene-tag">PTEN</span><span class="gene-tag">MKI67</span>
+                <span class="gene-tag">CCND1</span><span class="gene-tag">CDK4</span>
+            </div>
+            <p style="font-size:0.72rem;color:rgba(0,0,0,0.3);margin-top:1rem;margin-bottom:0">
+                + 22 biomarqueurs additionnels (angiogenèse, métabolisme, signalisation MAPK/PI3K)
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+'''
+
+
+
+# ════════════════════════════════════════════════════════
+# PAGE CONTACT — remplace le bloc elif correspondant
+# ════════════════════════════════════════════════════════
+CONTACT = '''
 elif st.session_state['current_page'] == 'contact':
     st.markdown("""
-    <div style="margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Contact & Support</h1>
-        <p style="color: rgba(0,0,0,0.55); font-size: 0.9rem;">Une question, une collaboration ou un support technique ? N'hésitez pas à nous contacter.</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="mcard">
-        <div class="mcard-title">📋 Formulaire de contact</div>
-        <p>Pour toute demande d'information ou collaboration, veuillez nous envoyer un email à :</p>
-        <p style="font-family: monospace; font-size: 1rem; color: #1a6fff; text-align: center; margin-top: 0.5rem;">contact@melanomapredict.ai</p>
+    <div class="page-header">
+        <div class="page-eyebrow"><span class="page-eyebrow-line"></span>Support & Collaboration</div>
+        <h1 class="page-title">Contact</h1>
+        <p class="page-subtitle">Une question scientifique, une demande de collaboration ou un support technique ? L'équipe répond sous 48 h.</p>
     </div>
     """, unsafe_allow_html=True)
 
+    c1, c2 = st.columns([6, 6], gap="large")
+
+    with c1:
+        st.markdown("""
+        <div class="cta-strip">
+            <div class="cta-overline">Prise de Contact</div>
+            <h2 class="cta-title">Travaillons<br>Ensemble</h2>
+            <p class="cta-sub">Collaborations cliniques, intégrations hospitalières, demandes de licences de recherche ou support technique.</p>
+            <a class="cta-email" href="mailto:contact@melanomapredict.ai">
+                ✉&nbsp; contact@melanomapredict.ai
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="contact-grid">
+            <div class="cont-card">
+                <div class="cont-icon">🔬</div>
+                <div class="cont-label">Recherche</div>
+                <div class="cont-value">Collaborations Cliniques</div>
+                <div class="cont-desc">Intégration dans des cohortes de validation, co-publications, études prospectives.</div>
+            </div>
+            <div class="cont-card">
+                <div class="cont-icon">🏥</div>
+                <div class="cont-label">Institutionnel</div>
+                <div class="cont-value">Déploiement Hospitalier</div>
+                <div class="cont-desc">Intégration SIH, accompagnement réglementaire, formation des équipes médicales.</div>
+            </div>
+            <div class="cont-card">
+                <div class="cont-icon">⚙️</div>
+                <div class="cont-label">Technique</div>
+                <div class="cont-value">Support & API</div>
+                <div class="cont-desc">Documentation technique, accès API, normalisation des données d'expression génique.</div>
+            </div>
+            <div class="cont-card">
+                <div class="cont-icon">📄</div>
+                <div class="cont-label">Réglementaire</div>
+                <div class="cont-value">Licences & Usage</div>
+                <div class="cont-desc">Licences de recherche, conformité RGPD, cadre d'utilisation clinique.</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with c2:
+        st.markdown(\'<div class="section-label" style="margin-top:0">FAQ</div>\', unsafe_allow_html=True)
+        st.markdown("""
+        <div class="gene-panel">
+            <div class="gene-panel-title">💬 Questions Fréquentes</div>
+            <div class="faq-item">
+                <div class="faq-q">Quel format de données d'expression génique est requis ?</div>
+                <div class="faq-a">Les données doivent être au format RNA-seq, normalisées en TPM ou FPKM puis transformées en log2(x+1). Un template CSV téléchargeable est disponible sur la page Analyse.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Le modèle est-il validé sur d'autres cohortes que TCGA ?</div>
+                <div class="faq-a">La validation externe est en cours sur les cohortes GEO et ICGC. Les résultats préliminaires seront publiés prochainement.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Peut-on l'utiliser pour d'autres types tumoraux que le mélanome cutané ?</div>
+                <div class="faq-a">Non. Le modèle a été spécifiquement entraîné sur TCGA-SKCM. Son application à d'autres tumeurs n'est pas validée et déconseillée.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Quelle est la politique de confidentialité des données patients ?</div>
+                <div class="faq-a">Aucune donnée patient n'est transmise à des serveurs tiers. Tout le traitement est réalisé localement dans l'instance Streamlit déployée.</div>
+            </div>
+            <div class="faq-item" style="border-bottom:none;padding-bottom:0">
+                <div class="faq-q">Comment citer cet outil dans une publication ?</div>
+                <div class="faq-a">Contactez-nous à l'adresse ci-contre pour recevoir la référence bibliographique complète et les conditions de citation.</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+'''
 # ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
