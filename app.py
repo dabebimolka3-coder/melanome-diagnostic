@@ -745,7 +745,7 @@ elif st.session_state['current_page'] == 'documentation':
             <div class="mcard-title"> Base de Données</div>
             <ul>
                 <li><strong>Cohorte :</strong> TCGA-SKCM (Skin Cutaneous Melanoma)</li>
-                <li><strong>Échantillons :</strong> 473 patients (mélanome primaire et métastatique)</li>
+                <li><strong>Échantillons :</strong> 206 patients (mélanome primaire et métastatique)</li>
                 <li><strong>Features :</strong> 57 variables (54 gènes + 3 cliniques)</li>
                 <li><strong>Ratio :</strong> Train/Test 80/20</li>
             </ul>
